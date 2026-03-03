@@ -1,0 +1,61 @@
+SELECT 
+    T1.ITNBR,
+    T4.PAMNT AS "UnitPrice($USD)",
+    T1.ITDSC,
+    T1.VNDNR, 
+    T1.WEGHT,
+    T1.B2COCD,
+    T3.VNNMVM,
+    T3.VNMAVM,
+    T1.B2Z95S as cubes, 
+    T1.ITCLS, 
+    CASE when T6.MFPUS ='U' then t6.MFPUS else T2.MFPUS end as MFPS,
+    T2.QTYCR,
+    T2.SERCOLNUM,
+    T2.SERIES,
+    T2.CRTLIN,
+    T2.CRTWIN,
+    T2.CRTHIN,
+    T2.PRDDDES,
+    T2.PRDLIN,
+    T2.PRDWIN,
+    T2.PRDHIN,
+    T5.PRISCHEDULEBNUMBER, 
+    T5.PRIUNITNETWEIGHTKGS 
+FROM 
+    AMFLIBA.ITMRVA T1 
+    LEFT JOIN AFILELIB.ITMEXT T2 
+        ON T1.ITNBR = T2.ITNBR  
+    LEFT JOIN AMFLIBA.VENNAMV0 T3 
+        ON T1.VNDNR = T3.VNDRVM 
+    LEFT JOIN (
+        SELECT PITEM, PAMNT 
+        FROM AFILELIB.PRICE 
+        WHERE PRICCD = 'FOBARC'
+    ) AS T4  
+        ON T1.ITNBR = T4.PITEM  
+    LEFT JOIN (
+        SELECT 
+            a1.PRIITEMNUMBER, 
+            a1.PRISCHEDULEBNUMBER, 
+            a1.PRIUNITNETWEIGHTKGS 
+        FROM 
+            ASHLEY.TBL_PROFORMA_INVOICE_ITEM a1  
+        WHERE EXISTS (
+            SELECT 1 
+            FROM AFILELIB.CODATAN t1  
+            WHERE t1.HOUSE = '335' 
+            AND a1.priordernumber = t1.ordno
+        )
+        GROUP BY  
+            a1.PRIITEMNUMBER, 
+            a1.PRISCHEDULEBNUMBER, 
+            a1.PRIUNITNETWEIGHTKGS
+    ) AS T5 
+        ON T1.ITNBR = T5.PRIITEMNUMBER
+    LEFT JOIN AFILELIB.ITBEXT AS T6
+        ON t1.STID = T6.HOUSE AND t1.ITNBR = T6.ITNBR
+WHERE 
+    T1.STID = '335' AND T1.ITCLS LIKE 'Z%' AND T1.ITCLS NOT LIKE '%K'
+ORDER BY 
+    T1.ITNBR

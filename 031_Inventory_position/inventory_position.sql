@@ -1,0 +1,1 @@
+SELECT  top 10 *   FROM t_inventory_position where planned_picks > 0
