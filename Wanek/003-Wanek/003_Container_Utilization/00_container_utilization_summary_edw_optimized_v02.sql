@@ -1,0 +1,144 @@
+-- Updated on Nov.22.2021 for wanek Container Utilization Summary sheet - Optimized
+-- 声明参数
+DECLARE @StartDate DATETIME = '2025-01-01 07:00:00';
+--DECLARE @EndDate DATETIME = CAST(DATEADD(DAY, 1, CAST(GETDATE() AS DATE)) AS DATETIME);  -- 包含今天整天
+DECLARE @EndDate DATETIME = CAST(CAST(GETDATE() AS DATE) AS DATETIME) + CAST('07:00:00' AS DATETIME);  -- 当天早上7:00:00
+
+WITH ContainerData AS (
+    -- 从活动表获取数据
+    SELECT 
+        a.WCHDOORNUMBER,
+        a.WCHCONTAINERNUMBER,
+        a.WCHORIGIN,
+        a.WCHDESTINATION,
+        a.WCHCONTAINERSTATUS,
+        a.WCHTOTALCARTONS,
+        a.WCHTOTALCUBES,
+        a.WCHPOSTEDTIMESTAMP,
+        a.WCHTOTALWEIGHT,
+        a.WCHPOSTEDUSER,
+        a.WCHCONTAINERSIZE,
+        LTRIM(RTRIM(a.WCHORIGIN)) + '-' + LTRIM(RTRIM(a.WCHCONTAINERNUMBER)) + '-' + LTRIM(RTRIM(a.WCHDESTINATION)) AS [Container#], 
+        a.WCHBUILDING
+    FROM Manufacturing_ProductionPlanning_WNK.WVCNTHD a
+    WHERE a.WCHCONTAINERSTATUS IN ('P', 'T') 
+        AND a.WCHORIGIN = '35'
+        AND a.WCHPOSTEDTIMESTAMP >= @StartDate
+        AND a.WCHPOSTEDTIMESTAMP < @EndDate
+        AND a.WCHCONTAINERNUMBER NOT LIKE 'AIR%' 
+        AND LEFT(LTRIM(RTRIM(a.WCHCONTAINERNUMBER)), 4) NOT IN ('AAAR', 'AIIR', 'AAIR', 'AIRR', 'AIR_', 'AIR1')
+        AND a.WCHDESTINATION NOT IN ('100', '101', '12', '131', '01', '3', '990')
+        AND (a.WCHACTUALARRIVALMAINTPROGRAM = 'SVCHECKIN' 
+            OR (a.WCHACTUALARRIVALMAINTPROGRAM <> 'SVCHECKIN' AND a.WCHBUILDING IN ('B1', 'B2', 'V3', 'M3')))
+
+    UNION ALL
+
+    -- 从归档表获取数据
+    SELECT  
+        a.WCHDOORNUMBER,
+        a.WCHCONTAINERNUMBER,
+        a.WCHORIGIN,
+        a.WCHDESTINATION,
+        a.WCHCONTAINERSTATUS,
+        a.WCHTOTALCARTONS,
+        a.WCHTOTALCUBES,
+        a.WCHPOSTEDTIMESTAMP,
+        a.WCHTOTALWEIGHT,
+        a.WCHPOSTEDUSER,
+        a.WCHCONTAINERSIZE,
+        LTRIM(RTRIM(a.WCHORIGIN)) + '-' + LTRIM(RTRIM(a.WCHCONTAINERNUMBER)) + '-' + LTRIM(RTRIM(a.WCHDESTINATION)) + '-' + LEFT(CONVERT(VARCHAR(23), a.WCHARCHIVETIMESTAMP, 121), 13) AS [Container#], 
+        a.WCHBUILDING
+    FROM Manufacturing_ProductionPlanning_WNK.WVCNTHDA a
+    WHERE a.WCHCONTAINERSTATUS IN ('P', 'T') 
+        AND a.WCHORIGIN = '35'
+        AND a.WCHPOSTEDTIMESTAMP >= @StartDate
+        AND a.WCHPOSTEDTIMESTAMP < @EndDate
+        AND a.WCHCONTAINERNUMBER NOT LIKE 'AIR%' 
+        AND LEFT(LTRIM(RTRIM(a.WCHCONTAINERNUMBER)), 4) NOT IN ('AAAR', 'AIIR', 'AAIR', 'AIRR', 'AIR_', 'AIR1')
+        AND a.WCHDESTINATION NOT IN ('100', '101', '12', '131', '01', '3', '990')
+        AND (a.WCHACTUALARRIVALMAINTPROGRAM = 'SVCHECKIN' 
+            OR (a.WCHACTUALARRIVALMAINTPROGRAM <> 'SVCHECKIN' AND a.WCHBUILDING IN ('B1', 'B2', 'V3', 'M3')))
+),
+ContainerMetrics AS (
+    SELECT 
+        WCHDOORNUMBER,
+        WCHCONTAINERNUMBER,
+        WCHORIGIN,
+        WCHDESTINATION,
+        WCHCONTAINERSTATUS,
+        WCHTOTALCARTONS,
+        WCHTOTALCUBES,
+        WCHPOSTEDTIMESTAMP,
+        WCHTOTALWEIGHT,
+        WCHCONTAINERSIZE,
+        [Container#],
+        WCHPOSTEDUSER,
+        WCHBUILDING,
+        -- 预计算时间相关字段
+        CONVERT(VARCHAR(10), WCHPOSTEDTIMESTAMP, 120) AS [Date],
+        CAST(WCHPOSTEDTIMESTAMP AS TIME) AS PostedTime,
+        -- 预计算 Shift
+        CASE 
+            WHEN CAST(WCHPOSTEDTIMESTAMP AS TIME) >= '07:00:00' 
+             AND CAST(WCHPOSTEDTIMESTAMP AS TIME) < '19:00:00' THEN 'D'
+            ELSE 'N'
+        END AS Shift,
+        -- 预计算 Shift_Date
+        CASE 
+            WHEN CAST(WCHPOSTEDTIMESTAMP AS TIME) >= '07:00:00' 
+             AND CAST(WCHPOSTEDTIMESTAMP AS TIME) < '19:00:00' 
+            THEN CAST(WCHPOSTEDTIMESTAMP AS DATE)
+            ELSE 
+                CASE 
+                    WHEN CAST(WCHPOSTEDTIMESTAMP AS TIME) >= '19:00:00' 
+                    THEN CAST(WCHPOSTEDTIMESTAMP AS DATE)
+                    ELSE DATEADD(DAY, -1, CAST(WCHPOSTEDTIMESTAMP AS DATE))
+                END
+        END AS Shift_Date,
+        -- 预计算容器尺寸前缀
+        LEFT(LTRIM(RTRIM(WCHCONTAINERSIZE)), 3) AS ContainerSizePrefix3,
+        LEFT(LTRIM(RTRIM(WCHCONTAINERSIZE)), 2) AS ContainerSizePrefix2,
+        LEFT(WCHCONTAINERSIZE, 1) AS ContainerSizePrefix1
+    FROM ContainerData
+)
+SELECT 
+    WCHDOORNUMBER,
+    WCHCONTAINERNUMBER,
+    WCHORIGIN,
+    WCHDESTINATION,
+    WCHCONTAINERSTATUS,
+    WCHTOTALCARTONS,
+    WCHTOTALCUBES,
+    WCHPOSTEDTIMESTAMP,
+    WCHTOTALWEIGHT,
+    WCHCONTAINERSIZE,
+    [Container#],
+    [Date],
+    WCHPOSTEDUSER,
+    WCHBUILDING,
+    Shift,
+    Shift_Date,
+    -- 计算 Utilization
+    CASE 
+        WHEN ContainerSizePrefix3 = '40H' THEN WCHTOTALCUBES / 2650.0
+        WHEN ContainerSizePrefix3 = '40' THEN WCHTOTALCUBES / 2383.0
+        WHEN ContainerSizePrefix3 = '45' THEN WCHTOTALCUBES / 3058.0
+        WHEN ContainerSizePrefix2 = '53' THEN WCHTOTALCUBES / 3831.0
+        WHEN ContainerSizePrefix2 = '50' THEN WCHTOTALCUBES / 3333.0
+        WHEN ContainerSizePrefix1 = '2' THEN WCHTOTALCUBES / 1191.0
+        ELSE WCHTOTALCUBES / 2650.0
+    END AS Utilization,
+    -- 计算 Site
+    CASE 
+        WHEN [Container#] LIKE '31%' THEN 'WN1'
+        WHEN [Container#] LIKE '33%' THEN 'WN2'
+        WHEN [Container#] LIKE '35%' AND LTRIM(RTRIM(WCHDOORNUMBER)) LIKE '4%' THEN 'WN3'
+        WHEN [Container#] LIKE '35%' AND LTRIM(RTRIM(WCHDOORNUMBER)) LIKE '9%' THEN 'WN2'
+        WHEN [Container#] LIKE '35%' AND LTRIM(RTRIM(WCHDOORNUMBER)) LIKE '8%' THEN 'DC'
+        WHEN [Container#] LIKE '35%' AND WCHBUILDING IN ('B1', 'B2') THEN 'WN2'
+        WHEN [Container#] LIKE '35%' AND WCHBUILDING = 'V3' THEN 'WN3'
+        WHEN [Container#] LIKE '35%' AND WCHBUILDING = 'M3' THEN 'DC'
+        ELSE 'CHECK' 
+    END AS Site
+FROM ContainerMetrics
+OPTION (MAXDOP 4);

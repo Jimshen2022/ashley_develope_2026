@@ -1,0 +1,23 @@
+
+select * from dw_developer.tabledictionary where tpkSchemaName like '%Distribution_Warehouse_Wholesale%'  order by tpkTableName
+select * from dw_developer.tabledictionary where tpkSchemaName like '%Wholesale_Invoicing_AFI%'  order by tpkSchemaName
+
+Wholesale_Invoicing_AFI	DW013EW1
+Wholesale_Invoicing_AFI	MBF9REP
+Wholesale_Invoicing_AFI	TSCMADJ
+Wholesale_Invoicing_AFI	TSCAIN
+Wholesale_Invoicing_AFI	TSITIN
+Wholesale_Invoicing_AFI	INVORD
+Wholesale_Invoicing_AFI	TSDSCADJ
+Wholesale_Invoicing_AFI	TSESTR
+Wholesale_Invoicing_AFI	TSSCIN
+Wholesale_Invoicing_AFI	TSTXIN
+Wholesale_Invoicing_AFI	TSININ
+Wholesale_Invoicing_AFI	TSINXN
+Wholesale_Invoicing_AFI	TSCIIN
+Wholesale_Invoicing_AFI	TSITXN
+Wholesale_Invoicing_AFI	TSSSIN
+Wholesale_Invoicing_AFI	TSITZN
+Wholesale_Invoicing_AFI	TSEXIN
+Wholesale_Invoicing_AFI	TSCOIN
+Wholesale_Invoicing_AFI	TSSCXN

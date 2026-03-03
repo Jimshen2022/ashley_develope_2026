@@ -1,0 +1,11 @@
+let
+    Source = Excel.Workbook(Web.Contents("https://masterashley.sharepoint.com/sites/AssetManagement/Shared%20Documents/Daily%20Site%20Reporting/DC%20Daily%20Entry%20Data.xlsx"), null, true),
+    Form1_Sheet = Source{[Item="Form1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Form1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ID", Int64.Type}, {"Start time", type datetime}, {"Completion time", type datetime}, {"Email", type text}, {"Name", type text}, {"Last modified time", type any}, {"Date", type date}, {"Question", type any}, {"DC", type text}, {"Count of Open Reqs (Current)", Int64.Type}, {"Question2", type any}, {"Next Week's Confirmed Hires", Int64.Type}, {"Absenteeism - Shipping (Daily)", type number}, {"Absenteeism - Overall (Daily)", type number}, {"Invoicing - Current Potential", type number}, {"Invoicing - Current Pace", type number}, {"Invoicing - Target", type number}, {"Shipping PPH", type number}, {"CG Receiving PPH", type number}, {"UPH Receiving PPH", type number}, {"UPH Receiving PPH2", type any}, {"CG Line Clearing PPH", type number}, {"Transfers PPH", type number}, {"Ecomm PPH", type number}, {"Yard PPH", type number}, {"Shuttle PPH", type number}, {"UPH LC PPH", type number}, {"Straights PPH", type number}, {"Shipping (Billable & Straights) PPH", type number}, {"Safety (Daily) Work Comp Incidents", Int64.Type}, {"Safety (Daily) Other Accidents", Int64.Type}, {"Safety (Daily) Light Duty", Int64.Type}, {"Safety (Daily) Current Off Work", Int64.Type}}),
+    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Last modified time", "Question", "Question2", "UPH Receiving PPH2"}),
+    #"Added Custom" = Table.AddColumn(#"Removed Columns", "Absenteeism - Shipping (Daily) Scorecard", each [#"Absenteeism - Shipping (Daily)"]/100),
+    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Absenteeism - Overall (Daily) Scorecard", each [#"Absenteeism - Overall (Daily)"]/100),
+    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom1",{{"Absenteeism - Shipping (Daily) Scorecard", type number}, {"Absenteeism - Overall (Daily) Scorecard", type number}})
+in
+    #"Changed Type1"

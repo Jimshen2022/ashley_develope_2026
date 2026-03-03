@@ -1,0 +1,24 @@
+SELECT
+    t1.TCODE,
+    t1.ORDNO,
+    t1.ITNBR,
+    t2.ITCLS,
+    t1.HOUSE,
+    t1.UPDDT,
+    t1.UPDTM,
+    t1.TRQTY,
+    t1.TRNDT,
+    t1.LBHNO,
+    t1.REFNO,
+    t1.REASN,
+    t1.USRSQ
+FROM
+    AMFLIBW.IMHIST as t1
+JOIN
+    (SELECT * FROM AMFLIBW.ITMRVA AS a WHERE a.STID IN ('35')) AS t2 ON t2.ITNBR = t1.ITNBR
+WHERE
+    t1.HOUSE = '35'
+    AND t1.UPDDT BETWEEN ? AND ?
+    AND t1.ITNBR IN (?, ?, ?, ?)
+ORDER BY
+    t1.UPDDT

@@ -1,0 +1,17 @@
+SELECT  [Name]
+      ,[EmployeeID]
+      ,[EmployeeNumber]
+      ,[WarehouseID]
+      ,[WorkDay]
+      ,[ActivityDescription]
+      ,[Duration]
+      ,[ProcessStart]
+      ,[ProcessEnd]
+      ,[ClockIn]
+      ,[ClockOut]
+      ,[Supervisor]
+      ,[Source]
+      ,[ProcessCode]
+  FROM [PowerBI_Distribution].[IndirectHistory]
+  where cast ([workday] as date)>DATEADD(DAY, -15, GETDATE())
+  and [WarehouseID] IN ('335','35')

@@ -1,0 +1,62 @@
+ SELECT * FROM Manufacturing_ProductionPlanning_WNK.WVCNTIDA a where a.WCICONTAINERNUMBER = 'AXIU1616126'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 声明参数
+DECLARE @ContainerDetailsStartDate DATE = '2025-01-01';
+--DECLARE @ContainerDetailsEndDate DATE = CAST(GETDATE() AS DATE);
+--DECLARE @ContainerDetailsEndDate DATE = CAST(CAST(GETDATE() AS DATE) AS DATETIME) + CAST('07:00:00' AS DATETIME);  -- 当天早上7:00:00;
+DECLARE @ContainerDetailsEndDate DATETIME = CAST(CAST(GETDATE() AS DATE) AS DATETIME) + CAST('07:00:00' AS DATETIME); -- 当天早上7:00:00;
+DECLARE @HeaderDetailsStartDate DATE = '2025-01-01';
+--DECLARE @HeaderDetailsEndDate DATE = CAST(GETDATE() AS DATE);
+DECLARE @HeaderDetailsEndDate DATE = CAST(CAST(GETDATE() AS DATE) AS DATETIME) + CAST('07:00:00' AS DATETIME);  -- 当天早上7:00:00;
+
+
+    SELECT 
+        LTRIM(RTRIM(a.WCICONTAINERNUMBER)),
+        a.WCIORIGIN, 
+        a.WCIDESTINATION, 
+        a.WCIORDER, 
+        LTRIM(RTRIM(a.WCIITEMNUMBER)), 
+        a.WCIQUANTITYLOADED,
+        a.WCILASTMAINTENANCETIMESTAMP, 
+        a.WCILASTMAINTENANCEUSER, 
+        b.ITMCQTY, 
+        c.itcls, 
+        c.B2Z95S, 
+        c.WEGHT, 
+        a.WCIQUANTITYLOADED * c.B2Z95S,
+        CEILING(CAST(a.WCIQUANTITYLOADED AS FLOAT) / b.ITMCQTY),
+        LTRIM(RTRIM(a.WCIORIGIN)) + '-' + LTRIM(RTRIM(a.WCICONTAINERNUMBER)) + '-' + LTRIM(RTRIM(a.WCIDESTINATION)) + '-' + LEFT(CONVERT(VARCHAR(23), a.WCIARCHIVETIMESTAMP, 121), 13),
+        CASE 
+            WHEN a.WCIITEMNUMBER LIKE 'B%' THEN 'CG'
+            WHEN c.ITCLS NOT LIKE 'Z%' THEN 'RP'
+            WHEN c.ITCLS LIKE 'Z%K' THEN 'Un-Kits'
+            WHEN c.ITCLS LIKE 'Z%Z' THEN 'ZipperCover'
+            ELSE 'UPH' 
+        END,
+        a.WCIARCHIVETIMESTAMP
+    FROM Manufacturing_ProductionPlanning_WNK.WVCNTIDA a
+   JOIN MasterData_ItemMaster_WNK.ITMEXT b ON a.WCIITEMNUMBER = b.itnbr
+  JOIN (select itnbr, itcls, B2Z95S, WEGHT, stid from MasterData_ItemMaster_WNK.ITMRVA where stid = '35') c ON a.WCIITEMNUMBER = c.itnbr 
+    WHERE a.WCIORIGIN IN ('35','33')
+      AND a.WCILASTMAINTENANCETIMESTAMP >= @ContainerDetailsStartDate
+      AND a.WCILASTMAINTENANCETIMESTAMP <= @ContainerDetailsEndDate
+      AND LEFT(LTRIM(RTRIM(a.WCICONTAINERNUMBER)), 4) NOT IN ('AAAR', 'AIIR', 'AAIR', 'AIRR', 'AIR_', 'AIR1', 'AAII', 'ARRR')
+      AND  LTRIM(RTRIM(a.WCIORIGIN)) + '-' + LTRIM(RTRIM(a.WCICONTAINERNUMBER)) + '-' + LTRIM(RTRIM(a.WCIDESTINATION)) + '-' + LEFT(CONVERT(VARCHAR(23), a.WCIARCHIVETIMESTAMP, 121), 13) = '33-AXIU1616126-5-2025-02-04 00'
+    
+
+

@@ -1,0 +1,29 @@
+SELECT  
+    t2.WHOSE, 
+    t2.CUSNO, 
+    t3.CUSNM, 
+    t2.RPKEY, 
+    t2.ENTDAT, 
+    t2.SHPDAT, 
+    t2.TRIP#, 
+    MAX(t1.PCKDTE) AS PackDate, 
+    SUM(t1.QTY) AS QTY 
+FROM 
+    AFILELIB.dbo.ARPDETL t1
+    JOIN AFILELIB.dbo.ARPHEDR t2 ON t2.RPKEY = t1.RPKEY
+    JOIN AMFLIBA.dbo.CUSMAS t3 ON t2.CUSNO = t3.CUSNO
+WHERE 
+    t2.ACTCOD = 'S' 
+    AND t2.ENTDAT BETWEEN '2021-01-01' AND '2029-12-31'
+    AND t2.WHOSE = '335'
+GROUP BY 
+    t2.WHOSE, 
+    t2.CUSNO, 
+    t3.CUSNM, 
+    t2.RPKEY, 
+    t2.ENTDAT, 
+    t2.SHPDAT, 
+    t2.TRIP#
+ORDER BY  
+    t2.RPKEY, 
+    t2.ENTDAT;
