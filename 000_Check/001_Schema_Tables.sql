@@ -194,7 +194,7 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%ITBEXT%'  o
 select * from dw_developer.tabledictionary where tpktablename LIKE '%InvoiceDetail%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ITEMBL%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ATOFILEATOFILE%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%t_exception_tran_log%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%excep%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%CODIS%'  order by tpkRowCount DESC
 
 
@@ -258,10 +258,12 @@ WHERE
 ORDER BY lot_number, start_tran_date, start_tran_time
 
 -- exception log 855
+Select top 10 * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%'
+Select distinct wh_id from Distribution_Warehouse_Wholesale.ExceptionLog 
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number in (Select lot_number from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%' and exception_date > '2026-01-01') order by lot_number, start_tran_date, start_tran_time
 
-
-Select * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%' and start_tran_date >= '2026-01-01' order by lot_number, exception_date 
+-- sn check
+Select * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%'  order by lot_number, exception_date 
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and tran_type = '855' and start_tran_date >= '2026-01-01' order by lot_number, start_tran_date, start_tran_time 
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952384062' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952820543' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 

@@ -157,7 +157,7 @@ select top 10 * from t_order_detail_breakdown where order_number like '%68433%'
 select top 10 * from t_employee
 select top 10 * from t_department
 select top 10 * from t_exception_log where tran_type like '855%' and exception_date > '2026-01-01' order by exception_date desc
-select top 10 * from t_exception_log where tran_type like '101%' and exception_date > '2026-01-01' order by exception_date desc
+select top 10 * from t_exception_log 
 select top 10 * from t_exception_tran_log
 
 -- picking exceptions
