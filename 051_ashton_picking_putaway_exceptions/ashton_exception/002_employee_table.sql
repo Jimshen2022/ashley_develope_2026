@@ -1,0 +1,1 @@
+select * from [PowerBI_Distribution].[DimEmployee]

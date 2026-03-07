@@ -1,0 +1,5 @@
+let
+    Source = Sql.Database("ashley-edw.database.windows.net", "ASHLEY_EDW", [Query="SELECT #(lf)      [Date_ID] AS [DateID]#(lf)      ,[Fiscal_Day_Of_Week_Name]#(lf)      ,[First_Date_Of_Fiscal_Week]#(lf)      ,[Last_Date_Of_Fiscal_Week] AS [Week Ending Date]#(lf)      ,[Fiscal_Month]#(lf)      ,[Fiscal_Month_Number]#(lf)      ,[Fiscal_Quarter_Number]#(lf)      ,[Fiscal_Year]#(lf)      ,[Fiscal_Week_Of_Year]#(lf)      ,[Last_Date_Of_Fiscal_Year]#(lf)      ,[Fiscal_Year_Diff]#(lf)      ,[Fiscal_Week_Diff]#(lf)      ,[Fiscal_Day_Diff]#(lf)      ,[Yesterday_Flag]#(lf)      ,[Fiscal_WTD_Flag]#(lf)      ,[Fiscal_MTD_Flag]#(lf)      ,[Fiscal_YTD_Flag]#(lf)      ,[First_Date_Of_Fiscal_Year]#(lf)  FROM [PowerBI_Enterprise].[DimDate]#(lf)  where cast([date_id]as date) BETWEEN DATEADD(day,-45,GETDATE()) AND GETDATE()", CreateNavigationProperties=false, CommandTimeout=#duration(0, 2, 40, 0)]),
+    #"Changed Type" = Table.TransformColumnTypes(Source,{{"DateID", type date}, {"First_Date_Of_Fiscal_Week", type date}, {"Week Ending Date", type date}, {"Last_Date_Of_Fiscal_Year", type date}, {"First_Date_Of_Fiscal_Year", type date}})
+in
+    #"Changed Type"

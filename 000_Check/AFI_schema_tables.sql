@@ -1,8 +1,35 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_loc%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_depart%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%WEB%'
 
 */
+
+
+-- Yard and transportation related tables
+select top 1000 * from t_ya_tran_log where started > '2026-03-01' order by started 
+select top 10 * from t_ya_zone 
+select top 10 * from t_ya_location 
+select top 10 * from t_ya_class_loca 
+select top 10 * from t_ya_work_q 
+select top 10 * from t_ya_tran 
+select top 10 * from t_ya_class 
+select top 10 * from t_ya_move_priority  
+select top 10 * from t_ya_tractor_type_location 
+select top 10 * from t_yard_checkin_details
+select top 10 * from t_ya_message
+select top 10 * from t_yard_health_report
+select top 10 * from t_ya_exception_log
+select top 10 * from t_ya_equipment_attributes
+select top 10 * from t_import_yard_checkin
+select top 10 * from t_import_yard_checkout
+select top 10 * from t_ya_equipment_check_log
+select top 10 * from t_ya_tran_types
+select top 10 * from t_ya_equipment_class_loca
+select top 10 * from t_ya_OSHA_attributes
+select top 10 * from t_ya_replenishment
+select top 10 * from t_ya_spotter_loc
+
+select top 10 * from t_control WHERE control_type LIKE '%SEND_YA101_AT_CHKIN%'
 select top 10 * From t_serial_active where hu_id is not null
 SELECT top 10 * FROM t_item_plate_section 
 SELECT top 10 * FROM t_la_employee_clock_in_out 
@@ -127,6 +154,61 @@ select top 10 * from t_order_detail
 select top 10 * from t_order_detail_breakdown
 select top 10 * from t_order_detail where order_number like '%68433%'
 select top 10 * from t_order_detail_breakdown where order_number like '%68433%'
+select top 10 * from t_employee
+select top 10 * from t_department
+select top 10 * from t_exception_log where tran_type like '855%' and exception_date > '2026-01-01' order by exception_date desc
+select top 10 * from t_exception_log where tran_type like '101%' and exception_date > '2026-01-01' order by exception_date desc
+select top 10 * from t_exception_tran_log
+
+-- picking exceptions
+
+select top 10 * from t_tran_log where tran_type in ('840') 
+select * from t_tran_log where lot_number in ('503952534734') order by start_tran_date+start_tran_time desc
+select * from t_tran_log where lot_number in ('503952609035') order by start_tran_date+start_tran_time desc
+select * from t_tran_log where lot_number in ('667047994817') order by start_tran_date+start_tran_time desc
+select top 10 * from t_employee 
+select top 100 * from t_department 
+
+with emp as (
+	select t.id, t.name,t.emp_number, t.dept, t.supervisor, t1.description, t1.department_code
+	from t_employee as t
+	left join t_department as t1 on t.dept = t1.department_code
+),
+trx as (
+	select t.tran_type,  t.description, cast(t.start_tran_date+ t.start_tran_time as datetime) as transaction_datetime, t.employee_id, t.item_number, t.lot_number, t.tran_qty, t.location_id as source_location, t.location_id_2 as destination_location, t.outside_id, t.process, t.equipment_zone,
+	case
+		when t.outside_id = '201' and t.location_id like 'S%' then 'sn in small stage but be moving scan from other location'
+		when t.outside_id = '201' and t.location_id not like 'S%' then 'sn in location A but be moving scan from location B'
+		when t.outside_id = '202'  then 'sn in location A but be moving scan on fork'
+		when t.outside_id = '251'  then 'sn in location A but replenish moving scan from location B'
+		when t.outside_id = '253'  then 'sn in location A but direct pickup moving scan from location B'
+		when t.outside_id = '303' and t.location_id like 'S%' then 'sn in small stage then be picking scan from other location again'
+		when t.outside_id = '303' and t.location_id not like 'S%' then 'sn in location A but be picking scan from location B'
+		when t.outside_id = '304' and t.location_id like 'S%'  then 'sn in small stage then be picking scan on fork'
+		when t.outside_id = '304' and t.location_id not like 'S%'  then 'sn without picking then be picking scan on fork'
+		when t.outside_id = '321'  then 'sn without picking but be loading scan'
+		when t.outside_id = '800'  then 'cycle count correction'
+		else 'check' end as exception_reason
+	from t_tran_log as t
+	where tran_type in ('840') and start_tran_date >= '2026-01-01'
+)
+select t.*, e.emp_number, e.name, e.dept, e.supervisor,e.description,
+case 
+	when t.exception_reason like 'sn in small stage but be moving scan from other location%' then 'Major'
+	when t.exception_reason like 'sn in location A but be moving scan from location B%' then 'Acceptable'
+	when t.exception_reason like 'sn in location A but be moving scan on fork%' then 'Acceptable'
+	when t.exception_reason like 'sn in location A but replenish moving scan from location B%' then 'Acceptable'
+	when t.exception_reason like 'sn in location A but direct pickup moving scan from location B%' then 'Acceptable'
+	when t.exception_reason like 'sn in small stage but be picking scan from other location again%' then 'Major'
+	when t.exception_reason like 'sn in location A but be picking scan from location B%' then 'Acceptable'
+	when t.exception_reason like 'sn in small stage but be picking scan on fork%' then 'Major'
+	when t.exception_reason like 'sn without picking then be picking scan on fork%' then 'Major'
+	when t.exception_reason like 'sn without picking but be loading scan%' then 'Major'
+	when t.exception_reason like 'cycle count correction %' then 'Acceptable'
+	else 'Others' end as exception_severity
+from trx as t
+left join emp as e on t.employee_id = e.id
+
 
 -- picking
 select  * from t_pick_detail where order_number like '%68433%' and status = 'PICKED'
@@ -165,8 +247,28 @@ select top 10 * from t_asn_detail
 select top 10 * from t_printer  
 
 
+-- by po
+select start_tran_date, tran_type, description,item_number, control_number_2,sum(case when tran_type = '951' then -tran_qty else tran_qty end ) as qty 
+from t_tran_log 
+where tran_type in ('151','951','183') and start_tran_date >= '2025-01-26' and control_number_2 in ('P2SWQ93')
+group by start_tran_date ,tran_type, description,item_number, control_number_2
+order by start_tran_date ,tran_type, description,item_number, control_number_2
+
+select start_tran_date, tran_type, description,item_number, control_number_2,sum(case when tran_type = '951' then -tran_qty else tran_qty end ) as qty 
+from t_tran_log 
+where tran_type in ('151','951','183') and start_tran_date >= '2025-01-26' and control_number_2 in ('P2SD358')
+group by start_tran_date ,tran_type, description,item_number, control_number_2
+order by start_tran_date ,tran_type, description,item_number, control_number_2
+
+-- by item 
+select start_tran_date,start_tran_time, tran_type, description,item_number, control_number_2, lot_number, employee_id, sum(case when tran_type = '951' then -tran_qty else tran_qty end ) as qty 
+from t_tran_log 
+where tran_type in ('151','951') and start_tran_date >= '2026-01-26' and item_number in ('D781-35') and control_number_2 in ('P2SWQ93')
+group by start_tran_date ,start_tran_time, tran_type, description,item_number, control_number_2, lot_number, employee_id
+order by start_tran_date ,start_tran_time, tran_type, description,item_number, control_number_2
+
 -- by sn
-select top 100 * from t_tran_log where lot_number in ('635930176074') 
+select top 100 * from t_tran_log where lot_number in ('688075336788') 
 
 -- onhand
 select top 10 * from t_serial_active where serial_number in ('635930176074') 
