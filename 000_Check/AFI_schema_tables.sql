@@ -160,12 +160,82 @@ select top 10 * from t_exception_log where tran_type like '855%' and exception_d
 select top 10 * from t_exception_log 
 select top 10 * from t_exception_tran_log
 
+-- trx
+SELECT * 
+FROM t_tran_log t
+WHERE t.item_number IN ('D781-35') 
+  AND t.tran_type = '165'  
+  AND NOT EXISTS (
+    SELECT 1 
+    FROM t_tran_log t1 
+    WHERE t1.tran_type = '151' 
+      AND t1.lot_number = t.lot_number
+  ) 
+ORDER BY start_tran_date DESC, start_tran_time DESC
+
+select * from t_tran_log where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
+
+-- by item inbound 
+SELECT t1.start_tran_date+t1.start_tran_time as tran_datetime, t1.item_number,t1.control_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('165','851','855')
+    AND t1.item_number IN ('D781-35')
+	--AND t1.control_number_2 IN ('P2RNT74','P2RSC61','P2RSC85','P2RSD96')
+    AND t1.start_tran_date >= '2025-12-28'
+GROUP by  t1.start_tran_date+t1.start_tran_time,t1.item_number,t1.control_number, t1.control_number_2,t1.tran_type, t1.lot_number
+order by t1.item_number, t1.start_tran_date+t1.start_tran_time desc
+
+
+-- by item receiving by LP
+SELECT t1.start_tran_date,t1.start_tran_time,t1.item_number,t1.control_number, t1.control_number_2, t1.employee_id,t1.hu_id,t1.location_id, t1.location_id_2,
+    sum (CASE when  t1.tran_type = '151' then t1.tran_qty else 0 end) as tran_151_qty,
+    sum (CASE when  t1.tran_type = '951' then -t1.tran_qty else 0 end) as tran_951_qty,
+    sum (CASE when  t1.tran_type = '151' then t1.tran_qty else 0 end) +  sum (CASE when  t1.tran_type = '951' then -t1.tran_qty else 0 end) as total_received_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('16','951')
+    AND t1.item_number IN ('D781-35')
+	--AND t1.control_number_2 IN ('P2RNP16','P2RNS50','P2RRC24','P2RMR77','P2RMQ29')
+    AND t1.start_tran_date >= '2025-12-28'
+GROUP by  t1.start_tran_date,t1.start_tran_time,t1.item_number,t1.control_number,  t1.control_number_2, t1.employee_id, t1.hu_id,t1.location_id, t1.location_id_2
+order by t1.start_tran_date+t1.start_tran_time desc, t1.control_number
+
+
+
+
+-- by sn
+select * from t_tran_log where  lot_number = '503949566078' order by start_tran_date + start_tran_time desc
+select * from t_tran_log where  lot_number = '503952343763' order by start_tran_date + start_tran_time desc
+
+
+-- by sn 2
+select t.tran_type, t.description, t.start_tran_date, t.start_tran_time, t.employee_id, t.control_number_2, t.wh_id, t.location_id, t.item_number, t.tran_qty, t.location_id_2, t.routing_code, t.hu_id
+from t_tran_log as t  
+where  lot_number = '503949566078' 
+order by start_tran_date + start_tran_time desc
+
+select t.tran_type, t.description, t.start_tran_date, t.start_tran_time, t.employee_id, t.control_number_2, t.wh_id, t.location_id, t.item_number, t.tran_qty, t.location_id_2, t.routing_code, t.hu_id
+from Distribution_Warehouse_Wholesale.TranLog as t  
+where  lot_number = '618268701624' 
+order by start_tran_date desc, start_tran_time desc
+
+-- by sn
+select *  from Distribution_Warehouse_Wholesale.TranLog  where  lot_number = '503951145940' order by start_tran_date desc, start_tran_time desc
+select *  from Distribution_Warehouse_Wholesale.TranLog  where  lot_number = '618268701624' order by start_tran_date desc, start_tran_time desc
+select *  from Distribution_Warehouse_Wholesale.TranLog where wh_id = '335' and item_number = 'A2000629' AND lot_number like '606%28' 
+select *  from Distribution_Warehouse_Wholesale.TranLog where wh_id = '335' and item_number = 'A2000629' AND lot_number like '606%28' 
+select *  from t_tran_log  where lot_number = '803952452209' order by start_tran_date desc, start_tran_time desc
+select *  from t_tran_log  where lot_number = '503952452433' order by start_tran_date desc, start_tran_time desc
+select *  from t_tran_log  where lot_number = '503951145940' order by start_tran_date desc, start_tran_time desc
+
+
 -- picking exceptions
 
 select top 10 * from t_tran_log where tran_type in ('840') 
 select * from t_tran_log where lot_number in ('503952534734') order by start_tran_date+start_tran_time desc
 select * from t_tran_log where lot_number in ('503952609035') order by start_tran_date+start_tran_time desc
-select * from t_tran_log where lot_number in ('667047994817') order by start_tran_date+start_tran_time desc
+select * from t_tran_log where lot_number in ('666001070015') order by start_tran_date+start_tran_time desc
 select top 10 * from t_employee 
 select top 100 * from t_department 
 
@@ -267,8 +337,64 @@ where tran_type in ('151','951') and start_tran_date >= '2026-01-26' and item_nu
 group by start_tran_date ,start_tran_time, tran_type, description,item_number, control_number_2, lot_number, employee_id
 order by start_tran_date ,start_tran_time, tran_type, description,item_number, control_number_2
 
+
+-- returned containers
+select *
+from t_serial_active where serial_number in (select distinct lot_number from t_tran_log where tran_type = '347' AND (control_number_2 LIKE '%89296-%' or control_number_2 LIKE '%90774-%' ) )
+
+
+-- Trip shipped by sn
+SELECT 
+    t.tran_type,  
+    t.description, 
+    t.start_tran_date, 
+    t.control_number_2,
+    -- 提取 '-' 之前的部分并转为整数以自动去除前导零
+    CAST(LEFT(t.control_number_2, CHARINDEX('-', t.control_number_2 + '-') - 1) AS INT) AS clean_control_number,
+    t.lot_number,
+	t1.po_number,
+	t1.serial_no_status,
+	t1.status_change,
+	t1.location_id,
+	t1.received_date,
+	t1.ship_date,
+    t.employee_id, 
+    t.item_number, 
+    SUM(t.tran_qty) AS tran_qty 
+FROM t_tran_log AS t
+LEFT JOIN t_serial_active as t1 ON t.lot_number = t1.serial_number
+WHERE t.wh_id = '335' 
+    AND t.start_tran_date > '2025-01-01'
+    AND t.tran_type IN ('347')
+    -- 过滤条件：确保包含连字符且截取后是数字格式（防止报错）
+    AND (t.control_number_2 LIKE '%89296-%' or t.control_number_2 LIKE '%90774-%' )
+GROUP BY 
+    t.tran_type,  
+    t.description, 
+    t.start_tran_date, 
+    t.control_number_2,
+    CAST(LEFT(t.control_number_2, CHARINDEX('-', t.control_number_2 + '-') - 1) AS INT),
+    t.lot_number,
+	t1.po_number,
+	t1.serial_no_status,
+	t1.status_change,
+	t1.location_id,
+	t1.received_date,
+	t1.ship_date,
+    t.employee_id, 
+    t.item_number
+
+-- by transactions type  
+select start_tran_date,start_tran_time, tran_type, description,item_number, control_number_2, lot_number, employee_id, sum(case when tran_type = '951' then -tran_qty else tran_qty end ) as qty 
+from t_tran_log 
+where tran_type in ('151','951') and start_tran_date >= '2026-01-26' and item_number in ('D781-35') and control_number_2 in ('P2SWQ93')
+group by start_tran_date ,start_tran_time, tran_type, description,item_number, control_number_2, lot_number, employee_id
+order by start_tran_date ,start_tran_time, tran_type, description,item_number, control_number_2
+
+
+
 -- by sn
-select top 100 * from t_tran_log where lot_number in ('688075336788') 
+select top 100 * from t_tran_log where lot_number in ('585683806')  order by start_tran_date+start_tran_time desc
 
 -- onhand
 select top 10 * from t_serial_active where serial_number in ('635930176074') 
@@ -581,7 +707,7 @@ select top 100 * from t_pick_detail as t
 where 1=1
 	and t.status = 'RELEASED'
 
-
+-- sn in warehouse
 select t.*, t2.* 
 from t_serial_active as t
 inner join t_location as t2 on t.location_id = t2.location_id 

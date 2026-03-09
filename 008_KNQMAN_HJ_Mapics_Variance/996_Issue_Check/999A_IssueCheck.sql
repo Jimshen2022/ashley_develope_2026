@@ -120,7 +120,7 @@ where tran_type like '345%' and start_tran_date = '2026-02-26' and control_numbe
 
 select *
 from t_tran_log 
-where tran_type like '3%' and start_tran_date = '2026-02-26' and control_number_2 like '%92556%'
+where tran_type like '3%' and start_tran_date = '2026-02-26' and control_number_2 like '%915914%'
 
 
 
@@ -248,7 +248,7 @@ SELECT t1.start_tran_date,t1.start_tran_time,t1.item_number,t1.control_number, t
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('151','951')
-    AND t1.item_number IN ('L204194')
+    AND t1.item_number IN ('D631-01')
 	--AND t1.control_number_2 IN ('P2RNP16','P2RNS50','P2RRC24','P2RMR77','P2RMQ29')
     AND t1.start_tran_date >= '2025-12-28'
 GROUP by  t1.start_tran_date,t1.start_tran_time,t1.item_number,t1.control_number,  t1.control_number_2, t1.employee_id, t1.hu_id,t1.location_id, t1.location_id_2

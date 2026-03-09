@@ -228,6 +228,64 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */   
 
+-- Trip shipped
+SELECT 
+    t.tran_type,  
+    t.description, 
+    t.start_tran_date, 
+    t.control_number_2,
+    -- 提取 '-' 之前的部分并转为整数以自动去除前导零
+    CAST(LEFT(t.control_number_2, CHARINDEX('-', t.control_number_2 + '-') - 1) AS INT) AS clean_control_number,
+    t.employee_id, 
+    t.item_number, 
+    SUM(t.tran_qty) AS tran_qty 
+FROM Distribution_Warehouse_Wholesale.TranLog AS t
+WHERE t.wh_id = '335' 
+    AND t.start_tran_date > '2025-01-01'
+    AND t.tran_type IN ('347')
+    -- 过滤条件：确保包含连字符且截取后是数字格式（防止报错）
+    AND (t.control_number_2 LIKE '%89296-%' or t.control_number_2 LIKE '%90774-%' )
+GROUP BY 
+    t.tran_type,  
+    t.description, 
+    t.start_tran_date, 
+    t.control_number_2,
+    CAST(LEFT(t.control_number_2, CHARINDEX('-', t.control_number_2 + '-') - 1) AS INT),
+    t.employee_id, 
+    t.item_number
+
+
+-- Trip shipped by sn
+SELECT 
+    t.tran_type,  
+    t.description, 
+    t.start_tran_date, 
+    t.control_number_2,
+    -- 提取 '-' 之前的部分并转为整数以自动去除前导零
+    CAST(LEFT(t.control_number_2, CHARINDEX('-', t.control_number_2 + '-') - 1) AS INT) AS clean_control_number,
+    t.lot_number,
+    t.employee_id, 
+    t.item_number, 
+    SUM(t.tran_qty) AS tran_qty 
+FROM Distribution_Warehouse_Wholesale.TranLog AS t
+WHERE t.wh_id = '335' 
+    AND t.start_tran_date > '2025-01-01'
+    AND t.tran_type IN ('347')
+    -- 过滤条件：确保包含连字符且截取后是数字格式（防止报错）
+    AND (t.control_number_2 LIKE '%89296-%' or t.control_number_2 LIKE '%90774-%' )
+GROUP BY 
+    t.tran_type,  
+    t.description, 
+    t.start_tran_date, 
+    t.control_number_2,
+    CAST(LEFT(t.control_number_2, CHARINDEX('-', t.control_number_2 + '-') - 1) AS INT),
+     t.lot_number,
+    t.employee_id, 
+    t.item_number
+
+
+
+
 SELECT * 
 FROM Distribution_Warehouse_Wholesale.tranlog 
 WHERE 
@@ -268,6 +326,7 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and t
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952384062' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952820543' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '635930176074' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '688075336774' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 
 Select TOP 10 * from Distribution_Warehouse_Wholesale.tranlog
 
 

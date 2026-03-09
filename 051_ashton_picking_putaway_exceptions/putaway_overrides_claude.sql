@@ -54,6 +54,7 @@ eda AS (
         t.employee_id,  
         ISNULL(e.name, u.full_name) AS employee_name,  
         ISNULL(e.supervisor, u.supervisor) AS supervisor,  
+        ISNULL(d1.department_code, d2.department_code) AS department_code,  
         ISNULL(d1.description, d2.description) AS department,  
         CONVERT(date, t.exception_date, 101) AS exception_date,  
         CONVERT(VARCHAR, t.exception_time, 108) AS exception_time,  

@@ -20,6 +20,7 @@ trx as (
 		when t.outside_id = '800'  then 'cycle count correction'
 		else 'check' end as exception_reason,
 	case
+		when t.outside_id = '171'  then 't.outside_id = ''171'''
 		when t.outside_id = '201' and t.location_id like 'S%' then 'outside_id = ''201'' and location_id like ''S%'''
 		when t.outside_id = '201' and t.location_id not like 'S%' then 'outside_id = ''201'' and location_id not like ''S%'''
 		when t.outside_id = '202'  then 'outside_id = ''202'''
