@@ -103,7 +103,7 @@ select * from dw_developer.tabledictionary where tpktablename like '%MBCDRESM%'
 select * from dw_developer.tabledictionary where tpktablename like '%SIMLBP%' 
 select * from dw_developer.tabledictionary where tpktablename like '%REQMTS%'  ------- MIL Raw materials demand forecast
 select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%WNK%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%' and tpktablename like '%CNT%'
+select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%'
 select * from dw_developer.tabledictionary where  tpktablename like '%ITMRVAL0%'
 select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%' and tpktablename like '%MOMAST%'
 select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%' and tpktablename like '%PC216WSCH%'
@@ -195,7 +195,7 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%InvoiceDeta
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ITEMBL%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ATOFILEATOFILE%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%excep%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%CODIS%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%%'  order by tpkRowCount DESC
 
 
 
@@ -227,6 +227,25 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */   
+
+--as400 transactions
+driver={iSeries Access ODBC Driver};system=AFIPROD;default collection=AMFLIBA,AFILELIB,DISTLIB,ASHLEYARC;ccsid=65535;translate=1
+select top 10 * from Manufacturing_Inventory_AFI.IMHIST WHERE HOUSE = '335' AND TCODE = 'IA' AND UPDDT > '1260101'
+select  * from Manufacturing_Inventory_AFI.IMHIST WHERE HOUSE = '335' AND TCODE = 'IA' AND UPDDT > '1260101'
+select  * from Manufacturing_Inventory_MIL.IMHIST WHERE HOUSE = '51' AND TCODE = 'IA' AND UPDDT > '1260101'
+select  * from Manufacturing_Inventory_WNK.IMHIST WHERE HOUSE IN ('31','33','35','34') AND TCODE = 'IA' AND UPDDT > '1260101'
+
+SELECT t1.HOUSE, t1.TRMID, ITNBR, t1.upddt, t1.updtm, t1.trqty, t1.tramt, t1.stpcs, t1.entum, t1.REFNO, t1.REASN, t1.LLOCN, T2.ITDSC, T2.UNMSR, T2.ITCLS, T2.WEGHT, T2.B2Z95S 
+FROM AMFLIBA.IMHIST t1 
+LEFT JOIN AMFLIBA.ITMRVA t2 ON t1.ITNBR = t2.ITNBR 
+LEFT JOIN AMFLIBA.WHSMST t3 ON t1.HOUSE = t3.WHID
+WHERE t2.ITNBR = t1.ITNBR 
+  AND t2.STID = t3.STID 
+  AND t1.HOUSE = t3.WHID 
+  AND t1.HOUSE = '335' 
+  AND t1.UPDDT >= '1260101'
+  AND t1.TRQTY <> 0
+  AND T1.tcode in ('IA','IS','SS')
 
 -- Trip shipped
 SELECT 

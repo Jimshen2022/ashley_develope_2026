@@ -1,0 +1,13 @@
+﻿<p>
+    Hi All,<br>
+    Picking and Putaway Exception Report has been generated.<br>
+    Refresh Time: @{formatDateTime(convertTimeZone(utcNow(),'UTC','SE Asia Standard Time'),'yyyy-MM-dd HH:mm')}
+</p>
+<p>
+    📊 <b>Power BI Dashboard</b><br>
+    <a href="https://app.powerbi.com/reportEmbed?reportId=9c5a44b8-9c3a-494e-9e44-48f19fc858f9&amp;appId=1434ea3e-c829-4f05-a150-239f59b1f1ca&amp;autoAuth=true&amp;ctid=5a9d9cfd-c32e-4ac1-a9ed-fe83df4f9e4d">Open Report</a>
+</p>
+<p>
+    📥 <b>Download Excel Report</b><br>
+    <a href="https://masterashley.sharepoint.com/sites/AsiaWarehouseOperations@{outputs('Create_file')?['body/Path']}">Open File</a>
+</p>

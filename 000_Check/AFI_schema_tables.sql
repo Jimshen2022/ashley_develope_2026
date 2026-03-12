@@ -160,6 +160,7 @@ select top 10 * from t_exception_log where tran_type like '855%' and exception_d
 select top 10 * from t_exception_log 
 select top 10 * from t_exception_tran_log
 
+
 -- trx
 SELECT * 
 FROM t_tran_log t
@@ -173,7 +174,15 @@ WHERE t.item_number IN ('D781-35')
   ) 
 ORDER BY start_tran_date DESC, start_tran_time DESC
 
+
+-- by sn 
 select * from t_tran_log where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
+
+
+-- STO
+select * from t_ where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
+
 
 -- by item inbound 
 SELECT t1.start_tran_date+t1.start_tran_time as tran_datetime, t1.item_number,t1.control_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
