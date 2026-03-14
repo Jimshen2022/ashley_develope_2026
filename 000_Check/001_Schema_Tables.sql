@@ -195,7 +195,7 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%InvoiceDeta
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ITEMBL%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ATOFILEATOFILE%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%excep%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%tranLog%'  order by tpkRowCount DESC
 
 
 
@@ -227,9 +227,12 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */   
+select top 10 * from Distribution_Warehouse_Wholesale.maTranLog where tran_type = '151' and item_number = '113703C' AND hu_id like '%2385395%'
+select * from Distribution_Warehouse_Wholesale.maTranLog where tran_type = '151' and item_number = '113703C' AND hu_id like '%2385395%'
+
 
 --as400 transactions
-driver={iSeries Access ODBC Driver};system=AFIPROD;default collection=AMFLIBA,AFILELIB,DISTLIB,ASHLEYARC;ccsid=65535;translate=1
+--driver={iSeries Access ODBC Driver};system=AFIPROD;default collection=AMFLIBA,AFILELIB,DISTLIB,ASHLEYARC;ccsid=65535;translate=1
 select top 10 * from Manufacturing_Inventory_AFI.IMHIST WHERE HOUSE = '335' AND TCODE = 'IA' AND UPDDT > '1260101'
 select  * from Manufacturing_Inventory_AFI.IMHIST WHERE HOUSE = '335' AND TCODE = 'IA' AND UPDDT > '1260101'
 select  * from Manufacturing_Inventory_MIL.IMHIST WHERE HOUSE = '51' AND TCODE = 'IA' AND UPDDT > '1260101'
@@ -389,6 +392,10 @@ select top 10 * from Wholesale_CODIS.ATOFILE
 select * from Wholesale_CODIS.ATOFILE where hous = '335' 
 
 -- Invoice
+
+select top 10 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335' and shcTripNumber = ''
+select top 10 * from Wholesale_SalesHistory_AFI.InvoiceDetail
+
 
 select top 1000 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335' and shcTripNumber = '97827'
 select top 1000 * from Wholesale_SalesHistory_AFI.InvoiceDetail where   Warehouse = '335' and TripNumber = '97827' order by InvoiceDate desc

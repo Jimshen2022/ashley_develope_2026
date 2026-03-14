@@ -13,7 +13,7 @@ select top 10 * from t_ya_class_loca
 select top 10 * from t_ya_work_q 
 select top 10 * from t_ya_tran 
 select top 10 * from t_ya_class 
-select top 10 * from t_ya_move_priority  
+select top 10 * from t_ya_move_priority 
 select top 10 * from t_ya_tractor_type_location 
 select top 10 * from t_yard_checkin_details
 select top 10 * from t_ya_message
@@ -28,7 +28,6 @@ select top 10 * from t_ya_equipment_class_loca
 select top 10 * from t_ya_OSHA_attributes
 select top 10 * from t_ya_replenishment
 select top 10 * from t_ya_spotter_loc
-
 select top 10 * from t_control WHERE control_type LIKE '%SEND_YA101_AT_CHKIN%'
 select top 10 * From t_serial_active where hu_id is not null
 SELECT top 10 * FROM t_item_plate_section 
@@ -181,7 +180,26 @@ select * from t_tran_log where lot_number = '688075336774' order by start_tran_d
 
 
 -- STO
-select * from t_ where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
+select * from t_stored_item where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
+select * from t_stored_item where item_number LIKE 'B%' 
+
+-- hold
+select top 10 * from t_items_on_hold 
+select  * from t_items_on_hold 
+
+select  top 10 * from t_item_master   
+select  top 10 * from t_serial_active 
+select  top 10 * from t_serial_active 
+select  top 10 * from t_serial_master  
+select  top 10 * from t_serial_master  
+select  top 10 * from t_serial_master  
+select  top 10 * from t_serial_master  
+select  top 10 * from t_serial_master  
+
+
+ 
+select  distinct serial_no_status from t_serial_active  
+
 
 
 -- by item inbound 
@@ -607,6 +625,8 @@ select top 10 *  from t_exception_tran_log  where exception_date > '2025-09-20' 
 SELECT *  FROM t_employee where device is not null order by last_tran_datetime desc
 SELECT top 10 *  FROM t_order_detail_breakdown  
 select top 10 * from t_serial_master 
+select top 10 * from t_serial_master 
+select top 10 * from t_serial_master 
 
 SELECT 
     t.name AS TableName,
@@ -628,6 +648,8 @@ select top 10000 * from t_tran_log where control_number_2 = 'P2R6Z63' and tran_t
 
 
 select * from t_serial_active where item_number = 'A4000684'  AND po_number = 'P2QT095'
+select * from t_serial_master where item_number = 'A4000684'  AND po_number = 'P2QT095'
+select * from t_serial_master where item_number = 'A4000684'  AND po_number = 'P2QT095'
 select * from t_serial_master where item_number = 'A4000684'  AND po_number = 'P2QT095'
 SELECT TOP 1000 *  FROM t_hu_detail WHERE item_number = 'A4000684'
 select * from t_serial_active (nolock) where 1=1 and item_number = 'A4000684' and location_id = 'RS040AA1' 
