@@ -161,6 +161,11 @@ select top 10 * from t_exception_tran_log
 
 
 -- trx
+SELECT * FROM t_tran_log where item_number = '5200338040'
+SELECT top 10 * FROM t_tran_log where tran_type = '151'
+
+
+
 SELECT * 
 FROM t_tran_log t
 WHERE t.item_number IN ('D781-35') 

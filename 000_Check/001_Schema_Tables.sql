@@ -278,6 +278,7 @@ GROUP BY
 
 
 -- Trip shipped by sn
+select top 10 * FROM Distribution_Warehouse_Wholesale.TranLog where tran_type = '347'
 SELECT 
     t.tran_type,  
     t.description, 

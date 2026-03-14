@@ -59,10 +59,12 @@ def get_peak_day_details():
             UNION ALL
 
             -- Part 2: 出货最高日明细 (2026-02-03)
-            -- 出货取 control_number_2 (Trip)
+            -- 出货: control_number_2 取 '-' 之前的部分(并转 INT 去除前导0)，再拼接 routing_code
             SELECT 
                 CAST(start_tran_date AS DATE) AS [Date],
-                control_number_2 AS [Container_Trip], -- 出货取 control_number_2 (Trip)
+                CAST(
+                    CAST(LEFT(control_number_2, CHARINDEX('-', control_number_2 + '-') - 1) AS INT) 
+                AS VARCHAR(50)) + '_' + ISNULL(routing_code, '') AS [Container_Trip],
                 SUM(tran_qty) AS [Quantity],
                 'Outbound' AS [Type]
             FROM Distribution_Warehouse_Wholesale.TranLog WITH (NOLOCK)
@@ -70,7 +72,11 @@ def get_peak_day_details():
                 wh_id = '335' 
                 AND tran_type = '347'
                 AND CAST(start_tran_date AS DATE) = '{PEAK_OUTBOUND_DATE}'
-            GROUP BY CAST(start_tran_date AS DATE), control_number_2
+            GROUP BY 
+                CAST(start_tran_date AS DATE), 
+                CAST(
+                    CAST(LEFT(control_number_2, CHARINDEX('-', control_number_2 + '-') - 1) AS INT) 
+                AS VARCHAR(50)) + '_' + ISNULL(routing_code, '')
 
             ORDER BY [Type], [Date], [Container_Trip];
             """
@@ -84,9 +90,12 @@ def get_peak_day_details():
                 # 打印预览
                 print(df.head(20).to_string(index=False))
                 
-                # 保存 Excel
-                output_file = 'Peak_Day_Details_wh335.xlsx'
-                df.to_excel(output_file, index=False)
+                # 生成带时间戳的文件名
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                output_file = f'Peak_Day_Details_wh335_{timestamp}.csv'
+                
+                # 保存为 CSV 文件
+                df.to_csv(output_file, index=False, encoding='utf-8-sig')
                 print(f"\n完整明细已保存至: {output_file}")
                 
                 # 简单统计
