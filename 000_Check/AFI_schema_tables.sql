@@ -186,7 +186,7 @@ select * from t_tran_log where lot_number = '688075336774' order by start_tran_d
 
 -- STO
 select * from t_stored_item where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
-select * from t_stored_item where item_number LIKE 'B%' 
+select * from t_stored_item where item_number LIKE 'B3381-99%'
 
 -- hold
 select top 10 * from t_items_on_hold 
