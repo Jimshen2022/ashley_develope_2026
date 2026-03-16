@@ -165,7 +165,7 @@ SELECT * FROM t_tran_log where item_number = '5200338040'
 SELECT top 10 * FROM t_tran_log where tran_type = '151'
 
 
-
+-- KNQMAN check
 SELECT * 
 FROM t_tran_log t
 WHERE t.item_number IN ('D781-35') 
@@ -181,7 +181,8 @@ ORDER BY start_tran_date DESC, start_tran_time DESC
 
 -- by sn 
 select * from t_tran_log where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
-select * from t_tran_log where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '605590406108' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '503950857188' order by start_tran_date desc, start_tran_time desc
 
 
 -- STO
@@ -208,15 +209,28 @@ select  distinct serial_no_status from t_serial_active
 
 
 -- by item inbound 
-SELECT t1.start_tran_date+t1.start_tran_time as tran_datetime, t1.item_number,t1.control_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
+SELECT t1.start_tran_date+t1.start_tran_time as tran_datetime, t1.item_number,t1.control_number,t1.control_number_2, t1.tran_type, t1.lot_number,
+       sum(CASE when  t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('165','851','855')
-    AND t1.item_number IN ('D781-35')
+	AND t1.tran_type in ('151','851','951')
+    AND t1.item_number IN ('A8010414')
 	--AND t1.control_number_2 IN ('P2RNT74','P2RSC61','P2RSC85','P2RSD96')
-    AND t1.start_tran_date >= '2025-12-28'
+    AND t1.start_tran_date >= '2026-01-28'
 GROUP by  t1.start_tran_date+t1.start_tran_time,t1.item_number,t1.control_number, t1.control_number_2,t1.tran_type, t1.lot_number
 order by t1.item_number, t1.start_tran_date+t1.start_tran_time desc
+
+-- by PO inbound
+SELECT t1.start_tran_date, t1.control_number,t1.control_number_2, t1.tran_type, t1.item_number,
+       sum(CASE when  t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','851','951')
+    --AND t1.item_number IN ('A8010414')
+	AND t1.control_number_2 IN ('P2SNX90')
+    AND t1.start_tran_date >= '2026-01-28'
+GROUP by  t1.start_tran_date,t1.control_number, t1.control_number_2,t1.tran_type, t1.item_number
+order by t1.start_tran_date desc
 
 
 -- by item receiving by LP

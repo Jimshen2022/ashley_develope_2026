@@ -226,7 +226,25 @@ FROM INFORMATION_SCHEMA.COLUMNS
 WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
-*/   
+*/
+-- sn check
+Select TOP 10 * from Distribution_Warehouse_Wholesale.tranlog
+Select * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%'  order by lot_number, exception_date
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and tran_type = '855' and start_tran_date >= '2026-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952384062' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952820543' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '635930176074' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '688075336774' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503950857188' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '694370110319' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '638920006379' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952704823' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+
+
+
+
+
 select top 10 * from Distribution_Warehouse_Wholesale.maTranLog where tran_type = '151' and item_number = '113703C' AND hu_id like '%2385395%'
 select * from Distribution_Warehouse_Wholesale.maTranLog where tran_type = '151' and item_number = '113703C' AND hu_id like '%2385395%'
 
@@ -343,14 +361,6 @@ Select top 10 * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id =
 Select distinct wh_id from Distribution_Warehouse_Wholesale.ExceptionLog 
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number in (Select lot_number from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%' and exception_date > '2026-01-01') order by lot_number, start_tran_date, start_tran_time
 
--- sn check
-Select * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%'  order by lot_number, exception_date 
-Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and tran_type = '855' and start_tran_date >= '2026-01-01' order by lot_number, start_tran_date, start_tran_time 
-Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952384062' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 
-Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952820543' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 
-Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '635930176074' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 
-Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '688075336774' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time 
-Select TOP 10 * from Distribution_Warehouse_Wholesale.tranlog
 
 
 Select TOP 10 * from [PowerBI_Distribution].[AshleycustomerMaster] WHERE CustomerNumber LIKE '109200'
