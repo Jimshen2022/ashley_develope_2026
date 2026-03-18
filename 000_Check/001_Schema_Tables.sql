@@ -227,6 +227,11 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+
+--
+Select top 10 * from Distribution_Warehouse_Wholesale.t_exception_tran_log where wh_id != '335'
+
+•	Distribution_Warehouse_Wholesale.t_exception_tran_log
 -- sn check
 Select TOP 10 * from Distribution_Warehouse_Wholesale.tranlog
 Select * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%'  order by lot_number, exception_date

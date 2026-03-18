@@ -1,20 +1,10 @@
-select trim(a.itnbr) as itnbr, a.itcls, b.pickput, b.ITMCLSID 
-from AMFLIBA.ITMRVA as a
-left join (SELECT * FROM AFILELIB.ITBEXT  WHERE HOUSE = '335')as b on b.itnbr = a.itnbr and a.stid = b.house
-where a.stid = '335' and a.itcls like 'Z%' and a.itcls not like 'Z%K'
-order by a.itnbr;
-
-
-
-
-
-
-
-
-
-
 WITH
--- 1) 基表精简与预筛
+-- 1) 基表精简与预筛 (现以 ITMRVA 为首)
+ITMRVA_CTE AS (
+    SELECT d.ITNBR, d.B2Z95S, d.ITDSC, d.STID
+    FROM AMFLIBA.ITMRVA d
+    WHERE d.STID IN ('335')
+),
 ITEMBL_CTE AS (
     SELECT a.ITNBR, a.HOUSE, a.MOHTQ, a.WHSLC, a.ITCLS, a.QTSYR, a.MPUPQ, a.USEYR, a.LDQOH, a.DOFLS, a.PLREQ, a.RECPL, a.SAFTY
     FROM AMFLIBA.ITEMBL a
@@ -32,26 +22,21 @@ ITMEXT_CTE AS (
            c.PRDWIN, c.PRDHIN, c.PRDLIN, c.ITMWEGHT, c.MFPUS, c.SERIES, c.UUCCIM, c.PRDDDES
     FROM AFILELIB.ITMEXT c
 ),
-ITMRVA_CTE AS (
-    SELECT d.ITNBR, d.B2Z95S, d.ITDSC, d.STID
-    FROM AMFLIBA.ITMRVA d
-    WHERE d.STID IN ('335')
-),
 
--- 2) 统一关联合并
+-- 2) 统一关联合并 (以 ITMRVA 为主表)
 MERGED AS (
     SELECT
-        t2.ITNBR,
-        t2.HOUSE,
+        t4.ITNBR,
+        t4.STID AS HOUSE,
         t2.MOHTQ,
         t2.WHSLC,
         t2.ITCLS,
         t2.QTSYR,
         t2.MPUPQ AS OPEN_PO,
         t2.USEYR AS "Quantity used this year",
-        t2.LDQOH AS "Last date affecting quantity on hand", 
-        t2.DOFLS AS "Date of last sale", 
-        t2.PLREQ as "Pick list requirements", 
+        t2.LDQOH AS "Last date affecting quantity on hand",
+        t2.DOFLS AS "Date of last sale",
+        t2.PLREQ as "Pick list requirements",
         t2.RECPL as "Quantity received since last plan",
         t2.SAFTY AS "Safety stock",
         t4.B2Z95S,
@@ -64,9 +49,9 @@ MERGED AS (
         t1.UNITSDEEP,
         t1.SCOOPQTY,
         t1.SKIDSIZE,
-        t1.MFPUS AS "Manu. Status Code", 
-        t1.OVRFLWBLDG, 
-        t1.TOHLD AS "Total_Hold_Qty", 
+        t1.MFPUS AS "Manu. Status Code",
+        t1.OVRFLWBLDG,
+        t1.TOHLD AS "Total_Hold_Qty",
         t1.ATPQT,
         t3.QTYCR,
         t3.NBSEAT,
@@ -77,19 +62,19 @@ MERGED AS (
         t3.PRDHIN,
         t3.PRDLIN,
         t3.ITMWEGHT,
-        t3.MFPUS, 
-        t3.SERIES, 
-        t3.UUCCIM AS "Financial Division", 
+        t3.MFPUS,
+        t3.SERIES,
+        t3.UUCCIM AS "Financial Division",
         t3.PRDDDES AS "Dimension Description"
-    FROM ITEMBL_CTE t2
+    FROM ITMRVA_CTE t4
+    LEFT JOIN ITEMBL_CTE t2
+        ON t2.ITNBR = t4.ITNBR
+       AND t2.HOUSE = t4.STID
     LEFT JOIN ITBEXT_CTE t1
-        ON t1.ITNBR = t2.ITNBR
-       AND t1.HOUSE = t2.HOUSE
+        ON t1.ITNBR = t4.ITNBR
+       AND t1.HOUSE = t4.STID
     LEFT JOIN ITMEXT_CTE t3
-        ON t3.ITNBR = t2.ITNBR
-    LEFT JOIN ITMRVA_CTE t4
-        ON t4.ITNBR = t2.ITNBR
-       AND t4.STID  = t2.HOUSE
+        ON t3.ITNBR = t4.ITNBR
 ),
 
 -- 3) 统一计算（全部重量转为 KG）
@@ -110,6 +95,7 @@ METRICS AS (
         -- 托盘数（至少 1 托）
         CASE
             WHEN m.SCOOPQTY IS NULL OR m.SCOOPQTY = 0 THEN NULL
+            WHEN m.MOHTQ IS NULL THEN NULL
             WHEN m.MOHTQ <= m.SCOOPQTY THEN 1
             ELSE CEIL( m.MOHTQ / NULLIF(m.SCOOPQTY, 0) )
         END AS PALLETS
@@ -166,6 +152,21 @@ SELECT
     SERIES,
     "Financial Division",
     "Dimension Description",
+
+    -- 产品分类逻辑 (Product Category Logic)
+    CASE
+        WHEN ITCLS NOT LIKE 'Z%' THEN 'RP'
+        WHEN PICKPUT = 'UPH' THEN 'UPH'
+        ELSE 'CG'
+    END AS PRODUCT_CATEGORY,
+
+    -- 新增：子分类逻辑 (New: Sub-Category Logic)
+    CASE
+        WHEN ITMCLSID IN ('FLOOR') THEN 'BULK'
+        WHEN ITMCLSID IN ('RUGS') THEN 'RUG'
+        WHEN PICKPUT = 'UPH' THEN 'UPH'
+        ELSE 'CG'
+    END AS SUB_CATEGORY,
 
     -- 计算字段
     UNIT_WEIGHT_KG,

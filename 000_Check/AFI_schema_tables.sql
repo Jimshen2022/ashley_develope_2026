@@ -161,7 +161,7 @@ select top 10 * from t_exception_tran_log
 
 
 -- trx
-SELECT * FROM t_tran_log where item_number = '5200338040'
+SELECT * FROM t_tran_log where item_number = 'R61332' order by start_tran_date desc, start_tran_time desc
 SELECT top 10 * FROM t_tran_log where tran_type = '151'
 
 
@@ -274,6 +274,7 @@ select *  from Distribution_Warehouse_Wholesale.TranLog where wh_id = '335' and 
 select *  from t_tran_log  where lot_number = '803952452209' order by start_tran_date desc, start_tran_time desc
 select *  from t_tran_log  where lot_number = '503952452433' order by start_tran_date desc, start_tran_time desc
 select *  from t_tran_log  where lot_number = '503951145940' order by start_tran_date desc, start_tran_time desc
+select *  from t_tran_log  where lot_number = '503952147520' order by start_tran_date desc, start_tran_time desc
 
 
 -- picking exceptions
@@ -348,8 +349,9 @@ select top 10 * from t_location_snapshot
 select top 10 * from t_slot_location_forecast_statistics
 select top 10 * from t_slot_location_statistics
 
-select top 10 * from t_zone_loca 
-select top 10 * from t_class_loca 
+select Distinct zone from t_zone_loca where zone  like '%BULK%'
+select top 10 *  from t_zone_loca where zone  like '%BULK%'
+select top 10 * from t_class_loca
 select top 10 * from t_printer  
 
 --asn

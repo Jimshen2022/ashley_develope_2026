@@ -1,1 +1,0 @@
-select top 10 *  from  t_class_loca where location_id like 'A3%' and class_id = 'MATT';
