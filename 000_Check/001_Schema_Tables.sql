@@ -250,6 +250,8 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 
 
 
+select top 10 * from Distribution_Warehouse_Wholesale.t_items_on_hold where WhId = '335'
+select * from Distribution_Warehouse_Wholesale.t_items_on_hold where WhId = '335'
 select top 10 * from Distribution_Warehouse_Wholesale.maTranLog where tran_type = '151' and item_number = '113703C' AND hu_id like '%2385395%'
 select * from Distribution_Warehouse_Wholesale.maTranLog where tran_type = '151' and item_number = '113703C' AND hu_id like '%2385395%'
 

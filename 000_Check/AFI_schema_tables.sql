@@ -1,10 +1,10 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_depart%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%loadsummary%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%WEB%'
 
 */
 
-
+select  * from t_items_on_hold
 -- Yard and transportation related tables
 select top 1000 * from t_ya_tran_log where started > '2026-03-01' order by started 
 select top 10 * from t_ya_zone 
@@ -32,8 +32,9 @@ select top 10 * from t_control WHERE control_type LIKE '%SEND_YA101_AT_CHKIN%'
 select top 10 * From t_serial_active where hu_id is not null
 SELECT top 10 * FROM t_item_plate_section 
 SELECT top 10 * FROM t_la_employee_clock_in_out 
-SELECT TOP 10 * FROM t_order_detail_breakdown where item_number = 'U1043518'
-SELECT TOP 10 * FROM t_order_detail_breakdown 
+SELECT TOP 10 * FROM t_order_detail_breakdown where item_number = '6700616'
+
+SELECT TOP 10 * FROM t_order_detail_breakdown
 SELECT TOP 10 * FROM t_import_ITEM where transaction_string like '%9810538%'
 SELECT top 10 * FROM t_import_ASN where transaction_string like '5478704%'
 SELECT TOP 10 * FROM t_item_master  where item_number like '9810538%'
@@ -159,11 +160,24 @@ select top 10 * from t_exception_log where tran_type like '855%' and exception_d
 select top 10 * from t_exception_log 
 select top 10 * from t_exception_tran_log
 
+-- item master
+select top 10 * from t_item_master where item_number = '6700616'
+select top 10 * from t_item_uom where item_number = '6700616'
+select top 10 * from t_import_ITEM where transaction_string like '%6700616%'
+select top 10 * from t_import_ITMBOM
+SELECT TOP 10 unit_volume, * FROM t_order_detail_breakdown where item_number = '6700616'
 
 -- trx
-SELECT * FROM t_tran_log where item_number = 'R61332' order by start_tran_date desc, start_tran_time desc
-SELECT top 10 * FROM t_tran_log where tran_type = '151'
+SELECT * FROM t_tran_log where item_number = '1080229' AND start_tran_date > '2026-03-17'  order by start_tran_date desc, start_tran_time desc
 
+-- trx
+SELECT start_tran_date, item_number, control_number, control_number_2, sum(case when tran_type = '951' then -tran_qty else tran_qty end) as qty
+FROM t_tran_log
+where tran_type in ('151','951') AND item_number = 'R66835'
+group by  start_tran_date, item_number, control_number, control_number_2
+
+select * from t_stored_item where item_number= '1080229'
+select item_number, sum(actual_qty) as onhand from t_stored_item where item_number LIKE '1080229%' group by item_number
 
 -- KNQMAN check
 SELECT * 
@@ -187,7 +201,8 @@ select * from t_tran_log where lot_number = '503950857188' order by start_tran_d
 
 -- STO
 select * from t_stored_item where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
-select * from t_stored_item where item_number LIKE 'B3381-99%'
+select * from t_stored_item where item_number LIKE 'T173-13%'
+select item_number, sum(actual_qty) as onhand from t_stored_item where item_number LIKE 'T173-13%' group by item_number
 
 -- hold
 select top 10 * from t_items_on_hold 
@@ -198,11 +213,19 @@ select  top 10 * from t_serial_active
 select  top 10 * from t_serial_active 
 select  top 10 * from t_serial_master  
 select  top 10 * from t_serial_master  
-select  top 10 * from t_serial_master  
-select  top 10 * from t_serial_master  
-select  top 10 * from t_serial_master  
+select  top 10 * from t_serial_master
 
 
+-- HOLD SN
+select sn.wh_id, sn.serial_number, sn.item_number, sn.po_number, sn.serial_no_status, sn.status_change, sn.trip_number, sn.location_id, sn.hu_id,
+       sn.received_date, sn.ship_date, sn.order_number, sn.sscc_code, itm.serial_no_status as sn_master_status
+from t_serial_active as sn
+left join t_serial_master as itm on itm.wh_id = sn.wh_id and itm.item_number = sn.item_number and sn.serial_number = itm.serial_number
+where sn.wh_id = '335' and sn.serial_no_status not in ('O',)
+
+
+-- SN
+SELECT * FROM t_tran_log where lot_number ='689251446936' order by start_tran_date, start_tran_time
  
 select  distinct serial_no_status from t_serial_active  
 
@@ -520,12 +543,18 @@ inner join (select * from t_item_uom where pick_put_id != 'SCOOP') as uom on im.
 
 
 
+-- item master
+select top 10 * from t_item_master where item_number = '1130449'
+select top 10 * from t_item_uom where item_number in ('1320138','5200438','3310438','4500338')
 
+
+
+-- asn
 
 select * 
 from t_asn_detail as asd
 inner join t_asn asn on asn.asn_id = asd.asn_id
-where 
+
 
 
 

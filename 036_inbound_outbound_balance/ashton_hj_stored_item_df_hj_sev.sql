@@ -11,5 +11,3 @@ and sto.status='A'
 and sto.location_id NOT IN ('RP998XL1','SH001AA1','NG001VD3','NG001OP3','RP998XL3') 
 and sto.item_number ! = 'RP ORDER'
 ORDER BY sto.item_number, sto.location_id;
-
-
