@@ -1,5 +1,5 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%loadsummary%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_import%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%WEB%'
 
 */
@@ -159,6 +159,7 @@ select top 10 * from t_department
 select top 10 * from t_exception_log where tran_type like '855%' and exception_date > '2026-01-01' order by exception_date desc
 select top 10 * from t_exception_log 
 select top 10 * from t_exception_tran_log
+select  * from t_import_ONHOLD where imported >= '2026-03-19'
 
 -- item master
 select top 10 * from t_item_master where item_number = '6700616'
@@ -169,6 +170,8 @@ SELECT TOP 10 unit_volume, * FROM t_order_detail_breakdown where item_number = '
 
 -- trx
 SELECT * FROM t_tran_log where item_number = '1080229' AND start_tran_date > '2026-03-17'  order by start_tran_date desc, start_tran_time desc
+SELECT * FROM t_tran_log where item_number = '2590316' AND start_tran_date > '2026-03-18'  order by start_tran_date desc, start_tran_time desc
+SELECT * FROM t_serial_active where item_number = '2590316' 
 
 -- trx
 SELECT start_tran_date, item_number, control_number, control_number_2, sum(case when tran_type = '951' then -tran_qty else tran_qty end) as qty
@@ -203,6 +206,9 @@ select * from t_tran_log where lot_number = '503950857188' order by start_tran_d
 select * from t_stored_item where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
 select * from t_stored_item where item_number LIKE 'T173-13%'
 select item_number, sum(actual_qty) as onhand from t_stored_item where item_number LIKE 'T173-13%' group by item_number
+select item_number, sum(actual_qty) as onhand from t_stored_item where item_number in ('7907008','') group by item_number
+select location_id, sum(actual_qty) as qty from t_stored_item where location_id like 'A3%' group by location_id
+
 
 -- hold
 select top 10 * from t_items_on_hold 
@@ -210,7 +216,7 @@ select  * from t_items_on_hold
 
 select  top 10 * from t_item_master   
 select  top 10 * from t_serial_active 
-select  top 10 * from t_serial_active 
+select  top 10 * from t_serial_active
 select  top 10 * from t_serial_master  
 select  top 10 * from t_serial_master  
 select  top 10 * from t_serial_master
