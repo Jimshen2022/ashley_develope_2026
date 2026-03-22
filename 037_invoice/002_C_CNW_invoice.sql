@@ -1,4 +1,15 @@
-WITH ss as (
+WITH iqty as (
+select t.ITINVR,
+       t.ITORNO,
+       t.ITITNO,
+       t.ITITSQ,
+       t.ITWHSE,
+
+       sum(t.INIQTY) as INIQTY
+from AFILELIB.TSITIN t
+WHERE t.ITWHSE in ('C','CNW','AF','IOR') and a1.ITSHQT>0
+),
+ss as (
     select t.SSINVR,
         t.SSORNO,
         t.SSCONO,

@@ -9,6 +9,207 @@ select top 10 * from t_item_master
 select top 10 * from t_order_detail
 select top 10 * from t_order_detail_breakdown
 
+
+-- trip shipped infor
+select start_tran_date,start_tran_time, tran_type, description, item_number, left(control_number_2,7) as trip_nbr,sum(tran_qty ) as trip_qty
+from t_tran_log
+where tran_type = '347' 
+and control_number_2 like '%1746%'
+group by start_tran_date,start_tran_time, tran_type, description, item_number, left(control_number_2,7)
+
+
+-- by item
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('165','851','855')
+    AND t1.item_number IN ('A4000665')
+    AND t1.start_tran_date >= '2026-03-01'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
+order by t1.item_number, t1.start_tran_date
+
+-- by sn
+SELECT tran_type,description,start_tran_date,start_tran_time,employee_id,control_number,control_number_2,wh_id,location_id,hu_id,item_number,lot_number,tran_qty,location_id_2,employee_id_2,
+sn_coo,process,equipment_zone
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+    AND t1.lot_number IN ('645850002909')
+    AND t1.start_tran_date >= '2025-12-14'
+order by t1.item_number, t1.start_tran_date, t1.start_tran_time
+
+
+
+-- check transactions
+SELECT tran_type,description,start_tran_date,start_tran_time,employee_id,control_number,control_number_2,wh_id,location_id,hu_id,item_number,lot_number,tran_qty,location_id_2,employee_id_2,
+sn_coo,process,equipment_zone
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','951')
+-- 	AND t1.control_number_2 like '0039312%'
+    AND t1.item_number IN ('833500825192')
+    AND t1.start_tran_date >= '2025-11-30'
+order by t1.item_number, t1.start_tran_date
+
+
+-- RP received by PO
+SELECT t1.start_tran_date,t1.start_tran_time, t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','347')
+ 	AND t1.control_number_2 in ('P2R7Q66','P2R8L70')
+   -- AND t1.item_number IN ('B814-58')
+    AND t1.start_tran_date >= '2025-11-01'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2, t1.start_tran_time
+order by t1.item_number, t1.start_tran_date, t1.start_tran_time
+
+
+--- yard trailer log
+SELECT *  FROM t_ya_tran_log 
+where carrier_trailer_number = '50E-545.10'
+order by started,ended
+
+-- item summary received
+SELECT *
+FROM t_tran_log AS t3                   -- From the TranLog table
+WHERE
+    --t3.wh_id = '335'                                         -- Filter for warehouse ID 335
+	--AND t3.item_number = 'A8010281'
+    t3.lot_number in ('688075534442')
+order by t3.lot_number, t3.start_tran_date desc, t3.start_tran_time desc
+ --   t3.lot_number in ('698075460913','688075534443','688075534444','688075534442')
+
+
+
+
+select top 10 *
+from t_tran_log
+where wh_id = '335'
+order by start_tran_date desc, start_tran_time desc
+
+
+
+
+-- RP received by PO
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','951')
+ 	AND t1.control_number_2 in ('P2QM971')
+    --AND t1.item_number IN ('P798-838')
+    AND t1.start_tran_date >= '2025-11-16'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
+order by t1.item_number, t1.start_tran_date
+
+-- RP received by item and sn
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','951')
+ 	--AND t1.control_number_2 in ('P2QSP73','P2QTZ51','P2QQ739')
+    AND t1.item_number IN ('5020577')
+    AND t1.start_tran_date >= '2025-11-16'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
+order by t1.item_number, t1.start_tran_date
+
+
+-- RP received by item and sn
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','951')
+ 	AND t1.control_number_2 in ('P2QSP73','P2QTZ51','P2QQ739','P2QSW23')
+    --AND t1.item_number IN ('D631-01')
+    AND t1.start_tran_date >= '2025-11-16'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
+order by t1.item_number, t1.start_tran_date
+
+
+
+-- RP received by item and sn
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','951')
+ 	AND t1.control_number_2 in ('P2QSP73','P2QTZ51','P2QQ739')
+    --AND t1.item_number IN ('D631-01')
+    AND t1.start_tran_date >= '2025-11-16'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
+order by t1.item_number, t1.start_tran_date
+
+
+-- RP received by item and sn
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','951')
+-- 	AND t1.control_number_2 like '0039312%'
+    AND t1.item_number IN ('B633-36')
+    AND t1.start_tran_date >= '2025-11-16'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
+order by t1.item_number, t1.start_tran_date
+
+
+-- RP received by item and sn
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('347')
+-- 	AND t1.control_number_2 like '0039312%'
+    AND t1.item_number IN ('B633-36')
+    AND t1.start_tran_date >= '2025-11-16'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
+order by t1.item_number, t1.start_tran_date
+
+SELECT *
+FROM
+    t_tran_log AS t3                   -- From the TranLog table
+WHERE
+    --t3.wh_id = '335'                                         -- Filter for warehouse ID 335
+	--AND t3.item_number = 'A8010281'
+    t3.lot_number = '606580128579'
+order by t3.lot_number, t3.start_tran_date desc, t3.start_tran_time desc
+
+
+-- RP received by item and sn
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('347')
+-- 	AND t1.control_number_2 like '0039312%'
+    AND t1.item_number IN ('U1070031')
+    AND t1.start_tran_date >= '2025-12-10'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
+order by t1.item_number, t1.start_tran_date
+
+-- RP received by item and sn
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('347')
+ 	AND t1.control_number_2 like '0058662-%'
+--    AND t1.item_number IN ('U1070031')
+    AND t1.start_tran_date >= '2025-12-10'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
+order by t1.item_number, t1.start_tran_date
+
+
+
+
+-- RP received by item and sn
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','951')
+-- 	AND t1.control_number_2 like '0039312%'
+    AND t1.item_number IN ('B974-74')
+    AND t1.start_tran_date >= '2025-11-16'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
+order by t1.item_number, t1.start_tran_date
+
+
+
+
+
 select top 10 * from t_customer where customer_number like '%888800%'
 select top 10 * from t_order
 select load_id, customer_id, customer_name from t_order group by load_id, customer_id, customer_name 
@@ -120,7 +321,7 @@ where tran_type like '345%' and start_tran_date = '2026-02-26' and control_numbe
 
 select *
 from t_tran_log 
-where tran_type like '3%' and start_tran_date = '2026-02-26' and control_number_2 like '%915914%'
+where tran_type like '3%' and start_tran_date = '2026-03-22' order by start_tran_date, start_tran_time
 
 
 
@@ -222,7 +423,13 @@ select *  from Distribution_Warehouse_Wholesale.TranLog where wh_id = '335' and 
 select *  from Distribution_Warehouse_Wholesale.TranLog where wh_id = '335' and item_number = 'A2000629' AND lot_number like '606%28' 
 select *  from t_tran_log  where lot_number = '803952452209' order by start_tran_date desc, start_tran_time desc
 select *  from t_tran_log  where lot_number = '503952452433' order by start_tran_date desc, start_tran_time desc
-select *  from t_tran_log  where lot_number = '503951145940' order by start_tran_date desc, start_tran_time desc
+
+
+-- KNQMAN variance verify on Mar.22.2026
+select *  from t_tran_log  where lot_number = '503948691983' order by start_tran_date desc, start_tran_time desc
+select *  from t_tran_log  where lot_number = '503952183811' order by start_tran_date desc, start_tran_time desc
+select *  from t_tran_log  where lot_number = '503951714438' order by start_tran_date desc, start_tran_time desc
+select *  from t_tran_log  where lot_number = '503952704823' order by start_tran_date desc, start_tran_time desc
 
 -- by serial number status
 select  *  from t_serial_active  where serial_number = '688806115244' 
@@ -399,193 +606,6 @@ LEFT JOIN (select location_id, sum(actual_qty) as loc_qty, count(distinct item_n
 			 group by location_id, item_number) AS t2 ON t1.location_id = t2.location_id
 where t1.location_id like 'M3%' AND type = 'I'
 
--- by item
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('165','851','855')
-    AND t1.item_number IN ('L317044')
-    AND t1.start_tran_date >= '2025-12-14'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
-order by t1.item_number, t1.start_tran_date
-
--- by sn
-SELECT tran_type,description,start_tran_date,start_tran_time,employee_id,control_number,control_number_2,wh_id,location_id,hu_id,item_number,lot_number,tran_qty,location_id_2,employee_id_2,
-sn_coo,process,equipment_zone
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-    AND t1.lot_number IN ('547720003921')
-    AND t1.start_tran_date >= '2025-12-14'
-order by t1.item_number, t1.start_tran_date, t1.start_tran_time
-
-
-
--- check transactions
-SELECT tran_type,description,start_tran_date,start_tran_time,employee_id,control_number,control_number_2,wh_id,location_id,hu_id,item_number,lot_number,tran_qty,location_id_2,employee_id_2,
-sn_coo,process,equipment_zone
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','951')
--- 	AND t1.control_number_2 like '0039312%'
-    AND t1.item_number IN ('833500825192')
-    AND t1.start_tran_date >= '2025-11-30'
-order by t1.item_number, t1.start_tran_date
-
-
--- RP received by PO
-SELECT t1.start_tran_date,t1.start_tran_time, t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','347')
- 	AND t1.control_number_2 in ('P2R7Q66','P2R8L70')
-   -- AND t1.item_number IN ('B814-58')
-    AND t1.start_tran_date >= '2025-11-01'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2, t1.start_tran_time
-order by t1.item_number, t1.start_tran_date, t1.start_tran_time
-
-
---- yard trailer log
-SELECT *  FROM t_ya_tran_log 
-where carrier_trailer_number = '50E-545.10'
-order by started,ended
-
--- item summary received
-SELECT *
-FROM t_tran_log AS t3                   -- From the TranLog table
-WHERE
-    --t3.wh_id = '335'                                         -- Filter for warehouse ID 335
-	--AND t3.item_number = 'A8010281'
-    t3.lot_number in ('688075534442')
-order by t3.lot_number, t3.start_tran_date desc, t3.start_tran_time desc
- --   t3.lot_number in ('698075460913','688075534443','688075534444','688075534442')
-
-
-
-
-select top 10 *
-from t_tran_log
-where wh_id = '335'
-order by start_tran_date desc, start_tran_time desc
-
-
-
-
--- RP received by PO
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','951')
- 	AND t1.control_number_2 in ('P2QM971')
-    --AND t1.item_number IN ('P798-838')
-    AND t1.start_tran_date >= '2025-11-16'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
-order by t1.item_number, t1.start_tran_date
-
--- RP received by item and sn
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','951')
- 	--AND t1.control_number_2 in ('P2QSP73','P2QTZ51','P2QQ739')
-    AND t1.item_number IN ('5020577')
-    AND t1.start_tran_date >= '2025-11-16'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
-order by t1.item_number, t1.start_tran_date
-
-
--- RP received by item and sn
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','951')
- 	AND t1.control_number_2 in ('P2QSP73','P2QTZ51','P2QQ739','P2QSW23')
-    --AND t1.item_number IN ('D631-01')
-    AND t1.start_tran_date >= '2025-11-16'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
-order by t1.item_number, t1.start_tran_date
-
-
-
--- RP received by item and sn
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','951')
- 	AND t1.control_number_2 in ('P2QSP73','P2QTZ51','P2QQ739')
-    --AND t1.item_number IN ('D631-01')
-    AND t1.start_tran_date >= '2025-11-16'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
-order by t1.item_number, t1.start_tran_date
-
-
--- RP received by item and sn
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','951')
--- 	AND t1.control_number_2 like '0039312%'
-    AND t1.item_number IN ('B633-36')
-    AND t1.start_tran_date >= '2025-11-16'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
-order by t1.item_number, t1.start_tran_date
-
-
--- RP received by item and sn
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('347')
--- 	AND t1.control_number_2 like '0039312%'
-    AND t1.item_number IN ('B633-36')
-    AND t1.start_tran_date >= '2025-11-16'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
-order by t1.item_number, t1.start_tran_date
-
-SELECT *
-FROM
-    t_tran_log AS t3                   -- From the TranLog table
-WHERE
-    --t3.wh_id = '335'                                         -- Filter for warehouse ID 335
-	--AND t3.item_number = 'A8010281'
-    t3.lot_number = '606580128579'
-order by t3.lot_number, t3.start_tran_date desc, t3.start_tran_time desc
-
-
--- RP received by item and sn
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('347')
--- 	AND t1.control_number_2 like '0039312%'
-    AND t1.item_number IN ('U1070031')
-    AND t1.start_tran_date >= '2025-12-10'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
-order by t1.item_number, t1.start_tran_date
-
--- RP received by item and sn
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('347')
- 	AND t1.control_number_2 like '0058662-%'
---    AND t1.item_number IN ('U1070031')
-    AND t1.start_tran_date >= '2025-12-10'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
-order by t1.item_number, t1.start_tran_date
-
-
-
-
--- RP received by item and sn
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','951')
--- 	AND t1.control_number_2 like '0039312%'
-    AND t1.item_number IN ('B974-74')
-    AND t1.start_tran_date >= '2025-11-16'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
-order by t1.item_number, t1.start_tran_date
 
 
 

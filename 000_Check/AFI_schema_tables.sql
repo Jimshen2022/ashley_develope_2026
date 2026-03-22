@@ -1,10 +1,20 @@
 ﻿/*
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_import%'
-SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%WEB%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%work_shift%'
+select * from t_la_employee_clock_in_out_detail
+select * from t_sod_eod_cico_log
+select * from t_la_team_cico
+select * from t_la_employee_clock_in_out
+select * from INC0644370_t_la_employee_clock_in_out_bkp
+
 
 */
 
+
+
 select  * from t_items_on_hold
+select top 10 * from t_lms_process_time
+
 -- Yard and transportation related tables
 select top 1000 * from t_ya_tran_log where started > '2026-03-01' order by started 
 select top 10 * from t_ya_zone 
@@ -160,6 +170,10 @@ select top 10 * from t_exception_log where tran_type like '855%' and exception_d
 select top 10 * from t_exception_log 
 select top 10 * from t_exception_tran_log
 select  * from t_import_ONHOLD where imported >= '2026-03-19'
+
+
+-- cico
+select * from t_la_schedule where active = 'Y'
 
 -- item master
 select top 10 * from t_item_master where item_number = '6700616'

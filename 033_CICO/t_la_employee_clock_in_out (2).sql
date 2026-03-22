@@ -1,0 +1,10 @@
+﻿UPDATE t_la_employee_clock_in_out SET
+clock_out=CASE
+WHEN CAST(actual_clock_in AS TIME)>='07:00' AND CAST(actual_clock_in AS TIME)<'19:00' THEN CAST(CAST(actual_clock_in AS DATE) AS DATETIME)+CAST('19:00:00' AS DATETIME)
+WHEN CAST(actual_clock_in AS TIME)>='19:00' THEN DATEADD(DAY,1,CAST(CAST(actual_clock_in AS DATE) AS DATETIME)+CAST('07:00:00' AS DATETIME))
+ELSE CAST(CAST(actual_clock_in AS DATE) AS DATETIME)+CAST('07:00:00' AS DATETIME) END,
+actual_clock_out=CASE
+WHEN CAST(actual_clock_in AS TIME)>='07:00' AND CAST(actual_clock_in AS TIME)<'19:00' THEN CAST(CAST(actual_clock_in AS DATE) AS DATETIME)+CAST('19:00:00' AS DATETIME)
+WHEN CAST(actual_clock_in AS TIME)>='19:00' THEN DATEADD(DAY,1,CAST(CAST(actual_clock_in AS DATE) AS DATETIME)+CAST('07:00:00' AS DATETIME))
+ELSE CAST(CAST(actual_clock_in AS DATE) AS DATETIME)+CAST('07:00:00' AS DATETIME) END
+WHERE employee_id='1001997' AND work_day='2026-01-28' AND clock_out IS NULL
