@@ -1,6 +1,6 @@
 ﻿/*
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_la%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%lunch%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%KVI%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -17,6 +17,7 @@ select top 10000 * from t_group as e
 select top 100 * from t_la_schedule as e
 select top 100 * from t_employee_attribute
 select top 10000 * from t_user_detail
+select top 10000 * from t_user_detail where id = '50968'
 
 
 select top 10 * from t_la_break

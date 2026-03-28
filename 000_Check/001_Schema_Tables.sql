@@ -182,7 +182,7 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%Manufacturi
 select * from dw_developer.tabledictionary where tpktablename LIKE '%EXTORIT%'
 select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%Manufacturing_Maximo%'
 
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%maximo%' order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%Distribution%' order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%vendor%' and tpkSchemaName like '%maximo%' order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpkSchemaName LIKE 'Manufacturing_Maximo%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpkSchemaName LIKE 'Maximo_DW%'  order by tpkRowCount DESC
@@ -196,7 +196,21 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%ITEMBL%'  o
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ATOFILEATOFILE%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%excep%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%tranLog%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%asset%'  order by tpkRowCount DESC
+
+
+select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccounting_Enh%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%PowerBI_Finance%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccounting%'  order by tpkRowCount DESC
+
+
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%PurchaseOrderPcs%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Ecommerce Invoicing%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Billable Volume%'
+
+
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Units_BED%' order by tpkRowCount DESC
+SELECT top 10  *  FROM Distribution_Wrk.InvoicedUnitsDetails
+
 
 
 
@@ -228,6 +242,28 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+
+
+
+
+
+
+-- raw data:
+
+Select top 10 * from PowerBI_Distribution.InvoiceAmount_WarehouseLevel
+Select top 10 * from Wholesale_DemandPlanning_AFI.SupplyPlanDetail
+Select top 10 * from PowerBI_SupplyChain.TotalReceipts
+Select top 10 * from PowerBI_Distribution.WhseTraffic
+Select top 10 * from CostAccounting_Enh.DC_LaborRollups_BaseData
+Select top 10 * from PowerBI_Distribution.InvoiceAmount_WarehouseLevel
+Select top 10 * from PowerBI_Finance.DC_LaborRollups_BaseData
+Select top 10 * from PowerBI_Finance.DC_LaborRollups_RunChartData
+Select top 10 * from CostAccounting.DC_LaborRollups_CalculatedData
+
+
+
+
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%PurchaseOrderPcs%'
 
 -- maximo asset tables
 SELECT * FROM dw_developer.tabledictionary WHERE tpktablename LIKE '%asset%' ORDER BY tpkRowCount DESC

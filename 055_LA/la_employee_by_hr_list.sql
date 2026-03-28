@@ -1,11 +1,12 @@
 /*
-select top 100 * from t_employee as e
+select top 100 * from t_employee WHERE id = '80054'
 select  * from t_employee as e where status = 'A'
 select top 100 * from t_department as e
 select  * from t_shift as e
 select top 10000 * from t_group as e
 select top 100 * from t_la_schedule as e
-select top 100 * from t_employee_attribute
+select top 100 * from t_la_break order by schedule_id
+select top 100 * from t_employee_attribute WHERE id = '80054'
 select top 10000 * from t_user_detail
 */
 

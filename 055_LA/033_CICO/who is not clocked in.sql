@@ -12,7 +12,7 @@ order by t.work_day,t.actual_clock_in
 
 
 
-select top 10 * from t_supervisor as e
+
 
 
 
