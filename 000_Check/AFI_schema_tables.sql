@@ -1,6 +1,6 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_import%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%work_shift%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_la%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%lunch%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -10,7 +10,25 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 */
 
+select top 100 * from t_employee as e
+select top 100 * from t_department as e
+select top 10000 * from t_shift as e
+select top 10000 * from t_group as e
+select top 100 * from t_la_schedule as e
+select top 100 * from t_employee_attribute
+select top 10000 * from t_user_detail
 
+
+select top 10 * from t_la_break
+select top 10 * from t_la_break_employee
+select top 10 * from t_la_employee_clock_in_out
+select top 10 * from t_la_employee_clock_in_out_detail
+select top 10 * from t_la_message
+select top 10 * from t_la_message_detail
+select top 10 * from t_la_picking_transaction
+select top 10 * from t_la_process_hold_release
+select top 10 * from t_la_schedule
+select top 10 * from t_la_team_cico
 
 select  * from t_items_on_hold
 select top 10 * from t_lms_process_time
@@ -172,8 +190,12 @@ select top 10 * from t_exception_tran_log
 select  * from t_import_ONHOLD where imported >= '2026-03-19'
 
 
+--battery table
+select * from t_battery
+
 -- cico
 select * from t_la_schedule where active = 'Y'
+select * from t_schedule 
 
 -- item master
 select top 10 * from t_item_master where item_number = '6700616'
@@ -208,6 +230,13 @@ WHERE t.item_number IN ('D781-35')
       AND t1.lot_number = t.lot_number
   ) 
 ORDER BY start_tran_date DESC, start_tran_time DESC
+
+-- by EMPLOYEE
+select top 10 * from t_tran_log where employee_id = '50165' order by start_tran_date desc, start_tran_time desc
+select top 10 * from t_tran_log where employee_id = '50165' order by start_tran_date desc, start_tran_time desc
+select top 10 * from t_tran_log 
+select * from t_tran_log where lot_number = '605590406108' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '503950857188' order by start_tran_date desc, start_tran_time desc
 
 
 -- by sn 

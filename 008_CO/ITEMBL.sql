@@ -1,4 +1,0 @@
-SELECT *
-FROM AMFLIBA.ITEMBL 
-WHERE itcls like 'Z%'
-limit 10

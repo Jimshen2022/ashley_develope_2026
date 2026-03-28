@@ -1,7 +1,11 @@
 ﻿/*
 --maximo PO query
+
+select top 10 * FROM Manufacturing_Maximo.Po as t WHERE siteid = 'VNM.ASPM'
+
+
 select top 10 * from Manufacturing_Maximo.Po  WHERE ponum = 'PF001194'
-select top 10 * from Manufacturing_Maximo.PoLine  WHERE ponum = 'PF001194'
+
 select top 10 * from Manufacturing_Maximo.Matrectrans where ponum = 'PF001194'
 
 select top 10 * from Manufacturing_Maximo.Po  where  siteid = 'VNM.ASPM'  and ponum = 'PF001343'

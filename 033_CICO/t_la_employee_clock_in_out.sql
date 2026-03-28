@@ -86,12 +86,19 @@ WHERE employee_id = '1001997'
 
 
 
+-- employee group, department, supervisor, shift check
 
-
-select  top 100 * from t_employee WHERE status = 'A'
+select  top 10 * from t_employee WHERE status = 'A'  
 select  top 10 * from t_department
 select  top 10 * from t_group
 select  top 10 * from t_supervisor
+
+select * 
+from t_employee as t
+left join t_department as d on t.dept = d.department
+left join t_group as g on t.group_nbr = g.group_nbr
+left join t_supervisor as s on t.supervisor_nbr = s.supervisor_nbr
+where t.emp_number = '00974' and t.status = 'A'
 
 select e.emp_number,t.*
 from t_la_employee_clock_in_out as t

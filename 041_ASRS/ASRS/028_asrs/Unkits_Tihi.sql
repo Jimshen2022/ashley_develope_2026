@@ -1,0 +1,120 @@
+SELECT t4.ITNBR,t2.ITNBR,t2.HOUSE,t2.MOHTQ,t2.WHSLC,t2.ITCLS, t2.QTSYR, t4.B2Z95S, t4.ITDSC, t1.TIHIUNLD, t1.PICKPUT, t1.ITMCLSID, t1.UNITSWIDE, t1.UNITLAYERS, t1.UNITSDEEP, t1.SCOOPQTY, t1.SKIDSIZE, t3.QTYCR,
+    t3.NBSEAT, t3.CRTWIN, t3.CRTLIN, t3.CRTHIN, t3.PRDWIN, t3.PRDHIN, t3.PRDLIN, t3.ITMWEGHT, t3.ITMWEGHT*0.453592 as "Unit_Weight(KG)", T2.MPUPQ AS OPEN_PO,
+    (CASE
+        WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+        ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) AS PALLETS,
+    t1.SCOOPQTY*t3.ITMWEGHT*0.453592 AS "SCOOP_Weight(KG)",
+       CASE
+           WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 2 THEN  'A. 1-2 pallet'
+           WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 3 THEN  'B. 2-3 pallets'
+           WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 4 THEN  'C. 3-4 pallets'
+           WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 5 THEN  'D. 4-5 pallets'
+           WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 6 THEN  'E. 5-6 pallets'
+           WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 7 THEN  'F. 6-7 pallets'
+            WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 15 THEN  'G. 7-15 pallets'
+            WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 30 THEN  'H. 15-30 pallets'
+            WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 60 THEN  'I. 30-60 pallets'
+            WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 90 THEN  'I. 60-90 pallets'
+            WHEN
+               (CASE
+                    WHEN t2.MOHTQ/t1.SCOOPQTY<=1 THEN 1
+                    ELSE ROUND(t2.MOHTQ/t1.SCOOPQTY) END) < 120 THEN  'I. 90-120 pallets'
+            ELSE 'J. Over 120 pallets'  END as Pallet_Qty_Range,
+    (CASE
+        WHEN  t2.MOHTQ < 10 THEN 'A. 0-10'
+        WHEN  t2.MOHTQ < 20 THEN 'B. 10-20'
+        WHEN  t2.MOHTQ < 30 THEN 'C. 20-30'
+        WHEN  t2.MOHTQ < 40 THEN 'D. 30-40'
+        WHEN  t2.MOHTQ < 50 THEN 'E. 40-50'
+        WHEN  t2.MOHTQ < 60 THEN 'F. 50-60'
+        WHEN  t2.MOHTQ < 70 THEN 'G. 60-70'
+        WHEN  t2.MOHTQ < 80 THEN 'H. 70-80'
+        WHEN  t2.MOHTQ < 90 THEN 'I. 80-90'
+        WHEN  t2.MOHTQ < 100 THEN 'K. 90-100'
+        WHEN  t2.MOHTQ < 110 THEN 'L. 100-110'
+        WHEN  t2.MOHTQ < 120 THEN 'M. 110-120'
+        WHEN  t2.MOHTQ < 130 THEN 'N. 120-130'
+        WHEN  t2.MOHTQ < 140 THEN 'O. 130-140'
+        WHEN  t2.MOHTQ < 150 THEN 'P. 140-150'
+        WHEN  t2.MOHTQ < 160 THEN 'Q. 150-160'
+        WHEN  t2.MOHTQ < 170 THEN 'R. 160-170'
+        WHEN  t2.MOHTQ < 180 THEN 'S. 170-180'
+        ELSE 'T. Over 180' END) AS OnHand_Pieces_Range,
+    (CASE
+        WHEN t3.ITMWEGHT*0.453592 < 10 THEN 'A. 0-10'
+        WHEN t3.ITMWEGHT*0.453592 < 20 THEN 'B. 10-20'
+        WHEN t3.ITMWEGHT*0.453592 < 30 THEN 'C. 20-30'
+        WHEN t3.ITMWEGHT*0.453592 < 40 THEN 'D. 30-40'
+        WHEN t3.ITMWEGHT*0.453592 < 50 THEN 'E. 40-50'
+        WHEN t3.ITMWEGHT*0.453592 < 60 THEN 'F. 50-60'
+        WHEN t3.ITMWEGHT*0.453592 < 70 THEN 'G. 60-70'
+        WHEN t3.ITMWEGHT*0.453592 < 80 THEN 'H. 70-80'
+        WHEN t3.ITMWEGHT*0.453592 < 90 THEN 'I. 80-90'
+        WHEN t3.ITMWEGHT*0.453592 < 100 THEN 'K. 90-100'
+        WHEN t3.ITMWEGHT*0.453592 < 110 THEN 'L. 100-110'
+        WHEN t3.ITMWEGHT*0.453592 < 120 THEN 'M. 110-120'
+        WHEN t3.ITMWEGHT*0.453592 < 130 THEN 'N. 120-130'
+        WHEN t3.ITMWEGHT*0.453592 < 140 THEN 'O. 130-140'
+        WHEN t3.ITMWEGHT*0.453592 < 150 THEN 'P. 140-150'
+        WHEN t3.ITMWEGHT*0.453592 < 160 THEN 'Q. 150-160'
+        WHEN t3.ITMWEGHT*0.453592 < 170 THEN 'R. 160-170'
+        WHEN t3.ITMWEGHT*0.453592 < 180 THEN 'S. 170-180'
+        ELSE 'T. Over 180' END) AS Unit_Weight_Range,
+    (CASE
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 100 THEN 'A. 0-100'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 200 THEN 'B. 100-200'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 300 THEN 'C. 200-300'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 400 THEN 'D. 300-400'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 500 THEN 'E. 400-500'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 600 THEN 'F. 500-600'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 700 THEN 'G. 600-700'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 800 THEN 'H. 700-800'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 900 THEN 'I. 800-900'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1000 THEN 'K. 900-1000'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1100 THEN 'L. 1000-1100'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1200 THEN 'M. 1100-1200'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1300 THEN 'N. 1200-1300'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1400 THEN 'O. 1300-1400'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1500 THEN 'P. 1400-1500'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1600 THEN 'Q. 1500-1600'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1700 THEN 'R. 1600-1700'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1800 THEN 'S. 1700-1800'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 1900 THEN 'T. 1800-1900'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 2000 THEN 'U. 1900-2000'
+        WHEN t1.SCOOPQTY*t3.ITMWEGHT < 2100 THEN 'V. 2000-2100'
+        ELSE 'W. Over 2100' END) AS SCOOP_Weight_Range
+FROM  (SELECT a.ITNBR,a.HOUSE,a.MOHTQ,a.WHSLC,a.ITCLS, a.QTSYR,a.MPUPQ FROM AMFLIBL.ITEMBL as a WHERE a.House in ('51') ) as t2
+LEFT JOIN (SELECT b.ITNBR, b.TIHIUNLD, b.PICKPUT, b.ITMCLSID, b.UNITSWIDE, b.UNITLAYERS, b.UNITSDEEP, b.SCOOPQTY, b.SKIDSIZE, b.house  FROM AFILELIBL.ITBEXT as b WHERE b.House in ('51')) AS t1 ON t1.itnbr = t2.itnbr and t1.house = t2.house
+LEFT JOIN (SELECT c.ITNBR, c.QTYCR, c.NBSEAT, c.CRTWIN, c.CRTLIN, c.CRTHIN, c.PRDWIN, c.PRDHIN, c.PRDLIN, c.ITMWEGHT  FROM AFILELIBL.ITMEXT AS c) AS T3 ON T3.ITNBR = T2.ITNBR
+LEFT JOIN (SELECT d.ITNBR, d.B2Z95S, d.ITDSC, d.STID  FROM AMFLIBL.ITMRVA AS d WHERE d.STID in ('51')) AS t4 ON t4.itnbr = t2.itnbr and t4.stid = t2.house
+WHERE t2.ITCLS LIKE 'Z%K' OR t2.ITCLS IN ('WVVG')

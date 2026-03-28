@@ -196,6 +196,7 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%ITEMBL%'  o
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ATOFILEATOFILE%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%excep%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%tranLog%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%asset%'  order by tpkRowCount DESC
 
 
 
@@ -228,13 +229,41 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
---
+-- maximo asset tables
+SELECT * FROM dw_developer.tabledictionary WHERE tpktablename LIKE '%asset%' ORDER BY tpkRowCount DESC
+Select top 10 * from Manufacturing_Maximo.asset where description like '%batt%'
+Select top 10000 * from Manufacturing_Maximo.asset where siteid = 'VNM.ASPM' and  order by assetnum
+Select top 10000 * from Manufacturing_Maximo.asset where siteid = 'VNM.ASPM' and assetnum LIKE 'VB%' order by assetnum
+
+
+Distribution_DW	MaximoAssetStatus
+Distribution_Delivery_Wholesale	ASSETRELOCATIONLOG
+Distribution_Delivery_Wholesale_wrk	ASSETRELOCATIONLOG
+Distribution_TMWSuite	AssetAssignment
+Distribution_TMWSuite_wrk	ASSETASSIGNMENT
+Distribution_DW	AssetUtilizationTrailerSnapshot
+Manufacturing_Maximo	Plustassetsthist
+Distribution_DW	AssetUtilizationTractorSnapshot
+Manufacturing_Maximo	AssetSpec
+Manufacturing_Maximo	plustassetalias
+Maximo_DW	DimMROAssetDetails
+
+Distribution_DW	AssetUtilizationSnapshot
+Manufacturing_Maximo	AssetMeter
+Manufacturing_Maximo	Assetlocusercust
+Manufacturing_Maximo	Plustwoasset
+Manufacturing_Maximo	AssetAttribute
+Manufacturing_DW	DimIOTAssetMachineDetails
+
+
+-- tran log tables
 Select top 10 * from Distribution_Warehouse_Wholesale.t_exception_tran_log where wh_id != '335'
 
 •	Distribution_Warehouse_Wholesale.t_exception_tran_log
 -- sn check
 Select TOP 10 * from Distribution_Warehouse_Wholesale.tranlog
 Select * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%'  order by lot_number, exception_date
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and employee_id = '50165' and start_tran_date > '2021-01-01' order by start_tran_date desc, start_tran_time desc
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and tran_type = '855' and start_tran_date >= '2026-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952384062' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952820543' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time

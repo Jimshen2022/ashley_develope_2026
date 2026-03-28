@@ -6,8 +6,27 @@ SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%custom
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.tables WHERE TABLE_NAME LIKE '%exception%'
 select top 10 * from t_stored_item 
 select top 10 * from t_item_master 
+select top 10 * from t_item_master where item_number = 'U6600014'
 select top 10 * from t_order_detail
 select top 10 * from t_order_detail_breakdown
+
+
+-- sn query
+
+SELECT * 
+FROM t_tran_log AS t3                  
+WHERE
+    -- t3.item_number = 'A8010281'
+    t3.lot_number in ('503951568674')
+order by t3.lot_number, t3.start_tran_date desc, t3.start_tran_time desc
+
+
+-- trip shipped infor
+select start_tran_date,start_tran_time, tran_type, description, item_number, left(control_number_2,7) as trip_nbr,sum(tran_qty ) as trip_qty
+from t_tran_log
+where tran_type = '347' 
+and control_number_2 like '%1746%'
+group by start_tran_date,start_tran_time, tran_type, description, item_number, left(control_number_2,7)
 
 
 -- trip shipped infor
@@ -74,19 +93,55 @@ FROM t_tran_log AS t3                   -- From the TranLog table
 WHERE
     --t3.wh_id = '335'                                         -- Filter for warehouse ID 335
 	--AND t3.item_number = 'A8010281'
-    t3.lot_number in ('688075534442')
+    t3.lot_number in ('503952911404')
 order by t3.lot_number, t3.start_tran_date desc, t3.start_tran_time desc
  --   t3.lot_number in ('698075460913','688075534443','688075534444','688075534442')
 
 
+-- ITEM MASTER
+select top 100 * from t_item_master 
+select top 100 * from t_item_uom
 
 
-select top 10 *
-from t_tran_log
-where wh_id = '335'
-order by start_tran_date desc, start_tran_time desc
 
 
+-- CHECK STO
+WITH itm as 
+(select distinct i.item_number ,
+    case 
+        when i.pick_put_id = 'UPH' THEN 'UPH'
+        when i.pick_put_id = 'PALLT' AND i.class_id = 'FLOOR' THEN 'BULK'
+        when i.pick_put_id = 'PALLT' AND i.class_id = 'RUGS' THEN 'RUGS'
+        when i.pick_put_id = 'PALLT' THEN 'CG'
+        else 'RP' end as product
+from t_item_master as i
+where i.wh_id = '335'
+)
+select SUBSTRING(t.location_id, 6, 2) as section, right(t.location_id,1) as level,  i.product, sum(t.actual_qty) as actual_qty        
+from t_stored_item as t
+left join itm as i  on t.item_number = i.item_number
+where t.wh_id = '335' and t.location_id like 'A30[25]%[12345]' and i.product in ('BULK')
+group by SUBSTRING(t.location_id, 6,2) , right(t.location_id,1) , i.product
+order by SUBSTRING(t.location_id, 6, 2) , right(t.location_id,1)
+
+-- STO ITEM in A3025
+WITH itm as 
+(select distinct i.item_number ,
+    case 
+        when i.pick_put_id = 'UPH' THEN 'UPH'
+        when i.pick_put_id = 'PALLT' AND i.class_id = 'FLOOR' THEN 'BULK'
+        when i.pick_put_id = 'PALLT' AND i.class_id = 'RUGS' THEN 'RUGS'
+        when i.pick_put_id = 'PALLT' THEN 'CG'
+        else 'RP' end as product
+from t_item_master as i
+where i.wh_id = '335'
+)
+select t.location_id, i.product, sum(t.actual_qty) as actual_qty        
+from t_stored_item as t
+left join itm as i  on t.item_number = i.item_number
+where t.wh_id = '335' and t.location_id like 'A3025%' and i.product in ('BULK')
+group by t.location_id, i.product
+order by t.location_id
 
 
 -- RP received by PO

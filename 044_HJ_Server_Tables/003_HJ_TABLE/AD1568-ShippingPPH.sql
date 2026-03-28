@@ -1,0 +1,197 @@
+/*************************************************************************************************
+   NAME:       usp_ww_shipping_pph_china
+   PURPOSE:
+			PPH report for china
+
+   REVISIONS:
+   Ver        Date        Author                Description
+   ---------  ----------  -------               ------------------------------------
+   1.0        2015.01.22  Lily Wei				Task: Shipping PPH for China.
+   1.1	      2015.04.08  Lily Wei				1.Change container calculated from ldm.equipment_id instead of trip number
+												2.Change actual working minutes & actual PPH from minutes to hours
+												3.Add summary records
+   1.2		  2015.04.13  Lily Wei				1.distinguish group on team
+                                                2.Fix piece calculation
+   1.3  	  2016.01.25  Lily Wei				LunchTime Parameterized
+   1.4		  2016.06.02  Lily Wei				Fix China/Vietnam PPH report issue for second shift
+												Remove trn.start_tran_date=@in_vchWorkDay when collect #temp_tran_log
+   1.5        2017.01.11  Lily Wei              STRY0065992 PPH Reporting Asia Filters, add @in_vchsubGroup
+   1.6        2017.02.06  Lily Wei		STRY0067182 Wanek Direct Customer Transfer PPH
+   2.0	      2017.09.30  Lily Wei		STRY0122316 Offshore - Webwise shipping PPH enhancement
+   2.1		  2019.05.27  Lily Wei				Wanek - Import CICO to PPH tables, so end time can be null
+***************************************************************************************************/
+CREATE PROCEDURE [dbo].[usp_ww_shipping_pph_china] @in_vchWhID    VARCHAR(10),
+                                                  @in_vchTeamID  VARCHAR(50),
+                                                  @in_vchWorkDay DATETIME
+												  ,@in_vchsubGroup VARCHAR(50)
+AS
+    DECLARE @AllowTime NUMERIC(8, 2)
+
+	Declare @LunchTimeFrom nvarchar(5),
+			@LunchTimeTo nvarchar(5),
+			@TimeDiff int
+
+    SET NOCOUNT ON
+
+	SELECT @LunchTimeFrom=text from t_lookup(nolock) where wh_id=@in_vchWhID and source='PPHLunchTime' and locale_id='1033' and sequence=1
+	SELECT @LunchTimeTo=text from t_lookup(nolock) where wh_id=@in_vchWhID and source='PPHLunchTime' and locale_id='1033' and sequence=2
+
+	SELECT @TimeDiff=datediff(mi,@LunchTimeFrom,@LunchTimeTo)
+
+    SELECT @AllowTime = Isnull(c1, 0)
+    FROM   t_control(nolock)
+    WHERE  control_type = 'PPH_TEAM_GOAL'
+
+    --collect team member
+    SELECT t.wh_id,
+		   t.team_id,
+		   t.team_name,
+           tm.employee_id,
+           tc.start_time,
+           (case when getdate()<isnull(tc.end_time,getdate()) then getdate() else isnull(tc.end_time,getdate()) end) as end_time  -- change tc.end_time to isnull(tc.end_time,getdate())
+    INTO   #tmpemp
+    FROM   t_team t(nolock)
+           INNER JOIN t_team_member tm(nolock)
+                   ON t.wh_id = tm.wh_id
+                      AND t.team_id = tm.team_id
+           INNER JOIN t_team_employee_clock_in_out tc (nolock)
+                   ON tm.wh_id = tc.wh_id
+                      AND tm.employee_id = tc.employee_id
+					  AND tm.team_id = tc.team_id
+					  AND tc.work_day between tm.beg_date and end_date
+    WHERE  t.wh_id = @in_vchWhID
+           AND t.status = 'A'
+           AND tc.work_day = @in_vchWorkDay
+           AND t.team_id LIKE @in_vchTeamID
+		   AND t.group_id='S'
+		   AND t.subgroup LIKE @in_vchsubGroup
+
+    --collect trn records
+    SELECT emp.team_id,
+           emp.employee_id,
+           tlp.description AS tran_type,
+           Sum(trn.tran_qty) AS tranqty
+    INTO   #tmptran
+    FROM   #tmpemp emp(nolock)
+           INNER JOIN t_tran_log trn(nolock)
+                  ON emp.wh_id = trn.wh_id
+                     AND emp.employee_id = trn.employee_id
+                     AND trn.start_tran_date + trn.start_tran_time BETWEEN emp.start_time AND emp.end_time
+           INNER JOIN t_lookup tlp (nolock)
+             ON trn.wh_id = tlp.wh_id
+				AND tlp.locale_id='1033'
+                AND trn.tran_type = tlp.text
+                AND tlp.source IN ( 'BillableContainer', 'TransferContainer' )
+    GROUP  BY emp.team_id,
+			emp.employee_id,
+			tlp.description
+
+	INSERT INTO #tmptran
+    SELECT emp.team_id,
+           emp.employee_id,
+           tlp.description   AS tran_type,
+           Sum(trn.tran_qty) AS tranqty
+    FROM    #tmpemp emp(nolock)
+           INNER JOIN t_tran_log trn(nolock)
+                   ON emp.wh_id = trn.wh_id
+                      AND emp.employee_id = trn.employee_id
+                      AND trn.start_tran_date + trn.start_tran_time BETWEEN emp.start_time AND emp.end_time
+           INNER JOIN t_lookup tlp (nolock)
+                   ON trn.wh_id = tlp.wh_id
+                      AND tlp.locale_id = '1033'
+                      AND trn.tran_type = tlp.text
+                      AND tlp.source = ( 'MoveContainer' )
+                      AND trn.location_id_2 LIKE tlp.lookup_type + '%'
+    GROUP  BY emp.team_id,
+			emp.employee_id,
+			tlp.description
+
+    --Team
+    SELECT emp.team_id,
+           emp.team_name,
+           Count(emp.employee_id) AS HdCnt,
+           @AllowTime             AS PPHGoal,
+           Sum (CASE
+                  WHEN CONVERT(VARCHAR, start_time, 024) <= @LunchTimeFrom
+                       AND CONVERT(VARCHAR, end_time, 024) >= @LunchTimeTo THEN ( Round(Cast(Cast(( Datediff(mi, start_time, end_time) - @TimeDiff ) AS DECIMAL(18, 2)) / 60 AS DECIMAL(18, 2)), 2) )
+                  ELSE Round(Cast(Cast(Datediff(mi, start_time, end_time)AS DECIMAL(18, 2)) / 60 AS DECIMAL(18, 2)), 2)
+                END)              AS ActWorkTime,
+           Sum(tranqty)           AS TTLPieces
+    INTO   #team
+    FROM   #tmpemp emp(nolock)
+           LEFT JOIN (SELECT trn.team_id,
+                             trn.employee_id,
+                             Sum(trn.tranqty) AS tranqty
+                      FROM   #tmptran trn(nolock)
+                      GROUP  BY trn.team_id,
+                                trn.employee_id) trn
+                  ON emp.team_id = trn.team_id
+                     AND emp.employee_id = trn.employee_id
+    GROUP  BY emp.team_id,
+              emp.team_name
+
+    DECLARE @SQL NVARCHAR(4000)=N''
+
+	SELECT DISTINCT description
+	INTO   #header
+	FROM   t_lookup(NOLOCK)
+	WHERE  wh_id = @in_vchWhID
+		   AND locale_id = '1033'
+		   AND source IN ( 'BillableContainer', 'TransferContainer', 'MoveContainer' )
+
+	 SET @SQL=Stuff((SELECT N',' +  Quotename(description)
+                    FROM  #header
+                    FOR XML PATH('')), 1, 1, N'')
+
+    DECLARE @select_columns NVARCHAR (MAX) = '';
+	SELECT @select_columns = @select_columns +  ',ISNULL(' +  Quotename(T.description) + ',0) AS ' +  Quotename(T.description) + ''
+	FROM  (SELECT  description From #header) T
+
+	DECLARE @sum_columns NVARCHAR (MAX) = '';
+	SELECT @sum_columns = @sum_columns +  ',sum(ISNULL(' +  Quotename(T.description) + ',0)) AS ' +  Quotename(T.description) + ''
+	FROM  (SELECT  description From #header) T
+
+	SET @SQL=N'select '''' as color,''A'' as sort,t.team_id,t.team_name'+ @select_columns +',isnull(TTLPieces,0) as ''Total Pieces'',
+				HdCnt as ''Total team count'',ActWorkTime as ''Actual Working Hours'',PPHGoal as ''PPH Goal'',
+				round(isnull(TTLPieces,0)/ActWorkTime,2) as ''Act PPH'',round(isnull(TTLPieces,0)/ActWorkTime-PPHGoal,2) as Difference
+				from #team t(nolock)
+				left join (select team_id,tranqty,tran_type from #tmptran(nolock))
+				as trn
+				pivot(sum(tranqty) for tran_type in('+ @SQL + N'))as p on p.team_id = t.team_id
+				union
+				select ''{{BGCOLOR=RED}}{{FGCOLOR=WHITE}}'' as color,''B''as sort,'''' as team_id,''Total'''+ @sum_columns +',
+				sum(isnull(TTLPieces,0)),sum(HdCnt),sum(ActWorkTime),PPHGoal,
+				round(sum(isnull(TTLPieces,0))/sum(isnull(ActWorkTime,0)),2) as ''ActPPH'',
+				round(sum(isnull(TTLPieces,0))/sum(isnull(ActWorkTime,0))-PPHGoal,2) as Difference
+				from #team t(nolock)
+				left join (select team_id,tranqty,tran_type from #tmptran(nolock))
+				as trn
+				pivot(sum(tranqty) for tran_type in('+ @SQL + N'))as p on p.team_id = t.team_id
+				group by PPHGoal
+				order by sort,team_id
+				'
+    EXEC (@SQL)
+
+	IF Object_id ('tempdb..#tmpemp') IS NOT NULL
+      BEGIN
+          DROP TABLE #tmpemp
+      END
+
+    IF Object_id ('tempdb..#tmptran') IS NOT NULL
+      BEGIN
+          DROP TABLE #tmptran
+      END
+
+    IF Object_id ('tempdb..#team') IS NOT NULL
+      BEGIN
+          DROP TABLE #team
+      END
+
+    BEGIN
+        DROP TABLE #header
+    END
+
+    RETURN
+
+
+
