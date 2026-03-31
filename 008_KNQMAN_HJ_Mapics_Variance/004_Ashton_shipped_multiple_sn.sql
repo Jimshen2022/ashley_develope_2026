@@ -8,7 +8,7 @@ SELECT item_number,
 FROM Distribution_Warehouse_Wholesale.TranLog
 WHERE wh_id = '335'
   AND tran_type = '347'
-  AND start_tran_date >= '2025-01-01'
+  AND start_tran_date >= '2026-01-01'
   AND start_tran_date <= GETDATE()
   AND lot_number IN (
       SELECT lot_number

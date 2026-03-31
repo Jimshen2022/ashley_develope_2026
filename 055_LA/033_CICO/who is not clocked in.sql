@@ -1,5 +1,6 @@
 ﻿-- who is clocked in 
-select e.emp_number, e.name as employee_name, s.name as supervisor_name, t.*, 
+-- who is not clocked in
+select e.emp_number, e.name as employee_name, s.name as supervisor_name, t.*,
 	ea.la_send_data, ea.la_cico_required
 from t_la_employee_clock_in_out as t
 left join t_employee as e on t.employee_id = e.employee_id
@@ -11,9 +12,20 @@ where actual_clock_out is null
 order by t.work_day,t.actual_clock_in
 
 
+select top 20 * from t_tran_log order by start_tran_date desc, start_tran_time desc
 
-
-
+-- who is clocked in 
+-- who is not clocked in
+select e.emp_number, e.name as employee_name, s.name as supervisor_name, t.*,
+	ea.la_send_data, ea.la_cico_required
+from t_la_employee_clock_in_out as t
+left join t_employee as e on t.employee_id = e.employee_id
+left join t_employee as s on t.supervisor_nbr = s.emp_number
+left join t_employee_attribute as ea on e.emp_number = ea.id
+where actual_clock_in >= DATEADD(DAY, -6, CAST(CAST(GETDATE() AS DATE) AS DATETIME))
+--and actual_clock_in < DATEADD(HOUR, 6, CAST(CAST(GETDATE() AS DATE) AS DATETIME))
+--and work_day <= CAST(GETDATE() AS DATE)
+order by t.work_day,t.actual_clock_in
 
 
 

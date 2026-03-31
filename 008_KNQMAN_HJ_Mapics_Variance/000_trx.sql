@@ -2,9 +2,9 @@
 SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('165','851','855')
-    AND t1.item_number IN ('L317044')
-    AND t1.start_tran_date >= '2025-12-14'
+	AND t1.tran_type in ('855')
+    AND t1.item_number IN ('B916-93')
+    AND t1.start_tran_date >= '2026-03-15'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
 order by t1.item_number, t1.start_tran_date
 
@@ -13,7 +13,7 @@ SELECT tran_type,description,start_tran_date,start_tran_time,employee_id,control
 sn_coo,process,equipment_zone
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
-    AND t1.lot_number IN ('547720003921')
+    AND t1.lot_number IN ('503952904749')
     AND t1.start_tran_date >= '2025-12-14'
 order by t1.item_number, t1.start_tran_date, t1.start_tran_time
 

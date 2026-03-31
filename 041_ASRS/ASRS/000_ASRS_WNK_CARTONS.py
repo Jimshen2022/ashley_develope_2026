@@ -7,7 +7,7 @@ import win32com.client as win32
 from tabulate import tabulate
 
 # 数据库连接参数 / Database Connection Parameters
-CONNECTION_STRING = 'DSN=WFVNPROD;UID=JIMSHEN;PWD=MJ2089'
+CONNECTION_STRING = 'DSN=WFVNPROD;UID=JIMSHEN;PWD=MJ2090'
 
 # SQL查询语句 / SQL Query
 SQL_QUERY = """

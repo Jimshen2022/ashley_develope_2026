@@ -208,8 +208,10 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Ecommerce In
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Billable Volume%'
 
 
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Units_BED%' order by tpkRowCount DESC
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Activity_Desc%'
 SELECT top 10  *  FROM Distribution_Wrk.InvoicedUnitsDetails
+
+
 
 
 
@@ -243,6 +245,13 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
+
+
+
+Select top 10 * from CostAccounting_Enh.DC_LaborRollups_BaseData
+Select top 10 * from PowerBI_Finance.DC_LaborRollups_BaseData
+Select top 10 * from PowerBI_Finance.DC_LaborRollups_RunChartData
+Select top 10 * from CostAccounting.DC_LaborRollups_CalculatedData
 
 
 
