@@ -4,7 +4,7 @@
 select top 10 * FROM Manufacturing_Maximo.Po as t WHERE siteid = 'VNM.ASPM'
 
 
-select top 10 * from Manufacturing_Maximo.Po  WHERE ponum = 'PF001194'
+select top 10 * from Manufacturing_Maximo.poline  WHERE ponum = 'PF001194'
 
 select top 10 * from Manufacturing_Maximo.Matrectrans where ponum = 'PF001194'
 
@@ -46,6 +46,11 @@ ORDER BY t.ponum;
 
 */
 
+select top 10 * from Manufacturing_Maximo.poline where itemnum = '112-6675' and siteid = 'VNM.ASPM'
+select top 10 * from Manufacturing_Maximo.inventory where itemnum = '112-6675' and siteid = 'VNM.ASPM'
+where itemnum = '112-6675' and siteid = 'VNM.ASPM'
+
+
 -- 相同的ponum, 保留 statusdate 最大的那行
 SELECT 
     ponum,
@@ -74,11 +79,11 @@ FROM (
     FROM Manufacturing_Maximo.Po as t 
     WHERE siteid = 'VNM.ASPM'
 ) as ranked
-WHERE rn = 1 and 
+WHERE rn = 1 
 
 
 -- PO query
-select t.ponum,
+select top 10 t.ponum,
 	t.purchaseagent,
 	t.description,
 	t.orderdate,

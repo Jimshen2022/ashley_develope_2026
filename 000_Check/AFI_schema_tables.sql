@@ -1,5 +1,6 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_export%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%'
+SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_%' group by table_name
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%KVI%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
@@ -7,9 +8,19 @@ select * from t_la_team_cico
 select * from t_la_employee_clock_in_out
 select * from INC0644370_t_la_employee_clock_in_out_bkp
 
-
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
 */
 
+
+select top 100 * from t_during_move_log
+select top 100 * from t_equipment_attributes
+select top 100 * from t_equipment_attributes
+select top 100 * from t_equipment_check_log
+select top 100 * from t_ya_equipment_attributes
+select top 100 * from t_ya_equipment_attributes
+select top 100 * from t_ya_equipment_check_log
+
+select top 100 * from t_employee as e
 select top 100 * from t_employee as e
 select top 100 * from t_department as e
 select top 10000 * from t_shift as e

@@ -49,5 +49,6 @@ LEFT JOIN uc on uc.itemnum = t1.itemnum
 WHERE t1.location LIKE 'MROSTORE%'
     AND t1.curbal > 0
     AND t1.siteid = 'VNM.ASPM'
+	and t1.itemnum = '112-6675'
 ORDER BY t1.itemnum
 
