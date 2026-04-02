@@ -26,5 +26,5 @@ left join t_department as d on e.dept = d.department
 left join t_group as g on e.group_nbr = g.group_nbr
 left join t_la_schedule as s on g.schedule_id = s.schedule_id
 left join t_employee_attribute as ea on e.emp_number = ea.id
-where e.status = 'A' 
+where e.status = 'A' and e.emp_number in ('50885','50807')
 order by e.emp_number

@@ -11,6 +11,14 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
 */
 
+select * from t_item_master where item_number = 'EB3660-113'
+select * from t_item_uom where item_number = 'EB3660-113'
+select * from t_location where location_id = 'A3015JQ1'
+select * from t_supervisor 
+select * from t_employee where name like '%NGO HAI BAC%' 
+
+
+
 
 select top 100 * from t_during_move_log
 select top 100 * from t_equipment_attributes

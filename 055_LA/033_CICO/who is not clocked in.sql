@@ -1,4 +1,16 @@
-﻿
+﻿-- who is clocked in report
+select e.emp_number, e.name as employee_name, s.name as supervisor_name, t.*,
+	ea.la_send_data, ea.la_cico_required
+from t_la_employee_clock_in_out as t
+left join t_employee as e on t.employee_id = e.employee_id
+left join t_employee as s on t.supervisor_nbr = s.emp_number
+left join t_employee_attribute as ea on e.emp_number = ea.id
+where actual_clock_out is null
+order by t.work_day,t.actual_clock_in
+
+
+
+
 --- last 7 days clock in record history
 select e.emp_number, e.name as employee_name, s.name as supervisor_name, t.*,
 	ea.la_send_data, ea.la_cico_required
@@ -7,7 +19,7 @@ left join t_employee as e on t.employee_id = e.employee_id
 left join t_employee as s on t.supervisor_nbr = s.emp_number
 left join t_employee_attribute as ea on e.emp_number = ea.id
 where actual_clock_in >= DATEADD(DAY, -6, CAST(CAST(GETDATE() AS DATE) AS DATETIME))
-and t.employee_id='1001817' 
+--and t.employee_id='1001817' 
 --and cico_key = '174200'
 order by t.work_day,t.actual_clock_in
 
@@ -37,15 +49,7 @@ WHERE employee_id='1002510' AND cico_key in ('1000008815' ,'1000008799','1000008
 
 select top 10 * from t_la_process_report
 
--- who is clocked in report
-select e.emp_number, e.name as employee_name, s.name as supervisor_name, t.*,
-	ea.la_send_data, ea.la_cico_required
-from t_la_employee_clock_in_out as t
-left join t_employee as e on t.employee_id = e.employee_id
-left join t_employee as s on t.supervisor_nbr = s.emp_number
-left join t_employee_attribute as ea on e.emp_number = ea.id
-where actual_clock_out is null
-order by t.work_day,t.actual_clock_in
+
 
 -- employee tran log
 SELECT 
