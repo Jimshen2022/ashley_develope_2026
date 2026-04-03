@@ -9,11 +9,12 @@ SELECT
     curr.employee_id,
     e.name AS employee_name,
     curr.check_meter,
-    curr.check_performed,
+    curr.check_performed,   
     
     -- 下一次check的信息
     next_rec.equipment_check_log_id    AS next_equipment_check_log_id,
     next_rec.employee_id               AS next_employee_id,
+    f.name AS next_employee_name,
     next_rec.check_meter               AS next_check_meter,
     next_rec.check_performed           AS next_check_performed,
     
@@ -22,9 +23,11 @@ SELECT
     
     -- 判断列
     CASE 
-        WHEN next_rec.check_meter - curr.check_meter >= 0 THEN 'OK'
-        WHEN next_rec.check_meter - curr.check_meter < 0  THEN 'PIV check issue'
-        ELSE NULL
+        when next_rec.check_performed is null and CAST(curr.check_performed AS DATE) IN (CAST(GETDATE() AS DATE), DATEADD(DAY, -1, CAST(GETDATE() AS DATE))) then 'equipment is working'
+        when next_rec.check_performed is null and DATEDIFF(DAY, CAST(curr.check_performed AS DATE), CAST(GETDATE() AS DATE)) > 2  then 'equipment cannot work?'
+
+        WHEN next_rec.check_meter - curr.check_meter >= 0 and next_rec.check_meter - curr.check_meter <= 10 THEN 'OK'
+        ELSE 'PIV check issue'
     END AS meter_check_status
 
 FROM (
@@ -80,5 +83,6 @@ OUTER APPLY (
     ORDER BY dedup.check_performed ASC
 ) AS next_rec
 left join (select * from Distribution_Warehouse_Wholesale.employee where wh_id = '335') as e on curr.employee_id = e.emp_number
+left join (select * from Distribution_Warehouse_Wholesale.employee where wh_id = '335') as f on next_rec.employee_id = f.emp_number
 ORDER BY curr.equipment_id, curr.check_performed;
 

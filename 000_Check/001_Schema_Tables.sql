@@ -358,7 +358,7 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%PurchaseOrde
 -- maximo asset tables
 SELECT * FROM dw_developer.tabledictionary WHERE tpktablename LIKE '%asset%' ORDER BY tpkRowCount DESC
 Select top 10 * from Manufacturing_Maximo.asset where description like '%batt%'
-Select top 10000 * from Manufacturing_Maximo.asset where siteid = 'VNM.ASPM' and  order by assetnum
+Select top 10000 * from Manufacturing_Maximo.asset where siteid = 'VNM.ASPM'  order by assetnum
 Select top 10000 * from Manufacturing_Maximo.asset where siteid = 'VNM.ASPM' and assetnum LIKE 'VB%' order by assetnum
 
 

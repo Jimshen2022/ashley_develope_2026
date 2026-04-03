@@ -82,6 +82,8 @@ SELECT
     i.std_hand_qty,
     i.pallet_id,
     case 
+        when i.class_id = 'RUGS' then 'Rugs'
+        when i.class_id = 'FLOOR' then 'Bulk'
         when i.pallet_id = 1 then '5x5'
         when i.pallet_id = 3 then '5x7'
         when i.pallet_id = 4 then '3.5x5'

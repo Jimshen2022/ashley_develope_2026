@@ -1,5 +1,5 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_%zone%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_%' group by table_name
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%KVI%'
 select * from t_la_employee_clock_in_out_detail
@@ -16,6 +16,9 @@ select * from t_item_uom where item_number = 'EB3660-113'
 select * from t_location where location_id = 'A3015JQ1'
 select * from t_supervisor 
 select * from t_employee where name like '%NGO HAI BAC%' 
+select * from t_la_schedule 
+select * from t_lunch 
+select * from t_equipment_check_log 
 
 
 
