@@ -20,6 +20,12 @@ select * from t_la_schedule
 select * from t_lunch 
 select * from t_equipment_check_log 
 
+-- rugs stock
+select location_id, item_number, sum(actual_qty) as onhand 
+from t_stored_item 
+where item_number not like 'R%' and location_id like 'A3018%1'
+group by location_id,item_number
+
 
 
 
