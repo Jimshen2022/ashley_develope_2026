@@ -245,6 +245,9 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
+
+
+
 select top 10 * from AtScale_Inventory.DimPurchasingWeeklyPlanSummaryDetails
 
 
