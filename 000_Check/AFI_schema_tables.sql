@@ -1,7 +1,7 @@
 ﻿/*
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_%zone%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_%' group by table_name
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%KVI%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%equipment_id%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -11,16 +11,29 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
 */
 
-select 
+ 
 
+select * from t_item_master 
 select * from t_item_master where item_number = 'EB3660-113'
 select * from t_item_uom where item_number = 'EB3660-113'
 select * from t_location where location_id = 'A3015JQ1'
 select * from t_supervisor 
 select * from t_employee where name like '%NGO HAI BAC%' 
 select * from t_la_schedule 
+select * from t_during_move_log 
 select * from t_lunch 
-select * from t_equipment_check_log 
+
+-- PIV check
+select * from t_location where location_id IN ('VS720','VS787','VSJIM5')
+select * from t_equipment_attributes where equipment_id  LIKE 'VS%'
+select * from t_equipment_attributes where equipment_id  IN ('VSJIM5','VS787')
+select * from t_equipment_check_log where equipment_id  IN ('VSJIM5') 
+select * from t_equipment_check_log where equipment_id  IN ('VS787','VSJIM5')  and check_performed >= '2026-04-01' order by check_performed desc
+select * from t_equipment_check_log where equipment_id = 'VS720' and check_performed >= '2026-04-01' order by check_performed desc
+select * from t_equipment_check_log where equipment_id = 'VS787' and check_performed >= '2026-04-01' order by check_performed desc
+select * from t_equipment_check_log where equipment_id = 'VSJIM5' and check_performed >= '2026-04-01' order by check_performed desc
+
+
 
 -- rugs stock
 select location_id, item_number, sum(actual_qty) as onhand 
