@@ -208,7 +208,7 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Ecommerce In
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%equipment%log%'
 
 
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Activity_Desc%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Avg%DF%%'
 SELECT top 10  *  FROM Distribution_Wrk.InvoicedUnitsDetails
 
 
@@ -244,6 +244,8 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+
+select top 10 * from AtScale_Inventory.DimPurchasingWeeklyPlanSummaryDetails
 
 
 Select  * from Distribution_Warehouse_Wholesale.EquipmentCheckLog where wh_id = '335' and equipment_id like 'VS801%' and check_performed >= '2026-03-15' order by equipment_id, check_performed;
