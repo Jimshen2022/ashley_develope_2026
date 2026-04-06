@@ -196,6 +196,7 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%ITEMBL%'  o
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ATOFILEATOFILE%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%excep%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%tranLog%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%equipment%check%log%'  order by tpkRowCount DESC
 
 
 select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccounting_Enh%'  order by tpkRowCount DESC
@@ -205,10 +206,10 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccount
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%PurchaseOrderPcs%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Ecommerce Invoicing%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%equipment%log%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%equipment%log%'
 
 
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Avg%DF%%'
+
 SELECT top 10  *  FROM Distribution_Wrk.InvoicedUnitsDetails
 
 

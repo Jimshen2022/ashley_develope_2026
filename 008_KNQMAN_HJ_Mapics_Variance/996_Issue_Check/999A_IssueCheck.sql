@@ -11,15 +11,21 @@ select top 10 * from t_order_detail
 select top 10 * from t_order_detail_breakdown
 
 
+-- trx
 select top 10 * from t_tran_log where start_tran_date = cast(getdate() as date)  order by start_tran_date desc, start_tran_time desc
 
--- sn query
+
+
+
+-- serial number active
+select top 10 * from t_serial_active where po_number = '8379393' 
+
 
 SELECT * 
 FROM t_tran_log AS t3                  
 WHERE
-    -- t3.item_number = 'A8010281'
-    t3.lot_number in ('503952904749')
+    t3.item_number = '32262'
+    --t3.lot_number in ('503952904749')
 order by t3.lot_number, t3.start_tran_date desc, t3.start_tran_time desc
 
 

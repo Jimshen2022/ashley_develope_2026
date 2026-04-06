@@ -46,7 +46,7 @@ group by location_id,item_number
 
 select top 100 * from t_during_move_log
 select top 100 * from t_equipment_attributes
-select top 100 * from t_equipment_attributes
+select  * from t_equipment_attributes
 select top 100 * from t_equipment_check_log
 select top 100 * from t_ya_equipment_attributes
 select top 100 * from t_ya_equipment_attributes
