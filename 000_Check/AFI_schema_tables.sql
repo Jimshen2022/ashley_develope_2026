@@ -1,7 +1,7 @@
 ﻿/*
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_%zone%'
-SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_%' group by table_name
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%equipment_id%'
+SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%dispatch%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -22,6 +22,54 @@ select * from t_employee where name like '%NGO HAI BAC%'
 select * from t_la_schedule 
 select * from t_during_move_log 
 select * from t_lunch 
+select * from t_order
+select * from t_order_detail
+select * from t_order_c_number
+
+
+
+-- order:
+select top 10 * from t_order_detail_breakdown where item_number = 'D954-50'
+select * from t_order_detail_breakdown where item_number = 'D954-50'
+select * from t_load_dispatch 
+
+
+-- by item demand
+SELECT 
+    orb.item_number,
+    orb.order_number,
+    ldm.dispatch_date,
+    ldm.dispatch_time,
+    SUM(orb.qty) AS qty
+FROM t_order_detail_breakdown AS orb (NOLOCK)
+JOIN t_order AS orm (NOLOCK)
+    ON orb.order_number = orm.order_number
+    AND orb.wh_id = orm.wh_id
+JOIN t_load_master AS ldm (NOLOCK)
+    ON ldm.load_id = orm.load_id
+    AND ldm.wh_id = orm.wh_id
+LEFT JOIN t_load_dispatch AS ldd (NOLOCK)
+    ON ldd.load_id = ldm.load_id
+    AND ldd.wh_id = ldm.wh_id
+WHERE orb.item_number = 'D954-50'
+    --AND ldm.load_type = 'B'                          -- 只取可计费 trip
+    AND ldm.status NOT IN ('S', 'X', 'C')            -- 排除已发运/取消/完成
+    --AND ldm.dispatch_date >= CONVERT(DATE, GETDATE()) -- 只取今天及以后的调度
+GROUP BY 
+    orb.item_number,
+    orb.order_number,
+    ldm.dispatch_date,
+    ldm.dispatch_time
+ORDER BY ldm.dispatch_date, ldm.dispatch_time
+
+
+select item_number, po_number, serial_no_status, count(serial_number) as qty 
+from t_serial_active 
+where item_number = 'D954-50' 
+    and serial_no_status not in ('O', 'S','L')
+group by item_number, po_number, serial_no_status
+
+
 
 -- PIV check
 select * from t_location where location_id IN ('VS720','VS787','VSJIM5')
