@@ -5,7 +5,18 @@ from t_la_employee_clock_in_out as t
 left join t_employee as e on t.employee_id = e.employee_id
 left join t_employee as s on t.supervisor_nbr = s.emp_number
 left join t_employee_attribute as ea on e.emp_number = ea.id
-where actual_clock_out is null
+where actual_clock_out is null 
+order by t.work_day,t.actual_clock_in
+
+
+-- who is clocked check by employee
+select e.emp_number, e.name as employee_name, s.name as supervisor_name, t.*,
+	ea.la_send_data, ea.la_cico_required
+from t_la_employee_clock_in_out as t
+left join t_employee as e on t.employee_id = e.employee_id
+left join t_employee as s on t.supervisor_nbr = s.emp_number
+left join t_employee_attribute as ea on e.emp_number = ea.id
+where e.emp_number in ('50290')
 order by t.work_day,t.actual_clock_in
 
 
