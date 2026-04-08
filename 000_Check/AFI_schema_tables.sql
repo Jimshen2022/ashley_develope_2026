@@ -1,7 +1,7 @@
 ﻿/*
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_%zone%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%dispatch%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMNS LIKE '%CROSS%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -9,9 +9,15 @@ select * from t_la_employee_clock_in_out
 select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE 'description'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
 */
 
- 
+ select * from t_location where location_id like 'S2%'
+
+ -- crossdock profile
+ select * from t_xdock_profile_detail 
+ select * from t_xdock_tran_type order by wh_id
 
 select * from t_item_master 
 select * from t_item_master where item_number = 'EB3660-113'
