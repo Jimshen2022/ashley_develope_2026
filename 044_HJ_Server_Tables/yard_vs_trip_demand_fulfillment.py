@@ -51,45 +51,63 @@ def get_demand_data(conn):
     # 这里我们直接查询 t_load_master 和 t_order_detail_breakdown
 
     demand_sql = """
-                 WITH TripDemand AS (SELECT ldm.dispatch_date, \
-                                            orb.item_number, \
-                                            ldm.load_id               AS trip_number, \
-                                            ldm.status                AS ldm_status, \
-                                            SUM(orb.qty)              AS trip_needed, \
-                                            ISNULL(pkd.picked_qty, 0) AS trip_picked \
-                                     FROM t_load_master ldm WITH (NOLOCK) \
-                                              JOIN \
-                                          t_order orm WITH (NOLOCK) \
-                                          ON ldm.load_id = orm.load_id AND ldm.wh_id = orm.wh_id \
-                                              JOIN \
-                                          t_order_detail_breakdown orb WITH (NOLOCK) \
-                                          ON orm.order_number = orb.order_number AND orm.wh_id = orb.wh_id \
-                                              LEFT JOIN \
-                                          (SELECT load_id, item_number, SUM(picked_quantity) as picked_qty \
-                                           FROM t_pick_detail WITH (NOLOCK) \
-                                           WHERE wh_id = '335' \
-                                           GROUP BY load_id, item_number) pkd \
-                                          ON ldm.load_id = pkd.load_id AND orb.item_number = pkd.item_number \
-                                     WHERE ldm.wh_id = '335'                   -- Ashton \
-                                       AND ldm.dispatch_date BETWEEN GETDATE() AND DATEADD(day, 10, GETDATE()) \
-                                       AND ldm.status NOT IN ('S', 'X', 'C') -- 未发运、未取消 \
-                                       AND ldm.load_type = 'B'               -- Billable loads \
-                                     GROUP BY ldm.dispatch_date, \
-                                              orb.item_number, \
-                                              ldm.load_id, \
-                                              ldm.status, \
-                                              pkd.picked_qty)
-                 SELECT dispatch_date, \
-                        item_number, \
-                        trip_number, \
-                        ldm_status, \
-                        trip_needed, \
-                        trip_picked, \
-                        (trip_needed - trip_picked) AS trip_demand_qty
-                 FROM TripDemand
-                 WHERE (trip_needed - trip_picked) > 0 -- 只关心还有需求未满足的
-                 ORDER BY dispatch_date, \
-                          trip_number; \
+                WITH TripDemand AS (
+                    SELECT
+                        DATEADD(SECOND, DATEDIFF(SECOND, 0, ldm.dispatch_time), ldm.dispatch_date) AS dispatch_date,
+                        orb.item_number,
+                        ldm.load_id AS trip_number,
+                        ldm.status AS ldm_status,
+                        SUM(orb.qty) AS trip_needed,
+                        ISNULL(pkd.picked_qty, 0) AS trip_picked
+                    FROM t_load_master ldm WITH (NOLOCK)
+                    JOIN t_order orm WITH (NOLOCK)
+                        ON ldm.load_id = orm.load_id
+                        AND ldm.wh_id = orm.wh_id
+                    JOIN t_order_detail_breakdown orb WITH (NOLOCK)
+                        ON orm.order_number = orb.order_number
+                        AND orm.wh_id = orb.wh_id
+                    LEFT JOIN (
+                        SELECT
+                            LEFT(load_id,7) as load_id,
+                            item_number,
+                            SUM(picked_quantity) AS picked_qty
+                        FROM t_pick_detail WITH (NOLOCK)
+                        WHERE picked_quantity > 0
+                          AND load_id IS NOT NULL
+                        GROUP BY
+                            load_id,
+                            item_number
+                    ) pkd
+                        ON ldm.load_id = pkd.load_id
+                        AND orb.item_number = pkd.item_number
+                    WHERE ldm.wh_id = '335'
+                      AND DATEADD(SECOND, DATEDIFF(SECOND, 0, ldm.dispatch_time), ldm.dispatch_date)
+                            >= DATEADD(MONTH, -1, GETDATE())
+                      AND DATEADD(SECOND, DATEDIFF(SECOND, 0, ldm.dispatch_time), ldm.dispatch_date)
+                            < DATEADD(DAY, 1, CAST(DATEADD(MONTH, 1, GETDATE()) AS DATE))
+                      AND ldm.status NOT IN ('S', 'X', 'C')
+                      AND ldm.load_type = 'B'
+                    GROUP BY
+                        DATEADD(SECOND, DATEDIFF(SECOND, 0, ldm.dispatch_time), ldm.dispatch_date),
+                        orb.item_number,
+                        ldm.load_id,
+                        ldm.status,
+                        pkd.picked_qty
+                )                
+                SELECT
+                    dispatch_date,
+                    item_number,
+                    trip_number,
+                    ldm_status,
+                    trip_needed,
+                    trip_picked,
+                    (trip_needed - trip_picked) AS trip_demand_qty
+                FROM TripDemand
+                WHERE (trip_needed - trip_picked) > 0
+                ORDER BY
+                    item_number,
+                    dispatch_date,
+                    trip_number      
                  """
     try:
         demand_df = pd.read_sql(demand_sql, conn)
@@ -105,21 +123,22 @@ def get_supply_data(conn):
     print("正在抓取Yard中的供应数据...")
 
     supply_sql = """
-                 SELECT trl.equipment_id AS container_number, \
-                        ad.item_number, \
-                        ad.qty           AS unreceived_qty, \
+                    SELECT
+                        trl.equipment_id AS container_number,
+                        ad.item_number,
+                        ad.quantity_shipped - ad.quantity_received AS unreceived_qty,
                         trl.entered_yard AS check_into_yard_time
-                 FROM t_trailer trl WITH (NOLOCK) \
-                          JOIN \
-                      t_trailer_asn tasn WITH (NOLOCK) ON trl.trailer_id = tasn.trailer_id AND trl.wh_id = tasn.wh_id \
-                          JOIN \
-                      t_asn a WITH (NOLOCK) ON tasn.asn_id = a.asn_id AND tasn.wh_id = a.wh_id \
-                          JOIN \
-                      t_asn_detail ad WITH (NOLOCK) ON a.asn_id = ad.asn_id AND a.wh_id = ad.wh_id
-                 WHERE trl.wh_id = '335' -- Ashton
-                   AND trl.status = 'IN YARD'
-                   AND a.status NOT IN ('RECEIVED', 'CANCELLED')
-                 ORDER BY trl.entered_yard; \
+                    FROM t_trailer trl WITH (NOLOCK)
+                    JOIN t_trailer_asn tasn WITH (NOLOCK)
+                        ON trl.trailer_id = tasn.trailer_id
+                    JOIN t_asn a WITH (NOLOCK)
+                        ON tasn.asn_id = a.asn_id
+                    JOIN t_asn_detail ad WITH (NOLOCK)
+                        ON a.asn_id = ad.asn_id
+                    WHERE
+                    --trl.status = 'IN YARD'
+                       a.status IN ('CHECKED IN')
+                    ORDER BY trl.entered_yard
                  """
     try:
         supply_df = pd.read_sql(supply_sql, conn)

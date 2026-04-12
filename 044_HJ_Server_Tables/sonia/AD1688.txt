@@ -1,0 +1,310 @@
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/********************************************************************************
+ *    Company			: Ashley Furniture Industries								
+ *    System   			: HighJump  		 
+ *    Module			: Dashboard - Load Summary 									
+ *    Procedure			: usp_load_summary 					  
+ *    Author			: Angela Brown
+ *    Date				: 09/29/09 
+ *	  Version			: 1.2					
+ *    Description		: This procedure is used to run page 1688 Load Summary in Web Wise
+ *    Modification Log  : Date 			Modified By 		Description
+ *						  02/01/10		Kevin Conan			Converted the comment header to the standard format
+ *																Added Special Shipping Instructions link
+ *						  08/27/10		Angi Brown          Added sum to uom_weight to fix subquery returning > 1 row
+ *						  12/07/10		Leo Schmidt			v1.2 Task 1174 - Streamlined query by removing UNION.  
+ *																Highlight suspended picks in red. 
+ *						  05/12/11		Angi Brown			Change order of highlights to have suspend take 1st priority
+ *                        2011-12-07	Jeson Ye			Task PV-3041 Add Column to Load Summary to Reflect Preloaded Items
+ *                        2012-01-05	Erik Easton			Updated so Preloaded Quantities on hold show
+ *                        2012-10-18	Jeson Ye			Task 0006323-0004102 HJ-WA - Stage and Load By LP
+ *						  10/11/2014	Lily Wei 			Add multi wh_id condition.  
+ *						  06.12.2015    Kevin Bever			Modified the order by to sort the order # by the first 7 and last 2 if a "-" found in position 8. 
+ *						  09.28.2015	Eric Slaby			Missing DISTINCT clause causes blank report when multiple LTC SKU's are packed to a single package (HU).
+ *																**also cleaned up comments**.
+ *						  07.03.2019    Grace Liu			for OMS load id change
+ *						  2020/02/26    Grace Liu			for 335946-correct Show Fill In Correct Trip sort include OMS order
+ *						  01-07-2022	SateeshP			PBI759559-Load Summary screen to depict dock or no loading dock
+ *					      07/28/2022    Dharani            882636-EOL - Visibility of EOL allocated serials in the ww pages
+ ********************************************************************************/
+CREATE PROCEDURE [dbo].[usp_load_summary]
+
+	@in_load_id		VARCHAR(30),
+	@in_wh_id		VARCHAR(10)
+AS
+DECLARE
+
+@v_vchLogMsg		    VARCHAR(250), 
+@v_vchSqlErrorNumber	VARCHAR(50),
+@v_nErrorNumber			INT,
+@e_GenSqlError			INT
+
+SET NOCOUNT ON
+
+	IF OBJECT_ID ('tempdb..#temp_pick ')IS NOT NULL
+	DROP TABLE #temp_pick 
+	IF OBJECT_ID ('tempdb..#temp_picked_cd')IS NOT NULL
+	DROP TABLE #temp_picked_cd
+
+-- Check for SQL Error
+    SELECT @v_vchSqlErrorNumber = @@ERROR
+    IF @v_vchSqlErrorNumber <> 0 
+    BEGIN
+        SET @v_nErrorNumber = @e_GenSqlError
+        GOTO ErrorHandler
+    END
+
+BEGIN
+
+		IF OBJECT_ID('tempdb..#palletized_order_special_handling_display') IS NOT NULL DROP TABLE #palletized_order_special_handling_display
+		CREATE TABLE #palletized_order_special_handling_display ( order_number VARCHAR(30),load_id VARCHAR(30) , ship_to_name  VARCHAR(30))
+
+
+		INSERT INTO #palletized_order_special_handling_display
+		EXEC dbo.usp_populate_palletized_order_special_handling_display
+
+SELECT
+   CASE  
+			WHEN (SELECT COUNT(0) 
+					FROM #palletized_order_special_handling_display sh 
+					WHERE sh.order_number=pkd.order_number)>0
+             THEN '{{BGCOLOR=#FFFF33}}'
+			WHEN (SELECT COUNT(*)
+					FROM t_order_detail_breakdown (nolock)
+					WHERE order_number = pkd.order_number
+					  AND wh_id = pkd.wh_id 
+					  AND item_number = pkd.item_number
+					  AND ship_status = 'SUSPEND') > 0
+             THEN '{{BGCOLOR=RED}}'
+
+		WHEN (Select count(*) from t_order_detail_comment c (nolock)
+              Where c.order_number = pkd.order_number
+              And c.line_number = pkd.line_number
+              And c.wh_id = pkd.wh_id
+              AND c.comment_text like '%COMPLETE%') > 0
+        THEN '{{BGCOLOR=PINK}}'
+        ELSE 
+        CASE WHEN (Select count(*) from t_order_c_number_comment cn (nolock),
+                   t_order_detail_breakdown odb (nolock)
+              Where odb.order_number = pkd.order_number
+              AND odb.item_number = pkd.item_number
+              AND odb.wh_id = pkd.wh_id
+              AND cn.wh_id = odb.wh_id
+              AND cn.c_number = odb.c_number
+              AND cn.order_number = odb.order_number      
+              AND cn.comment like '%COMPLETE%') > 0
+             THEN '{{BGCOLOR=PINK}}'
+             ELSE 
+             CASE WHEN (Select count(*) from t_order_c_number cn (nolock),
+                   t_order_types ot (nolock), t_order_detail_breakdown odb (nolock)
+                   Where odb.order_number = pkd.order_number
+                   AND odb.item_number = pkd.item_number
+                   AND odb.wh_id = pkd.wh_id
+                   AND cn.wh_id = odb.wh_id
+                   AND cn.c_number = odb.c_number
+                   AND cn.order_number = odb.order_number      
+                   AND (cn.order_type_1 = ot.type
+                   OR cn.order_type_2 = ot.type
+                   OR cn.order_type_3 = ot.type
+                   OR cn.order_type_4 = ot.type)
+                   AND ot.description like '%COMPLETE%') > 0
+             THEN '{{BGCOLOR=PINK}}'
+	     ELSE
+	     CASE WHEN (SELECT count(*) from t_order_detail_breakdown (nolock)
+			WHERE order_number = pkd.order_number
+			AND wh_id = pkd.wh_id 
+			AND item_number = pkd.item_number
+			AND (ship_status = 'B' or ship_status = 'BACKORDER')) > 0
+             THEN '{{BGCOLOR=ORANGE}}'
+                        ELSE
+                        CASE WHEN (SELECT count(*) from t_pick_detail (nolock)
+                                             WHERE order_number = pkd.order_number
+                                             AND wh_id = pkd.wh_id
+                                              AND item_number = pkd.item_number
+                                              AND (lot_number = pkd.lot_number OR lot_number IS NULL AND pkd.lot_number IS NULL)
+                                              AND status = 'HOLD') > 0
+              THEN '{{BGCOLOR=#66FF00}}'
+               ELSE '{{BGCOLOR=WHITE}}'
+             END
+            END
+          END
+ END
+ END AS color,
+ '1' AS sort_seq,
+pkd.load_id,
+ pkd.wh_id,
+ pkd.order_number,
+ pkd.item_number,
+ pkd.line_number,
+  pkd.uom,
+
+   CASE WHEN (select count(distinct odb.set_group)          
+       FROM t_order_detail_breakdown odb (nolock)      
+       WHERE odb.item_number=pkd.item_number              
+       AND odb.order_number=pkd.order_number            
+       AND odb.wh_id=pkd.wh_id) > 1         
+   THEN 'Multiple'     
+ELSE       
+  (select TOP 1 CONVERT(VARCHAR(10), odb.set_group)         
+          from t_order_detail_breakdown odb (nolock)
+          where odb.item_number = pkd.item_number
+          And odb.order_number = pkd.order_number
+          And odb.wh_id = pkd.wh_id
+           Order by odb.set_group)
+END AS set_group,
+
+	CASE WHEN EXISTS(SELECT 'TRUE' FROM t_order tor (NOLOCK)
+						JOIN t_order_c_number tocn (NOLOCK)
+						  ON tocn.order_number = tor.order_number
+						 AND tor.wh_id = tocn.wh_id
+						 AND tor.wh_id = pkd.wh_id
+						JOIN t_special_shipping_instructions tssi (NOLOCK)
+						  ON tssi.customer_number = tocn.customer_number
+					   WHERE tor.order_number = pkd.order_number)
+			   THEN 'Y'
+		 ELSE ''
+	END AS special_ship_inst,
+
+
+ CASE WHEN (select count(*) from t_items_on_hold
+            where item_number = pkd.item_number) > 0
+      THEN 'HOLD'
+      END AS hold,
+ (select TOP 1 CASE pick_area
+          WHEN 'UPHOLSTERY' THEN 'UPH'
+          WHEN 'CASEUPPER'  THEN 'UPPER'
+          WHEN 'CASEGOOD'   THEN 'B2CASE'
+          END AS support_pick
+   FROM t_pick_detail (nolock)
+            WHERE order_number = pkd.order_number
+               AND wh_id = pkd.wh_id 
+               AND item_number = pkd.item_number
+		AND (pick_area IN ('UPHOLSTERY','CASEUPPER')
+		or pick_area in ('CASEGOOD') and left(pick_location,2) IN ('B2'))) 
+   AS support_pick,
+  Sum(planned_quantity) AS Planned_Qty,
+  (Sum(picked_quantity) - Sum(staged_quantity)) AS picked_qty,
+  (Sum(staged_quantity) - Sum(loaded_quantity)) AS staged_qty,
+  (SELECT count(*) from t_serial_active (nolock) sna
+                        join t_hu_master (nolock) hum
+                        on sna.hu_id=hum.hu_id
+						and sna.wh_id = hum.wh_id   
+                        and hum.type='SO'
+                        join t_work_q (nolock) wkq 
+                        on wkq.pick_ref_number=hum.hu_id
+                        and wkq.location_id=hum.location_id
+						and wkq.wh_id = hum.wh_id   
+                        and wkq.work_type='58'
+                        AND wkq.work_status <> 'C'
+          WHERE (hum.load_id = pkd.load_id or hum.control_number = pkd.order_number)
+               AND hum.wh_id = pkd.wh_id 
+               AND sna.item_number = pkd.item_number
+               ) AS preloading_quantity,
+  Sum(loaded_quantity) AS loaded_qty,
+  (SELECT ISNULL((sum(planned_quantity) - sum(picked_quantity)),0) FROM t_pick_detail (nolock)
+            WHERE order_number = pkd.order_number 
+               AND wh_id = pkd.wh_id
+               AND item_number = pkd.item_number 
+               AND (lot_number = pkd.lot_number OR lot_number IS NULL AND pkd.lot_number IS NULL)
+               AND status = 'HOLD') AS needlist_qty,
+  (SELECT count(*) from t_order_detail_breakdown (nolock)
+            WHERE order_number = pkd.order_number
+               AND wh_id = pkd.wh_id 
+               AND item_number = pkd.item_number
+               AND (ship_status = 'B' or ship_status = 'BACKORDER')) AS backorder_quantity,
+lot_number,
+ (select ISNULL(cast(round(sum(odb.unit_volume),0) as int),0) 
+  from t_order_detail_breakdown odb (nolock) 
+  where odb.item_number = pkd.item_number
+        And odb.order_number = pkd.order_number
+        And odb.wh_id = pkd.wh_id) as cubes,
+(select ISNULL(uom_weight, 0) from t_item_uom uom (nolock)
+where uom.item_number = pkd.item_number
+and uom.uom = pkd.uom
+and uom.wh_id = pkd.wh_id   
+and uom in ('EA', 'CN')) as unit_weight
+,CASE
+	WHEN (SELECT Count(DISTINCT hu_id)
+		FROM   t_hu_detail hud (nolock)
+		WHERE  hud.storage_type = pkd.order_number
+				AND hud.item_number = pkd.item_number
+				AND hud.wh_id = pkd.wh_id) > 1 THEN 'Multiple'
+	ELSE (SELECT DISTINCT hu_id
+		  FROM   t_hu_detail hud(nolock)
+		  WHERE  hud.storage_type = pkd.order_number
+			AND hud.item_number = pkd.item_number
+			AND hud.wh_id = pkd.wh_id)
+END  AS LP,
+ CASE WHEN (Select count(1) from t_order_c_number_comment cn (nolock),
+                   t_order_detail_breakdown odb (nolock)
+              Where odb.order_number = pkd.order_number
+              AND odb.item_number = pkd.item_number
+              AND odb.wh_id = pkd.wh_id
+              AND cn.wh_id = odb.wh_id
+              AND cn.c_number = odb.c_number
+              AND cn.order_number = odb.order_number      
+              AND cn.comment = 'NO LOADING DOCK') > 0
+             THEN 'NO LOADING DOCK'
+             ELSE 
+			 'DOCK' END as comment
+ INTO #temp_pick 
+ FROM dbo.t_pick_detail pkd (nolock)
+ WHERE pkd.wh_id LIKE @in_wh_id
+ and pkd.load_id like @in_load_id +'%'
+ GROUP BY pkd.load_id, pkd.wh_id, pkd.line_number, pkd.order_number, pkd.item_number, lot_number, pkd.uom
+
+
+
+ 		SELECT SUM(planned_quantity) as planned_quantity,
+		pkd1.load_id, pkd1.wh_id, pkd1.line_number, pkd1.order_number, pkd1.item_number, lot_number, pkd1.uom
+		INTO #temp_picked_cd
+		FROM dbo.t_pick_detail pkd1 (NOLOCK)
+		WHERE pkd1.status='PICKED-CD'
+		and pkd1.wh_id LIKE @in_wh_id
+		and pkd1.load_id like @in_load_id +'%'
+		GROUP BY pkd1.load_id, pkd1.wh_id, pkd1.line_number, pkd1.order_number, pkd1.item_number, lot_number, pkd1.uom
+
+
+		UPDATE tpk SET picked_qty=tpk.picked_qty+tpcd.planned_quantity
+		From #temp_picked_cd tpcd inner join #temp_pick tpk
+		on tpcd.order_number=tpk.order_number
+		and tpcd.item_number=tpk.item_number
+		and tpcd.load_id =tpk.load_id
+		and tpcd.wh_id=tpk.wh_id
+		and tpcd.uom=tpk.uom
+		and tpcd.line_number=tpk.line_number
+
+
+		SELECT color, sort_seq, load_id, wh_id, order_number,  item_number, set_group, 
+	   special_ship_inst,  
+	   hold, support_pick, sum(Planned_Qty) as Planned_Qty, 
+       sum(picked_qty) as picked_qty, sum(staged_qty) as staged_qty,       
+       sum(preloading_quantity) as preloading_quantity,  
+       sum(loaded_qty) as loaded_qty,        
+       sum(needlist_qty) as needlist_qty, sum(backorder_quantity) as backorder_quantity,  lot_number,
+       cubes, substring(order_number,12,2) as drop_number, unit_weight
+		,LP,comment
+	FROM #temp_pick P
+	GROUP BY color, sort_seq, load_id, wh_id, order_number, item_number, set_group, special_ship_inst, hold,  support_pick, lot_number, cubes, unit_weight, preloading_quantity
+			,LP,comment
+	ORDER BY 
+		CASE WHEN charindex('-',order_number)>0  and charindex(':',order_number)>0 
+			THEN substring(order_number,1,charindex('-',order_number)-1) + right(order_number,len(order_number)-charindex(':',order_number))
+			ELSE order_number
+			END,
+		sort_seq, 
+		item_number  
+
+
+ErrorHandler:
+    IF @v_nErrorNumber = @e_GenSqlError
+    BEGIN      
+        SET @v_vchLogMsg = 'An unknown SQL Server Error has occurred.'
+    END
+ SET NOCOUNT OFF
+
+END
+
+RETURN

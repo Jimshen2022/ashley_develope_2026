@@ -1,5 +1,6 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_%zone%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_import%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMNS LIKE '%CROSS%'
 select * from t_la_employee_clock_in_out_detail
@@ -10,10 +11,82 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE 'description'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Acadia%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%hotload%'
 */
 
+
+
+
+ select top 10 * from t_tran_log order by start_tran_date desc, start_tran_time desc 
+
+
+-- wanek allocate
+
+
+
+select  * from t_item_allocation_hotload where mfg_date = '2026-04-11'
+select  * from t_xdock_allocation where mfg_date = '2026-04-11'
+select  * from t_item_allocation_hotload where mfg_date = '2026-04-11' and item_number = '1000608'
+select  * from t_soft_allocate_hotload 
+select  * from t_soft_allocate_hotload_log 
+select  * from t_order_detail_hotload 
+select  * from t_hotload_ATP 
+select  * from t_hotloading_stage 
+select  * from t_order_c_number_label 
+select  * from t_order_label 
+select  * from t_order_c_number_capture 
+select  * from t_view_order
+select  * from t_view_order_line 
+select  * from t_order where wh_id= '35'
+select  * from t_order_detail where wh_id= '35' and remaining_qty > 0
+select  * from t_order_detail_breakdown  where wh_id= '35' and remaining_qty > 0
+select  * from t_order_detail_comment 
+select  * from t_order_c_number 
+select  * from t_order_comment 
+select  * from t_order_mfg 
+select  * from t_hj_as400_transferorder 
+select  * from t_order_mfg_detail_breakdown 
+
+
+
+
+
+
+
+
+
+
+
+select top 10 * from t_soft_allocate_large_orders
+select top 10 * from t_soft_allocate_hotload
+select top 10 * from t_soft_allocate_hotload_log
+select top 10 * from t_eol_allocate_to_xdock_opportunity
+select top 10 * from t_eol_allocate_to_xdock_opportunity_audit_detail
+select top 10 * from t_eol_unallocate_valid_location
+select top 10 * from t_overflow_allocated_loads
+
+select * from t_item_master where item_number = '8400325'
+select * from t_item_master where item_number = '8400225'
+select * from t_item_master where item_number = '6450694'
+select * from t_item_master where item_number = '6450688'
+
  select * from t_location where location_id like 'S2%'
+ select * from t_location where location_id like 'S2%'
+
+ --WN5
+ select * from t_zone where wh_id = '36'
+ select * from t_location where location_id like 'V3001AA9%'
+ select * from t_tran_log where control_number like '%17193%' and tran_type = '347'
+
+
+
+ select *
+ from t_tran_log
+ where control_number like '%17193%'
+   and tran_type = '347'
+
 
  -- crossdock profile
  select * from t_xdock_profile_detail 

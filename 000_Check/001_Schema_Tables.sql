@@ -449,10 +449,10 @@ SELECT
     SUM(t.tran_qty) AS tran_qty 
 FROM Distribution_Warehouse_Wholesale.TranLog AS t
 WHERE t.wh_id = '335' 
-    AND t.start_tran_date > '2025-01-01'
+    AND t.start_tran_date > '2026-01-01'
     AND t.tran_type IN ('347')
     -- 过滤条件：确保包含连字符且截取后是数字格式（防止报错）
-    AND (t.control_number_2 LIKE '%89296-%' or t.control_number_2 LIKE '%90774-%' )
+    AND (t.control_number_2 LIKE '%14173-%' or t.control_number_2 LIKE '%14173-%' )
 GROUP BY 
     t.tran_type,  
     t.description, 
@@ -462,6 +462,14 @@ GROUP BY
     t.employee_id, 
     t.item_number
 
+select t.control_number_2, sum(t.tran_qty) as qty
+FROM Distribution_Warehouse_Wholesale.TranLog AS t
+WHERE t.wh_id = '335'
+    AND t.start_tran_date > '2026-01-01'
+    AND t.tran_type IN ('347')
+    AND t.item_number = 'RP ORDER'
+AND (t.control_number_2 LIKE '%14173-%' or t.control_number_2 LIKE '%14173-%' )
+group by  t.control_number_2
 
 -- Trip shipped by sn
 select top 10 * FROM Distribution_Warehouse_Wholesale.TranLog where tran_type = '347'
