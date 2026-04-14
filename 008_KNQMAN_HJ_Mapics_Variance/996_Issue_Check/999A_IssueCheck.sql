@@ -24,8 +24,8 @@ select top 10 * from t_serial_active where po_number = '8379393'
 SELECT * 
 FROM t_tran_log AS t3                  
 WHERE
-    t3.item_number = '32262'
-    --t3.lot_number in ('503952904749')
+    t3.item_number = 'R407051'
+    AND t3.location_id in ('NG001OP3')
 order by t3.lot_number, t3.start_tran_date desc, t3.start_tran_time desc
 
 
@@ -49,8 +49,8 @@ group by start_tran_date,start_tran_time, tran_type, description, item_number, l
 SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('165','851','855')
-    AND t1.item_number IN ('B916-93')
+	AND t1.tran_type in ('161','165','851','855')
+    AND t1.item_number IN ('B949-93')
     AND t1.start_tran_date >= '2026-03-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
 order by t1.item_number, t1.start_tran_date

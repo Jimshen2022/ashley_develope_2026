@@ -201,11 +201,12 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%equipment%c
 
 select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccounting_Enh%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%PowerBI_Finance%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccounting%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%serial%'  order by tpkRowCount DESC
 
 
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%PurchaseOrderPcs%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Ecommerce Invoicing%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%serial%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%equipment%log%'
 
 
@@ -246,6 +247,8 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
+-- sn check by sites
+select * from Distribution_Warehouse_Wholesale.t_serial_active where item_number = 'D954-50' AND po_number in  ('P2S3T23','P2S3T14','P2S3T20','P2TC102','P2TGQ80')
 
 
 
@@ -406,6 +409,14 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '694370110319' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '638920006379' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952704823' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010313' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+
+--R407051
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420009049' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010266' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010313' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010409' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420068949' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 
 
 

@@ -13,13 +13,15 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and colu
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE 'description'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Acadia%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%hotload%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%release%'
 */
 
 
 
 
  select top 10 * from t_tran_log order by start_tran_date desc, start_tran_time desc 
+ select top 10 * from t_tran_log_holding order by start_tran_date desc, start_tran_time desc
+ select top 100 * from t_items_on_hold_released where item_number = 'D954-50'
 
 
 -- wanek allocate
@@ -410,10 +412,12 @@ select * from t_tran_log where lot_number = '605590406108' order by start_tran_d
 select * from t_tran_log where lot_number = '503950857188' order by start_tran_date desc, start_tran_time desc
 
 
+
 -- by sn 
 select * from t_tran_log where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '605590406108' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '503950857188' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '833500834109' order by start_tran_date desc, start_tran_time desc
 
 
 -- STO
