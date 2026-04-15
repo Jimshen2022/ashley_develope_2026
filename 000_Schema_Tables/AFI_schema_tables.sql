@@ -1,5 +1,5 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%battery%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%equipment%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%work_shift%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
@@ -13,6 +13,8 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 
 select  * from t_items_on_hold
+select  * from t_location where location_id like 'VR%'
+select  * from t_equipment_class
 select top 10 * from t_lms_process_time
 
 -- Yard and transportation related tables
@@ -217,6 +219,15 @@ ORDER BY start_tran_date DESC, start_tran_time DESC
 select * from t_tran_log where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '605590406108' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '503950857188' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '503950857188' order by start_tran_date desc, start_tran_time desc
+
+-- extra sn
+select tran_type, description, cast(start_tran_date as date) as date, CONVERT(VARCHAR(8), CAST(start_tran_time AS TIME), 108) AS time,
+       control_number_2, item_number, lot_number, routing_code as container_nbr
+from t_tran_log
+where lot_number IN ('609890106976','609890106975','609890107055','609890106978','609890107214')
+    and tran_type in ('347')
+order by start_tran_date desc, start_tran_time desc
 
 
 -- STO

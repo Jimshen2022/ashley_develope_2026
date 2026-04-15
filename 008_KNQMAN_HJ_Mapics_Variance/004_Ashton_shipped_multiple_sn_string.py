@@ -46,11 +46,11 @@ WHERE wh_id = '335'
 ORDER BY start_tran_date, start_tran_time;
 """
 
-# --- Helper: 用 ="..." 格式，Excel 打开时强制显示为文本，无多余空格 ---
+# --- Helper: 在值后加制表符，让 Excel 打开 CSV 时识别为文本 ---
 def format_as_excel_text(val):
     if pd.isna(val) or str(val).lower() == 'nan' or str(val).strip() == '':
         return val
-    return f'="{val}"'
+    return f'{val}\t'
 
 def main():
     try:
