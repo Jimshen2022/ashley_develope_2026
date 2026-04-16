@@ -4,7 +4,7 @@
 WITH itm AS (
 SELECT t.STID, t.ITNBR, t.ITCLS, t.B2Z95S, t.WEGHT, s.ITMCQTY,
         (CASE WHEN t.ITCLS IN ('WPLS','PLST') THEN 'Plastic'
-            WHEN t.ITCLS ('PVN','TAB') THEN 'Unkits'
+            WHEN t.ITCLS IN ('PVN','TAB') THEN 'Unkits'
             WHEN t.ITCLS LIKE  'Z%K' THEN 'Unkits'
             WHEN t.ITCLS IN ('PVN2','QA','QB') THEN 'RAW'
             WHEN t.ITCLS = 'CHS' THEN 'RP-CGs'
