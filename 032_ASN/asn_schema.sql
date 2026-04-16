@@ -9,7 +9,8 @@ select top 10 * from t_trailer
 
 select *
 from t_tran_log
-where control_number_2 = 'P2TSH68' and tran_type in ('151','951')
+where control_number_2 = 'P2TSH68' and tran_type in ('951')
+and item_number = 'B742-36'
 
 
 select control_number, control_number_2, item_number, sum(case when tran_type = '951' then -tran_qty else tran_qty end) as tran_qty

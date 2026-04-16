@@ -11,14 +11,30 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE 'description'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%excel%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%consolidator_addr2%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%import%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%release%'
 */
 
+select  * from t_ww_release_orders
+select  * from t_items_on_hold_released
+select  * from t_order where wh_id = '35'
+select  * from t_auto_release_setup where wh_id = '35'
+select  * from t_order_release_queue where wh_id = '35'
+select  * from t_order where wh_id = '36'
+select top 10 * from t_order_c_number where wh_id = '35'
+select top 10 * from t_order_detail where wh_id = '36'
+select top 10 * from t_order_detail_breakdown where wh_id = '35'
+
+select top 10 * from t_order_c_number where wh_id = '35'
+select top 10 * from t_order_detail_hotload where wh_id = '36'
+select top 10 * from t_order_detail_audit
+select top 10 * from t_order_detail_breakdown_audit
 select top 10 * from t_import_XML
 select top 10 * from t_import_error_logs
 select top 10 * from v_xml_import_queue
+select top 10 * from t_import_WAORDER
 
 -- location creation dynamic
 select top 10 * from t_eil_xml_msg

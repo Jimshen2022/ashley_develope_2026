@@ -1,6 +1,6 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%equipment%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%work_shift%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%barcode%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%barcode%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -10,8 +10,27 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 */
 
+--   location barcode
+select location_id, location_barcode, building, type, status
+from t_location
 
 
+
+select * from t_location where location_id like '[SD]%' and building = 'A3' and location_id = 'D100'
+
+
+select top 10 * from t_item_master where item_number = 'D824-924'
+select top 10 * from t_import_XML
+select * from t_import_error_logs order by rec_created_date desc
+select top 10 * from v_xml_import_queue
+select * from v_xml_import_queue
+
+-- location creation dynamic
+select  * from t_eil_xml_msg  --- change status
+select * from t_rei_master
+select * from t_location where location_id like 'D02%'
+
+select  top 10 * from t_mdcrdc_hu_interface_detail
 select  * from t_items_on_hold
 select  * from t_location where location_id like 'VR%'
 select  * from t_equipment_class
