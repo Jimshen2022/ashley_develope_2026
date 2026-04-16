@@ -1,4 +1,86 @@
-﻿SELECT top 10 * FROM t_class_loca 
+﻿
+-- location creation dynamic
+select * from t_eil_xml_msg
+select top 10 * from t_rei_master
+select * from t_location where wh_id = '36'
+
+-- yard door location
+select * from t_ya_location where type = 'DOOR'
+select * from t_ya_zone
+select * from t_ya_zone_loca
+
+-- step1: add location
+select '335' as area_id, location_id as location_name, location_id  as description, 'DOOR' as type, 'EMPTY' as status from t_location where location_id like '[D]%' and type ='D' and location_id not in (select location_name from t_ya_location)
+
+-- step2： add zone
+select location_name as zone_name, location_name as description,  'N' as container_flag, '335' as area_id from t_ya_location where type ='DOOR' and location_name not in (select zone_name from t_ya_zone)
+
+-- step3: add zone loca
+SELECT '1' as zone_id, location_id, '335' as area_id
+FROM t_ya_zone_loca AS t0
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM t_ya_zone_loca t1
+    WHERE t1.zone_id = 1
+      AND t1.location_id = t0.location_id
+)
+AND t0.location_id IN (
+    SELECT location_id
+    FROM t_ya_location
+    WHERE type = 'DOOR'
+)
+
+
+-- add same zone into location id
+SELECT
+    z.zone_id,z.zone_name,
+    l.location_id,l.location_name,
+    l.area_id
+FROM t_ya_location AS l
+INNER JOIN t_ya_zone AS z ON z.zone_name = l.location_name
+WHERE l.location_name LIKE 'D%'
+  AND z.zone_name LIKE 'D%'
+  AND l.location_id NOT IN (
+    SELECT zl.location_id
+    FROM t_ya_zone_loca AS zl
+    WHERE zl.zone_id = z.zone_id
+)
+
+SELECT DISTINCT zl2.location_id as zone_id, zl.location_id,'335' as area_id
+FROM t_ya_zone_loca zl INNER JOIN t_ya_location l ON l.location_id = zl.location_id WHERE NOT EXISTS (SELECT 1
+FROM t_ya_zone_loca zl2 INNER JOIN t_ya_zone z ON z.zone_id = zl2.zone_id WHERE zl2.location_id = zl.location_id AND l.location_name = z.zone_name)
+
+
+SELECT l.location_id
+FROM t_ya_location l
+WHERE l.type = 'DOOR'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM t_ya_zone_loca zl
+    WHERE zl.location_id = l.location_id
+      AND zl.zone_id = 1
+)
+
+
+
+SELECT DISTINCT zl.location_id,
+       l.location_name
+FROM t_ya_zone_loca zl
+INNER JOIN t_ya_location l ON l.location_id = zl.location_id
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM t_ya_zone_loca zl2
+    INNER JOIN t_ya_zone z ON z.zone_id = zl2.zone_id
+    WHERE zl2.location_id = zl.location_id
+      AND l.location_name = z.zone_name
+)
+
+-- location barcode query
+select location_id, location_barcode, building, type, status
+from t_location
+
+
+SELECT top 10 * FROM t_class_loca
 select top 10 *  from t_location 
 select top 1000 *  from t_exception_tran_log  where exception_date > '2025-11-02' and item_number = '1850743'
 select * from t_serial_active  as t where t.item_number = '1850743'	and t.serial_no_status not in ('S','O') order by t.received_date desc

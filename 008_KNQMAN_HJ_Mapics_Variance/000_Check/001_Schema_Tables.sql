@@ -195,7 +195,7 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%InvoiceDeta
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ITEMBL%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%ATOFILEATOFILE%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%excep%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%tranLog%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%HR%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%equipment%check%log%'  order by tpkRowCount DESC
 
 
@@ -204,9 +204,9 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%PowerBI_Fin
 select * from dw_developer.tabledictionary where tpktablename LIKE '%serial%'  order by tpkRowCount DESC
 
 
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%EMP%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Ecommerce Invoicing%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%serial%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%HR%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%equipment%log%'
 
 

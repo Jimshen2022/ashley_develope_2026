@@ -11,11 +11,21 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE 'description'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%consolidator_addr2%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%zone$name%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%import%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%release%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%zone%'
 */
+
+-- menu
+select * from t_process_department
+select top 10 * from t_current_menu_option
+select top 10 * from t_menu
+select * from t_menu
+select top 10 * from t_menu_pick_method
+select top 10 * from t_ya_zone_loca
+
+
 
 select  * from t_ww_release_orders
 select  * from t_items_on_hold_released
