@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>托盘堆码 3D 可视化（无自转 + 可输入）</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<style>
+  :root{
+    --bg1:#5b7cfa; --bg2:#8a53f6; --card:#fff; --muted:#6b7280;
+    --accent:#10b981; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,Roboto,Arial;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#0f172a}
+  .shell{max-width:1400px;margin:28px auto;padding:0 18px}
+  .wrap{background:var(--card);border-radius:18px;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,.22)}
+  header{padding:18px 22px;color:#fff;background:linear-gradient(135deg,#10b981,#059669)}
+  header h1{margin:0;font-size:20px}
+  .grid{display:grid;grid-template-columns:350px 1fr;min-height:760px}
+  .left{border-right:1px solid var(--line);background:#fbfbfc;padding:14px;display:flex;flex-direction:column;gap:12px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
+  .panel h3{margin:0 0 10px;font-size:14px}
+  .row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+  .row .field{display:flex;flex-direction:column;gap:6px}
+  .row .field label{font-size:12px;color:#334155}
+  input[type=number]{width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:14px}
+  .actions{display:flex;gap:8px;margin-top:8px}
+  .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:14px}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.ghost{background:#f8fafc}
+  .kv{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .kv div{background:#f9fafb;border:1px dashed #d1d5db;padding:10px;border-radius:10px;font-size:13px}
+  .toggle{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:#334155}
+  .canvas{position:relative;background:linear-gradient(180deg,#eef2ff,#e0e7ff)}
+  #stage{width:100%;height:100%;min-height:760px;display:block}
+  .hud{position:absolute;left:14px;top:14px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:250px;box-shadow:0 10px 24px rgba(0,0,0,.1);backdrop-filter:saturate(140%) blur(6px);font-size:13px}
+  .hud h4{margin:0 0 4px;font-size:14px}
+  table{width:100%;border-collapse:separate;border-spacing:0 6px;margin-top:6px;font-size:13px}
+  th,td{padding:8px 10px;background:#fff;border:1px solid var(--line)}
+  th{background:#f1f5f9;color:#334155}
+  tr.best td{background:#ecfdf5;border-color:#86efac}
+  tr:hover td{filter:brightness(0.98)}
+  @media (max-width:1100px){.grid{grid-template-columns:1fr}.left{border-right:none;border-bottom:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="wrap">
+    <header><h1>托盘堆码 3D 可视化（无自转）</h1></header>
+
+    <div class="grid">
+      <!-- 左侧控制 -->
+      <aside class="left">
+        <div class="panel">
+          <h3>输入参数（单位：英寸）</h3>
+          <div class="row">
+            <div class="field"><label>托盘 长 (L)</label><input id="palletL" type="number" step="0.1" value="84"></div>
+            <div class="field"><label>托盘 宽 (W)</label><input id="palletW" type="number" step="0.1" value="60"></div>
+            <div class="field"><label>限高 (Hlimit)</label><input id="limitH" type="number" step="0.1" value="66.9"></div>
+            <div class="field"><label>产品 长 (L)</label><input id="cargoL" type="number" step="0.1" value="40"></div>
+            <div class="field"><label>产品 宽 (W)</label><input id="cargoW" type="number" step="0.1" value="30"></div>
+            <div class="field"><label>产品 高 (H)</label><input id="cargoH" type="number" step="0.1" value="20"></div>
+          </div>
+          <label class="toggle"><input id="brickToggle" type="checkbox"> 使用砖式交错（更贴近实物，但可能略减数量）</label>
+          <div class="actions">
+            <button id="applyBtn" class="btn primary">✅ 确定并计算</button>
+            <button id="bestBtn" class="btn ghost">🔎 一键选择最佳方案</button>
+            <button id="resetCam" class="btn ghost">🎥 重置视角</button>
+          </div>
+          <div class="kv" style="margin-top:8px">
+            <div>📦 产品：<b id="descCargo">L40 × W30 × H20</b></div>
+            <div>🟩 托盘：<b id="descPallet">L84 × W60 × 限高66.9</b></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>当前方案结果</h3>
+          <div class="kv">
+            <div>NX×NY（长×宽）<br><b><span id="nx">-</span> × <span id="ny">-</span></b></div>
+            <div>每层 TI / 层数 HI / 总数<br><b><span id="ti">-</span> / <span id="hi">-</span> / <span id="total">-</span></b></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>6 种堆码方案（点击行可切换可视化）</h3>
+          <div style="max-height:320px;overflow:auto">
+            <table id="schemeTable">
+              <thead><tr>
+                <th>方向</th><th>映射</th><th>NX</th><th>NY</th><th>TI</th><th>HI</th><th>总数</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 右侧画布 -->
+      <section class="canvas">
+        <canvas id="stage"></canvas>
+        <div class="hud">
+          <h4 id="hudTitle">方向 1：L→长，W→宽，H→高</h4>
+          <div id="mapText" style="color:#64748b">40"→84"方向，30"→60"方向，20"→高度</div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== 基础参数与状态 ===== */
+let cargo = { L:40, W:30, H:20 };
+let pallet = { L:84, W:60 };
+let heightLimit = 66.9;
+const scale = 0.02;          // 显示缩放
+const visualShrink = 0.98;   // 视觉留缝（不影响计算）
+let useBrickPattern = false; // 交错默认关闭（更利于“看清楚”）
+let currentIdx = 0;
+
+/* 6 种方向定义：X=托盘长向，Z=托盘宽向，Y=高度 */
+const ORIS = [
+  { title:'方向 1：L→长，W→宽，H→高', map:['L','W','H'] },
+  { title:'方向 2：L→长，H→宽，W→高', map:['L','H','W'] },
+  { title:'方向 3：W→长，L→宽，H→高', map:['W','L','H'] },
+  { title:'方向 4：W→长，H→宽，L→高', map:['W','H','L'] },
+  { title:'方向 5：H→长，L→宽，W→高', map:['H','L','W'] },
+  { title:'方向 6：H→长，W→宽，L→高', map:['H','W','L'] },
+];
+
+/* ===== three.js 场景搭建（无自转） ===== */
+const stage = document.getElementById('stage');
+let scene, camera, renderer, controls, palletGroup, cargoMesh;
+
+initScene();
+buildPallet();
+renderOrientation(0);
+updateSchemesTable();
+animate(); // 仅用于 OrbitControls 阻尼渲染，无任何自转
+
+function initScene(){
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xeef2ff);
+
+  camera = new THREE.PerspectiveCamera(55, stage.clientWidth / stage.clientHeight, 0.1, 100);
+  camera.position.set(6.5, 6.5, 6.5);
+
+  renderer = new THREE.WebGLRenderer({canvas: stage, antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(stage.clientWidth, stage.clientHeight, false);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 1.0, 0);
+  controls.enableDamping = true;
+
+  const hemi = new THREE.HemisphereLight(0xffffff, 0x99a7c2, 0.85);
+  scene.add(hemi);
+  const sun = new THREE.DirectionalLight(0xffffff, 0.9);
+  sun.position.set(8, 12, 6);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  scene.add(sun);
+
+  const grid = new THREE.GridHelper(20, 20, 0x93c5fd, 0xe5e7eb);
+  grid.position.y = -0.001;
+  scene.add(grid);
+
+  palletGroup = new THREE.Group();
+  scene.add(palletGroup);
+
+  window.addEventListener('resize', ()=>{
+    const w = stage.clientWidth, h = stage.clientHeight || stage.parentElement.clientHeight;
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    renderer.setSize(w, h, false);
+  });
+}
+
+function buildPallet(){
+  palletGroup.clear();
+
+  // 底座
+  const baseGeo = new THREE.BoxGeometry(pallet.L*scale, 0.20, pallet.W*scale);
+  const baseMat = new THREE.MeshStandardMaterial({ color:0x16a34a, roughness:.65, metalness:.05 });
+  const base = new THREE.Mesh(baseGeo, baseMat);
+  base.position.y = -0.10;
+  base.receiveShadow = true;
+  palletGroup.add(base);
+
+  // 边框到限高
+  const frameGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(pallet.L*scale, heightLimit*scale, pallet.W*scale));
+  const frame = new THREE.LineSegments(frameGeo, new THREE.LineBasicMaterial({ color:0x94a3b8, transparent:true, opacity:.65 }));
+  frame.position.y = (heightLimit*scale)/2;
+  palletGroup.add(frame);
+
+  // 限高平面
+  const limGeo = new THREE.PlaneGeometry(pallet.L*scale*1.06, pallet.W*scale*1.06);
+  const limMat = new THREE.MeshBasicMaterial({ color:0xef4444, transparent:true, opacity:.18, side:THREE.DoubleSide });
+  const lim = new THREE.Mesh(limGeo, limMat);
+  lim.rotation.x = -Math.PI/2;
+  lim.position.y = heightLimit*scale;
+  palletGroup.add(lim);
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+/* ===== 计算与渲染 ===== */
+function getMapped(map){
+  const d = { L:cargo.L, W:cargo.W, H:cargo.H };
+  return { x:d[map[0]], z:d[map[1]], y:d[map[2]] }; // 英寸
+}
+
+function renderOrientation(idx){
+  currentIdx = idx;
+  const o = ORIS[idx];
+  const m = getMapped(o.map);
+
+  const nx = Math.floor(pallet.L / m.x);
+  const ny = Math.floor(pallet.W / m.z);
+  const hi = Math.floor(heightLimit / m.y);
+  const ti = nx * ny;
+  const total = ti * hi;
+
+  // HUD & 指标
+  document.getElementById('hudTitle').textContent = o.title;
+  document.getElementById('mapText').textContent = `${m.x}"→${pallet.L}"方向，${m.z}"→${pallet.W}"方向，${m.y}"→高度`;
+  document.getElementById('nx').textContent = nx;
+  document.getElementById('ny').textContent = ny;
+  document.getElementById('ti').textContent = ti;
+  document.getElementById('hi').textContent = hi;
+  document.getElementById('total').textContent = total;
+
+  // 旧实例清理
+  if (cargoMesh) { scene.remove(cargoMesh); cargoMesh.geometry.dispose(); }
+
+  // 几何与材质
+  const geo = new THREE.BoxGeometry(m.x*scale*visualShrink, m.y*scale*visualShrink, m.z*scale*visualShrink);
+  const mat = new THREE.MeshStandardMaterial({ color:0xfb923c, roughness:.55, metalness:.05 });
+
+  // 如果任何一维为 0，则直接不生成
+  const maxCount = Math.max(total, 0);
+  cargoMesh = new THREE.InstancedMesh(geo, mat, maxCount || 1);
+  cargoMesh.castShadow = true; cargoMesh.receiveShadow = true;
+
+  // 位置排布（中心对齐），可选砖式交错（偶数层 X 向偏半格）
+  let id = 0;
+  if (nx>0 && ny>0 && hi>0){
+    const startX = - (pallet.L*scale)/2;
+    const startZ = - (pallet.W*scale)/2;
+    const cellX  = (pallet.L / nx) * scale;
+    const cellZ  = (pallet.W / ny) * scale;
+
+    for (let h=0; h<hi; h++){
+      const shiftX = (useBrickPattern && nx>1 && (h%2===1)) ? (cellX/2) : 0;
+      for (let ix=0; ix<nx; ix++){
+        for (let iz=0; iz<ny; iz++){
+          const cx = startX + cellX*(ix + .5) + shiftX;
+          const cz = startZ + cellZ*(iz + .5);
+          const left = cx - (m.x*scale)/2, right = cx + (m.x*scale)/2;
+          if (left < -pallet.L*scale/2 || right > pallet.L*scale/2) continue; // 交错越界剔除
+          const cy = (m.y*scale)*(h + .5);
+          cargoMesh.setMatrixAt(id++, new THREE.Matrix4().makeTranslation(cx, cy, cz));
+        }
+      }
+    }
+  }
+  cargoMesh.count = id;
+  scene.add(cargoMesh);
+}
+
+function computeAllSchemes(){
+  return ORIS.map((o, i)=>{
+    const m = getMapped(o.map);
+    const nx = Math.floor(pallet.L / m.x);
+    const ny = Math.floor(pallet.W / m.z);
+    const hi = Math.floor(heightLimit / m.y);
+    const ti = Math.max(nx,0) * Math.max(ny,0);
+    const total = ti * Math.max(hi,0);
+    return { idx:i, title:o.title, map:o.map.join('→'), dims:m, nx, ny, ti, hi, total };
+  });
+}
+
+function updateSchemesTable(){
+  const tbody = document.querySelector('#schemeTable tbody');
+  tbody.innerHTML = '';
+  const rows = computeAllSchemes();
+
+  // 找最佳
+  let best = rows.reduce((acc,r)=> r.total>acc.total? r:acc, {total:-1});
+
+  rows.forEach(r=>{
+    const tr = document.createElement('tr');
+    if (r.idx === best.idx) tr.classList.add('best');
+    tr.innerHTML = `
+      <td>${r.title.replace('方向 ','方')}</td>
+      <td>${r.map}</td>
+      <td>${r.nx}</td>
+      <td>${r.ny}</td>
+      <td>${r.ti}</td>
+      <td>${r.hi}</td>
+      <td><b>${r.total}</b>${r.idx===best.idx?' ⭐':''}</td>
+    `;
+    tr.style.cursor='pointer';
+    tr.addEventListener('click', ()=>{ renderOrientation(r.idx); });
+    tbody.appendChild(tr);
+  });
+}
+
+/* ===== 事件：确定 / 最佳 / 重置 / 交错 ===== */
+document.getElementById('applyBtn').addEventListener('click', ()=>{
+  const v = n => Math.max(parseFloat(n)||0, 0);
+  const pL = v(document.getElementById('palletL').value);
+  const pW = v(document.getElementById('palletW').value);
+  const lim = v(document.getElementById('limitH').value);
+  const cL = v(document.getElementById('cargoL').value);
+  const cW = v(document.getElementById('cargoW').value);
+  const cH = v(document.getElementById('cargoH').value);
+
+  if (!pL||!pW||!lim||!cL||!cW||!cH) { alert('请填写完整有效的尺寸（必须大于 0）'); return; }
+
+  pallet = { L:pL, W:pW };
+  heightLimit = lim;
+  cargo  = { L:cL, W:cW, H:cH };
+
+  document.getElementById('descCargo').textContent  = `L${cargo.L} × W${cargo.W} × H${cargo.H}`;
+  document.getElementById('descPallet').textContent = `L${pallet.L} × W${pallet.W} × 限高${heightLimit}`;
+
+  buildPallet();
+  renderOrientation(currentIdx);
+  updateSchemesTable();
+});
+
+document.getElementById('bestBtn').addEventListener('click', ()=>{
+  const rows = computeAllSchemes();
+  const best = rows.reduce((acc,r)=> r.total>acc.total? r:acc, {total:-1});
+  renderOrientation(best.idx);
+  updateSchemesTable();
+});
+
+document.getElementById('resetCam').addEventListener('click', ()=>{
+  camera.position.set(6.5,6.5,6.5);
+  controls.target.set(0,1.0,0);
+  controls.update();
+});
+
+document.getElementById('brickToggle').addEventListener('change', (e)=>{
+  useBrickPattern = !!e.target.checked;
+  renderOrientation(currentIdx);
+  updateSchemesTable();
+});
+</script>
+</body>
+</html>

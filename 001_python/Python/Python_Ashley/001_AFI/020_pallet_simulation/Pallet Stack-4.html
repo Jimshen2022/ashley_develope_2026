@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pallet Stacking 3D (no spin) · EN</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<style>
+  :root{
+    --bg1:#5b7cfa; --bg2:#8a53f6; --card:#fff; --muted:#6b7280;
+    --accent:#10b981; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,Roboto,Arial;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#0f172a}
+  .shell{max-width:1400px;margin:22px auto;padding:0 16px}
+  .wrap{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 14px 36px rgba(0,0,0,.22)}
+  header{padding:14px 18px;color:#fff;background:linear-gradient(135deg,#10b981,#059669)}
+  header h1{margin:0;font-size:18px}
+  .grid{display:grid;grid-template-columns:280px 1fr;min-height:720px}
+  .left{border-right:1px solid var(--line);background:#fbfbfc;padding:12px;display:flex;flex-direction:column;gap:10px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}
+  .panel h3{margin:0 0 8px;font-size:13px}
+  .form{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:11px;color:#334155}
+  input[type=number]{width:100%;padding:6px 8px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-size:13px}
+  .actions{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+  .btn{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:13px}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.ghost{background:#f8fafc}
+  .mini{font-size:12px;color:#475569;margin-top:6px}
+  .kv{display:grid;grid-template-columns:1fr;gap:6px;margin-top:6px}
+  .kv div{background:#f9fafb;border:1px dashed #d1d5db;padding:8px;border-radius:8px;font-size:12px}
+  .canvas{position:relative;background:linear-gradient(180deg,#eef2ff,#e0e7ff)}
+  #stage{width:100%;height:100%;min-height:720px;display:block}
+  .hud{position:absolute;left:12px;top:12px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:230px;box-shadow:0 10px 24px rgba(0,0,0,.1);backdrop-filter:saturate(140%) blur(6px);font-size:12px}
+  .hud h4{margin:0 0 4px;font-size:13px}
+  table{width:100%;border-collapse:separate;border-spacing:0 6px;margin-top:4px;font-size:12px}
+  th,td{padding:6px 8px;background:#fff;border:1px solid var(--line)}
+  th{background:#f1f5f9;color:#334155;position:sticky;top:0}
+  tr.best td{background:#ecfdf5;border-color:#86efac}
+  tr:hover td{filter:brightness(0.98)}
+  @media (max-width:1100px){.grid{grid-template-columns:1fr}.left{border-right:none;border-bottom:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="wrap">
+    <header><h1>Pallet Stacking 3D · No Auto-Spin</h1></header>
+
+    <div class="grid">
+      <!-- compact left panel -->
+      <aside class="left">
+        <div class="panel">
+          <h3>Inputs (inches)</h3>
+          <div class="form">
+            <div class="field"><label>Pallet L</label><input id="palletL" type="number" step="0.1" value="84"></div>
+            <div class="field"><label>Pallet W</label><input id="palletW" type="number" step="0.1" value="60"></div>
+            <div class="field"><label>Height limit</label><input id="limitH" type="number" step="0.1" value="66.9"></div>
+            <div class="field"><label>Item L</label><input id="cargoL" type="number" step="0.1" value="40"></div>
+            <div class="field"><label>Item W</label><input id="cargoW" type="number" step="0.1" value="30"></div>
+            <div class="field"><label>Item H</label><input id="cargoH" type="number" step="0.1" value="20"></div>
+          </div>
+          <label class="mini"><input id="brickToggle" type="checkbox"> Brick pattern (stagger even layers)</label>
+          <div class="actions">
+            <button id="applyBtn" class="btn primary">Apply & Calculate</button>
+            <button id="bestBtn" class="btn ghost">Pick Best</button>
+            <button id="resetCam" class="btn ghost">Reset Camera</button>
+          </div>
+          <div class="kv">
+            <div>Item: <b id="descCargo">L40 × W30 × H20</b></div>
+            <div>Pallet: <b id="descPallet">L84 × W60 × Limit 66.9</b></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Current Layout</h3>
+          <div class="kv">
+            <div>NX × NY (rows × cols): <b><span id="nx">-</span> × <span id="ny">-</span></b></div>
+            <div>Per-layer TI / Layers HI / Total: <b><span id="ti">-</span> / <span id="hi">-</span> / <span id="total">-</span></b></div>
+          </div>
+        </div>
+
+        <div class="panel" style="min-height:0">
+          <h3>6 Orientations (click to preview)</h3>
+          <div style="max-height:280px;overflow:auto">
+            <table id="schemeTable">
+              <thead><tr>
+                <th>Orientation</th><th>Mapping</th><th>NX</th><th>NY</th><th>TI</th><th>HI</th><th>Total</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </aside>
+
+      <!-- canvas -->
+      <section class="canvas">
+        <canvas id="stage"></canvas>
+        <div class="hud">
+          <h4 id="hudTitle">Ori 1: L→length, W→width, H→height</h4>
+          <div id="mapText" style="color:#64748b">40"→84" dir, 30"→60" dir, 20"→height</div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+/* -------- State & constants -------- */
+let cargo = { L:40, W:30, H:20 };
+let pallet = { L:84, W:60 };
+let heightLimit = 66.9;
+const scale = 0.02;          // visualization scale
+const visualShrink = 0.98;   // small gap for visibility (does not affect counts)
+let useBrickPattern = false; // default off for clarity
+let currentIdx = 0;
+
+/* Orientations: X = pallet length dir, Z = pallet width dir, Y = height */
+const ORIS = [
+  { title:'Ori 1: L→length, W→width, H→height', map:['L','W','H'] },
+  { title:'Ori 2: L→length, H→width,  W→height', map:['L','H','W'] },
+  { title:'Ori 3: W→length,  L→width,  H→height', map:['W','L','H'] },
+  { title:'Ori 4: W→length,  H→width,  L→height', map:['W','H','L'] },
+  { title:'Ori 5: H→length,  L→width,  W→height', map:['H','L','W'] },
+  { title:'Ori 6: H→length,  W→width,  L→height', map:['H','W','L'] },
+];
+
+/* -------- three.js scene (no auto-rotation) -------- */
+const stage = document.getElementById('stage');
+let scene, camera, renderer, controls, palletGroup, cargoMesh;
+
+initScene();
+buildPallet();
+renderOrientation(0);
+updateSchemesTable();
+animate(); // damping only
+
+function initScene(){
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xeef2ff);
+
+  camera = new THREE.PerspectiveCamera(55, stage.clientWidth / stage.clientHeight, 0.1, 100);
+  camera.position.set(6.5, 6.5, 6.5);
+
+  renderer = new THREE.WebGLRenderer({canvas: stage, antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(stage.clientWidth, stage.clientHeight, false);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 1.0, 0);
+  controls.enableDamping = true;
+
+  const hemi = new THREE.HemisphereLight(0xffffff, 0x99a7c2, 0.85);
+  scene.add(hemi);
+  const sun = new THREE.DirectionalLight(0xffffff, 0.9);
+  sun.position.set(8, 12, 6);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  scene.add(sun);
+
+  const grid = new THREE.GridHelper(20, 20, 0x93c5fd, 0xe5e7eb);
+  grid.position.y = -0.001;
+  scene.add(grid);
+
+  palletGroup = new THREE.Group();
+  scene.add(palletGroup);
+
+  window.addEventListener('resize', ()=>{
+    const w = stage.clientWidth, h = stage.clientHeight || stage.parentElement.clientHeight;
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    renderer.setSize(w, h, false);
+  });
+}
+
+function buildPallet(){
+  palletGroup.clear();
+
+  // base
+  const baseGeo = new THREE.BoxGeometry(pallet.L*scale, 0.20, pallet.W*scale);
+  const baseMat = new THREE.MeshStandardMaterial({ color:0x16a34a, roughness:.65, metalness:.05 });
+  const base = new THREE.Mesh(baseGeo, baseMat);
+  base.position.y = -0.10;
+  base.receiveShadow = true;
+  palletGroup.add(base);
+
+  // frame to height limit
+  const frameGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(pallet.L*scale, heightLimit*scale, pallet.W*scale));
+  const frame = new THREE.LineSegments(frameGeo, new THREE.LineBasicMaterial({ color:0x94a3b8, transparent:true, opacity:.65 }));
+  frame.position.y = (heightLimit*scale)/2;
+  palletGroup.add(frame);
+
+  // limit plane
+  const limGeo = new THREE.PlaneGeometry(pallet.L*scale*1.06, pallet.W*scale*1.06);
+  const limMat = new THREE.MeshBasicMaterial({ color:0xef4444, transparent:true, opacity:.18, side:THREE.DoubleSide });
+  const lim = new THREE.Mesh(limGeo, limMat);
+  lim.rotation.x = -Math.PI/2;
+  lim.position.y = heightLimit*scale;
+  palletGroup.add(lim);
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+/* -------- compute & render -------- */
+function getMapped(map){
+  const d = { L:cargo.L, W:cargo.W, H:cargo.H };
+  return { x:d[map[0]], z:d[map[1]], y:d[map[2]] }; // inches
+}
+
+function renderOrientation(idx){
+  currentIdx = idx;
+  const o = ORIS[idx];
+  const m = getMapped(o.map);
+
+  const nx = Math.floor(pallet.L / m.x);
+  const ny = Math.floor(pallet.W / m.z);
+  const hi = Math.floor(heightLimit / m.y);
+  const ti = nx * ny;
+  const total = ti * hi;
+
+  // HUD & metrics
+  document.getElementById('hudTitle').textContent = o.title;
+  document.getElementById('mapText').textContent = `${m.x}"→${pallet.L}" dir, ${m.z}"→${pallet.W}" dir, ${m.y}"→height`;
+  document.getElementById('nx').textContent = nx;
+  document.getElementById('ny').textContent = ny;
+  document.getElementById('ti').textContent = ti;
+  document.getElementById('hi').textContent = hi;
+  document.getElementById('total').textContent = total;
+
+  if (cargoMesh) { scene.remove(cargoMesh); cargoMesh.geometry.dispose(); }
+
+  const geo = new THREE.BoxGeometry(m.x*scale*visualShrink, m.y*scale*visualShrink, m.z*scale*visualShrink);
+  const mat = new THREE.MeshStandardMaterial({ color:0xfb923c, roughness:.55, metalness:.05 });
+
+  const maxCount = Math.max(total, 0);
+  cargoMesh = new THREE.InstancedMesh(geo, mat, maxCount || 1);
+  cargoMesh.castShadow = true; cargoMesh.receiveShadow = true;
+
+  let id = 0;
+  if (nx>0 && ny>0 && hi>0){
+    const startX = - (pallet.L*scale)/2;
+    const startZ = - (pallet.W*scale)/2;
+    const cellX  = (pallet.L / nx) * scale;
+    const cellZ  = (pallet.W / ny) * scale;
+
+    for (let h=0; h<hi; h++){
+      const shiftX = (useBrickPattern && nx>1 && (h%2===1)) ? (cellX/2) : 0;
+      for (let ix=0; ix<nx; ix++){
+        for (let iz=0; iz<ny; iz++){
+          const cx = startX + cellX*(ix + .5) + shiftX;
+          const cz = startZ + cellZ*(iz + .5);
+          const left = cx - (m.x*scale)/2, right = cx + (m.x*scale)/2;
+          if (left < -pallet.L*scale/2 || right > pallet.L*scale/2) continue; // keep inside
+          const cy = (m.y*scale)*(h + .5);
+          cargoMesh.setMatrixAt(id++, new THREE.Matrix4().makeTranslation(cx, cy, cz));
+        }
+      }
+    }
+  }
+  cargoMesh.count = id;
+  scene.add(cargoMesh);
+}
+
+function computeAllSchemes(){
+  return ORIS.map((o, i)=>{
+    const m = getMapped(o.map);
+    const nx = Math.floor(pallet.L / m.x);
+    const ny = Math.floor(pallet.W / m.z);
+    const hi = Math.floor(heightLimit / m.y);
+    const ti = Math.max(nx,0) * Math.max(ny,0);
+    const total = ti * Math.max(hi,0);
+    const mapStr = `${o.map[0]}→len, ${o.map[1]}→wid, ${o.map[2]}→height`;
+    return { idx:i, title:o.title, mapStr, nx, ny, ti, hi, total };
+  });
+}
+
+function updateSchemesTable(){
+  const tbody = document.querySelector('#schemeTable tbody');
+  tbody.innerHTML = '';
+  const rows = computeAllSchemes();
+  let best = rows.reduce((acc,r)=> r.total>acc.total? r:acc, {total:-1});
+
+  rows.forEach(r=>{
+    const tr = document.createElement('tr');
+    if (r.idx === best.idx) tr.classList.add('best');
+    tr.innerHTML = `
+      <td>${r.title}</td>
+      <td>${r.mapStr}</td>
+      <td>${r.nx}</td>
+      <td>${r.ny}</td>
+      <td>${r.ti}</td>
+      <td>${r.hi}</td>
+      <td><b>${r.total}</b>${r.idx===best.idx?' ⭐':''}</td>
+    `;
+    tr.style.cursor='pointer';
+    tr.addEventListener('click', ()=>{ renderOrientation(r.idx); });
+    tbody.appendChild(tr);
+  });
+}
+
+/* -------- Events -------- */
+document.getElementById('applyBtn').addEventListener('click', ()=>{
+  const v = n => Math.max(parseFloat(n)||0, 0);
+  const pL = v(document.getElementById('palletL').value);
+  const pW = v(document.getElementById('palletW').value);
+  const lim = v(document.getElementById('limitH').value);
+  const cL = v(document.getElementById('cargoL').value);
+  const cW = v(document.getElementById('cargoW').value);
+  const cH = v(document.getElementById('cargoH').value);
+
+  if (!pL||!pW||!lim||!cL||!cW||!cH) { alert('Please enter valid positive numbers for all fields.'); return; }
+
+  pallet = { L:pL, W:pW };
+  heightLimit = lim;
+  cargo  = { L:cL, W:cW, H:cH };
+
+  document.getElementById('descCargo').textContent  = `L${cargo.L} × W${cargo.W} × H${cargo.H}`;
+  document.getElementById('descPallet').textContent = `L${pallet.L} × W${pallet.W} × Limit ${heightLimit}`;
+
+  buildPallet();
+  renderOrientation(currentIdx);
+  updateSchemesTable();
+});
+
+document.getElementById('bestBtn').addEventListener('click', ()=>{
+  const rows = computeAllSchemes();
+  const best = rows.reduce((acc,r)=> r.total>acc.total? r:acc, {total:-1});
+  renderOrientation(best.idx);
+  updateSchemesTable();
+});
+
+document.getElementById('resetCam').addEventListener('click', ()=>{
+  camera.position.set(6.5,6.5,6.5);
+  controls.target.set(0,1.0,0);
+  controls.update();
+});
+
+document.getElementById('brickToggle').addEventListener('change', (e)=>{
+  useBrickPattern = !!e.target.checked;
+  renderOrientation(currentIdx);
+  updateSchemesTable();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\desktop-tutorial\\Python_Ashley_6\\Python2025\\Python2025\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5A44CAB3-D66A-4BF2-9712-C40885A26810}|Python2025\\Python2025.pyproj|D:\\desktop-tutorial\\Python_Ashley_6\\Python2025\\Python2025\\Python2025\\Python2025.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{5A44CAB3-D66A-4BF2-9712-C40885A26810}|Python2025\\Python2025.pyproj|solutionrelative:Python2025\\Python2025.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Python2025.py",
+              "DocumentMoniker": "D:\\desktop-tutorial\\Python_Ashley_6\\Python2025\\Python2025\\Python2025\\Python2025.py",
+              "RelativeDocumentMoniker": "Python2025\\Python2025.py",
+              "ToolTip": "D:\\desktop-tutorial\\Python_Ashley_6\\Python2025\\Python2025\\Python2025\\Python2025.py",
+              "RelativeToolTip": "Python2025\\Python2025.py",
+              "ViewState": "AgIAADEAAAAAAAAAAAAuwEQAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2025-11-20T01:20:09.927Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

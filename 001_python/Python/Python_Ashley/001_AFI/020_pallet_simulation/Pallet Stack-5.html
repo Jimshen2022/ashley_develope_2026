@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Pallet Stacking Planner · Paste from Excel</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<style>
+  :root{ --bg1:#5b7cfa; --bg2:#8a53f6; --card:#fff; --line:#e5e7eb; --muted:#64748b; --accent:#10b981; }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#0f172a}
+  .shell{max-width:1400px;margin:22px auto;padding:0 16px}
+  .wrap{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 14px 36px rgba(0,0,0,.22)}
+  header{padding:14px 18px;color:#fff;background:linear-gradient(135deg,#10b981,#059669)}
+  header h1{margin:0;font-size:18px}
+  .grid{display:grid;grid-template-columns:320px 1fr;min-height:760px}
+  .left{border-right:1px solid var(--line);background:#fbfbfc;padding:12px;display:flex;flex-direction:column;gap:10px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}
+  .panel h3{margin:0 0 8px;font-size:13px}
+  textarea{width:100%;min-height:130px;border:1px solid #cbd5e1;border-radius:8px;padding:8px;font-size:12px;resize:vertical}
+  .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .btn{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:12px}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .mini{font-size:12px;color:var(--muted);margin-top:6px}
+  .search{display:flex;gap:6px}
+  input[type="text"]{width:100%;padding:6px 8px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px}
+  table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:12px}
+  th,td{padding:6px 8px;background:#fff;border:1px solid var(--line)}
+  th{background:#f1f5f9;color:#334155;position:sticky;top:0;z-index:1}
+  tr:hover td{filter:brightness(.98)}
+  tr.best td{background:#ecfdf5;border-color:#86efac}
+  .canvas{position:relative;background:linear-gradient(180deg,#eef2ff,#e0e7ff)}
+  #stage{width:100%;height:100%;min-height:760px;display:block}
+  .hud{position:absolute;left:12px;top:12px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:240px;box-shadow:0 10px 24px rgba(0,0,0,.1);backdrop-filter:saturate(140%) blur(6px);font-size:12px}
+  .hud h4{margin:0 0 4px;font-size:13px}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .tag{background:#f1f5f9;border:1px solid #e2e8f0;padding:4px 8px;border-radius:999px}
+  @media (max-width:1100px){.grid{grid-template-columns:1fr}.left{border-right:none;border-bottom:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="wrap">
+    <header><h1>Pallet Stacking Planner · Paste from Excel (no auto-rotation)</h1></header>
+
+    <div class="grid">
+      <!-- LEFT: paste + list -->
+      <aside class="left">
+        <div class="panel">
+          <h3>Paste items (tab/comma separated)</h3>
+          <textarea id="pasteBox" placeholder="Example with header:
+ITNBR	CRTLIN	CRTWIN	CRTHIN	ITMCLSID	Unit_Weight(KG)	SCOOP_Weight(KG)
+D123-01	40	30	20		35.5
+R-999	78	24	12	RAILS	18.2	"></textarea>
+          <div class="actions">
+            <button class="btn primary" id="calcBtn">Calculate</button>
+            <button class="btn" id="sampleBtn">Sample</button>
+            <button class="btn" id="clearBtn">Clear</button>
+          </div>
+          <div class="mini">
+            Required fields: Item + L/W/H (inches). Optional: ITMCLSID (RAILS uses 1.1 m height), Unit_Weight(KG), SCOOP_Weight(KG).
+            Best pallet/orientation follows your Python rules (overhang policy, height tolerance, 1500 kg cap by lowering HI).
+          </div>
+        </div>
+
+        <div class="panel" style="min-height:0">
+          <div class="search">
+            <input id="searchBox" type="text" placeholder="Filter items…" />
+            <button class="btn" id="bestOnlyBtn">Best only</button>
+          </div>
+          <div style="max-height:440px;overflow:auto;margin-top:6px">
+            <table id="resultTable">
+              <thead>
+                <tr>
+                  <th>Item</th><th>L×W×H</th><th>Pallet</th><th>Plan</th>
+                  <th>NX×NY×HI</th><th>TI</th><th>Total</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT: 3D -->
+      <section class="canvas">
+        <canvas id="stage"></canvas>
+        <div class="hud">
+          <h4 id="hudTitle">No item selected</h4>
+          <div id="mapText" style="color:#64748b">Click an item on the left to preview its 3D stacking.</div>
+          <div class="tags" id="hudTags"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== Constants (mirroring your Python script) ===== */
+const FT_TO_IN = 12.0;
+const CM_TO_IN = 1/2.54;
+const IN_TO_CM = 2.54;
+
+// Height policy
+const HEIGHT_LIMIT_CM_DEFAULT = 170.0;
+const HEIGHT_LIMIT_CM_RAILS = 110.0;
+const HEIGHT_TOL_CM = 1.0;
+
+// Overhang policy
+const ALLOW_LEN_OVERHANG_8FT = true;   // only 8ft pallets may accept length overhang
+const LEN_OVERHANG_MAX_CM = null;      // no explicit max by default
+const ALLOW_WIDTH_OVERHANG = true;
+const WIDTH_OVERHANG_MAX_CM = null;
+const FORCE_SINGLE_LAYER_IF_OVERHEIGHT = true;
+
+// Weight cap
+const PALLET_WEIGHT_CAP_KG = 1500.0;
+
+// Pallet catalog: key "WxL" -> (PL, PW) where PL = length, PW = width (inches)
+const PALLETS = {
+  "5x5":   [5*FT_TO_IN,   5*FT_TO_IN],  // 60x60
+  "5x7":   [7*FT_TO_IN,   5*FT_TO_IN],  // 84x60
+  "3.5x5": [5*FT_TO_IN, 3.5*FT_TO_IN],  // 60x42
+  "3.5x7": [7*FT_TO_IN, 3.5*FT_TO_IN],  // 84x42
+  "5x8":   [8*FT_TO_IN,   5*FT_TO_IN],  // 96x60
+  "3.5x8": [8*FT_TO_IN, 3.5*FT_TO_IN],  // 96x42
+};
+
+const H_TOL_IN = HEIGHT_TOL_CM * CM_TO_IN;
+const LEN_OVER_MAX_IN = LEN_OVERHANG_MAX_CM == null ? null : LEN_OVERHANG_MAX_CM * CM_TO_IN;
+const WID_OVER_MAX_IN = WIDTH_OVERHANG_MAX_CM == null ? null : WIDTH_OVERHANG_MAX_CM * CM_TO_IN;
+
+/* ===== Planner core (ports of your Python functions) ===== */
+function getCandidatePallets(maxDimIn){
+  if (maxDimIn > 7*FT_TO_IN)      return ["3.5x8","5x8"];
+  else if (maxDimIn > 5*FT_TO_IN) return ["3.5x7","5x7"];
+  return ["3.5x5","5x5"];
+}
+
+function isBetterPlan(p1, p2){
+  if (p1.relax_level !== p2.relax_level) return p1.relax_level < p2.relax_level;
+  if (Math.abs(p1.VolumeUtil - p2.VolumeUtil) > 1e-6) return p1.VolumeUtil > p2.VolumeUtil;
+  if (p1.Total !== p2.Total) return p1.Total > p2.Total;
+  return p1.FootprintUtil > p2.FootprintUtil;
+}
+
+function evalSingleOrientation(pLenDim, pWidDim, hDim, palletName, oriDesc, maxHIn, hTolIn){
+  const [PL, PW] = PALLETS[palletName];
+  const flags = { LEN_OVER:false, WID_OVER:false, H_TOL:false, H_FORCE1:false };
+  let relax = 0;
+
+  // length (X)
+  let NX;
+  if (pLenDim <= PL) {
+    NX = Math.floor(PL / Math.max(pLenDim,1e-9)) || 1;
+  } else {
+    if (ALLOW_LEN_OVERHANG_8FT && (palletName==="3.5x8"||palletName==="5x8") &&
+        (LEN_OVER_MAX_IN==null || (pLenDim-PL)<=LEN_OVER_MAX_IN)){
+      NX = 1; flags.LEN_OVER = true; relax = Math.max(relax,2);
+    } else {
+      NX = 1; flags.LEN_OVER = true; relax = Math.max(relax,2);
+    }
+  }
+
+  // width (Z)
+  let NY;
+  if (pWidDim <= PW) {
+    NY = Math.floor(PW / Math.max(pWidDim,1e-9)) || 1;
+  } else {
+    if (ALLOW_WIDTH_OVERHANG &&
+        (WID_OVER_MAX_IN==null || (pWidDim-PW)<=WID_OVER_MAX_IN)){
+      NY = 1; flags.WID_OVER = true; relax = Math.max(relax,3);
+    } else {
+      NY = 1; flags.WID_OVER = true; relax = Math.max(relax,3);
+    }
+  }
+
+  const TI = NX*NY;
+
+  // height (Y)
+  let HI;
+  if (hDim <= maxHIn){
+    HI = Math.max(1, Math.floor(maxHIn / Math.max(hDim,1e-9)));
+  } else if (hDim <= maxHIn + hTolIn){
+    HI = 1; flags.H_TOL = true; relax = Math.max(relax,1);
+  } else {
+    if (FORCE_SINGLE_LAYER_IF_OVERHEIGHT){
+      HI = 1; flags.H_FORCE1 = true; relax = Math.max(relax,4);
+    } else {
+      HI = 0;
+    }
+  }
+
+  const eff_L = Math.min(pLenDim, PL);
+  const eff_W = Math.min(pWidDim, PW);
+  const eff_H = Math.min(hDim, maxHIn);
+
+  const PLPW = PL*PW;
+  const footprint = PLPW>0 ? (TI * eff_L * eff_W) / PLPW : 0;
+  const denom = PLPW * maxHIn || 1;
+  const volume = (TI * HI * eff_L * eff_W * eff_H) / denom;
+
+  return {
+    Pallet:palletName, Ori:oriDesc,
+    NX, NY, TI, HI, Total:TI*HI,
+    FootprintUtil:footprint, VolumeUtil:volume,
+    relax_level:relax, flags,
+    pallet_len_dim:pLenDim, pallet_wid_dim:pWidDim, height_dim:hDim,
+    eff_L, eff_W, eff_H,
+    max_h_in:maxHIn,
+    over_len:Math.max(0,pLenDim-PL), over_wid:Math.max(0,pWidDim-PW), over_hgt:Math.max(0,hDim-maxHIn)
+  };
+}
+
+function evalAllOrientations(L,W,H,palletName,maxHIn,hTolIn){
+  const dims=[+L,+W,+H];
+  const opts=[
+    [dims[0],dims[1],dims[2],'L->PL, W->PW, H->H'],
+    [dims[0],dims[2],dims[1],'L->PL, H->PW, W->H'],
+    [dims[1],dims[0],dims[2],'W->PL, L->PW, H->H'],
+    [dims[1],dims[2],dims[0],'W->PL, H->PW, L->H'],
+    [dims[2],dims[0],dims[1],'H->PL, L->PW, W->H'],
+    [dims[2],dims[1],dims[0],'H->PL, W->PW, L->H'],
+  ];
+  let best=null;
+  for(const [pl,pw,h,desc] of opts){
+    const plan = evalSingleOrientation(pl,pw,h,palletName,desc,maxHIn,hTolIn);
+    if(!best || isBetterPlan(plan,best)) best=plan;
+  }
+  return best;
+}
+
+function pickBestPlan(L,W,H,maxHIn,hTolIn){
+  const maxDim = Math.max(+L,+W,+H);
+  const candidates = getCandidatePallets(maxDim);
+  let best=null;
+  for(const name of candidates){
+    const p = evalAllOrientations(L,W,H,name,maxHIn,hTolIn);
+    if(!best || isBetterPlan(p,best)) best=p;
+  }
+  return best;
+}
+
+function adjustHeightByWeight(plan, unitKg, targetKg){
+  const TI = +plan.TI, HI = +plan.HI;
+  if(!unitKg || unitKg<=0 || TI<=0 || HI<=0) return [HI, TI*HI, plan.VolumeUtil, false, unitKg?unitKg*TI*HI:null, null];
+  const origW = unitKg*TI*HI;
+  if(origW <= targetKg) return [HI, TI*HI, plan.VolumeUtil, false, origW, origW];
+
+  const ideal = targetKg / (unitKg * TI);
+  const cand1 = Math.max(1, Math.min(HI, Math.floor(ideal)));
+  const cand2 = Math.max(1, Math.min(HI, Math.ceil(ideal)));
+  const w1 = unitKg*TI*cand1, w2 = unitKg*TI*cand2;
+  let newHI, newW;
+  if (Math.abs(w1-targetKg) < Math.abs(w2-targetKg) || (Math.abs(w1-targetKg)===Math.abs(w2-targetKg) && w1<=targetKg)){
+    newHI=cand1; newW=w1;
+  }else{ newHI=cand2; newW=w2; }
+
+  const [PL,PW] = PALLETS[plan.Pallet]; const PLPW=PL*PW; const denom=PLPW*plan.max_h_in || 1;
+  const newVU = (TI * newHI * plan.eff_L * plan.eff_W * plan.eff_H) / denom;
+  return [newHI, TI*newHI, newVU, true, origW, newW];
+}
+
+/* ===== Parsing from textarea ===== */
+function parsePasted(text){
+  if(!text.trim()) return [];
+  const rows = text.replace(/\r/g,'').split('\n').filter(x=>x.trim().length>0).map(r=>r.split(/\t|,/));
+  if(rows.length===0) return [];
+
+  const headers = rows[0].map(h=>h.trim().toUpperCase());
+  let idx={ item:0,L:1,W:2,H:3,cls:null,unitW:null,scoopW:null }, start=0;
+
+  const find = name => headers.findIndex(h => h===name);
+  if(headers.some(h => ["ITNBR","CRTLIN","CRTWIN","CRTHIN"].includes(h))){
+    idx.item = find("ITNBR");
+    idx.L = find("CRTLIN"); idx.W = find("CRTWIN"); idx.H = find("CRTHIN");
+    idx.cls = find("ITMCLSID"); idx.unitW = find("UNIT_WEIGHT(KG)"); idx.scoopW = find("SCOOP_WEIGHT(KG)");
+    start = 1;
+  } else {
+    // no header → assume first 4 columns
+    start = 0;
+  }
+
+  const out=[];
+  for(let i=start;i<rows.length;i++){
+    const r = rows[i];
+    const it = r[idx.item] ?? r[0];
+    const L  = parseFloat(r[idx.L] ?? r[1]);
+    const W  = parseFloat(r[idx.W] ?? r[2]);
+    const H  = parseFloat(r[idx.H] ?? r[3]);
+    if(!it || !isFinite(L)||!isFinite(W)||!isFinite(H) || Math.min(L,W,H)<=0) continue;
+    const cls = idx.cls!=null && idx.cls>=0 ? String(r[idx.cls]||"").trim().toUpperCase() : "";
+    const unitKg = idx.unitW!=null && idx.unitW>=0 ? parseFloat(r[idx.unitW]) : NaN;
+    const scoopKg = idx.scoopW!=null && idx.scoopW>=0 ? parseFloat(r[idx.scoopW]) : NaN;
+    out.push({ ITNBR:it, L, W, H, ITMCLSID:cls, unitKg:isFinite(unitKg)?unitKg:null, scoopKg:isFinite(scoopKg)?scoopKg:null });
+  }
+  return out;
+}
+
+/* ===== Run calculation for a list of items ===== */
+function computePlans(items){
+  const results=[];
+  for(const it of items){
+    const maxHcm = it.ITMCLSID==="RAILS" ? HEIGHT_LIMIT_CM_RAILS : HEIGHT_LIMIT_CM_DEFAULT;
+    const maxHIn = maxHcm * CM_TO_IN;
+
+    let plan = pickBestPlan(it.L, it.W, it.H, maxHIn, H_TOL_IN);
+
+    // weight logic
+    const TI = +plan.TI, HI = +plan.HI;
+    const calcWeight = it.unitKg ? it.unitKg * TI * HI : null;
+    const anyOrig = [calcWeight, it.scoopKg].filter(v=>v!=null)[0];
+    let hit=false;
+    if(anyOrig!=null && anyOrig > PALLET_WEIGHT_CAP_KG){
+      const [newHI,newTotal,newVU,hitCap] = adjustHeightByWeight(plan, it.unitKg, PALLET_WEIGHT_CAP_KG);
+      plan.HI = newHI; plan.Total = newTotal; plan.VolumeUtil = newVU; hit = hitCap;
+    }
+
+    const flags = plan.flags;
+    results.push({
+      ...it,
+      plan,
+      best: {
+        pallet: plan.Pallet, ori: plan.Ori,
+        NX: plan.NX, NY: plan.NY, HI: plan.HI, TI: plan.TI, Total: plan.Total,
+        relax: plan.relax_level, lenOver: flags.LEN_OVER, widOver: flags.WID_OVER,
+        hTol: flags.H_TOL, hForce1: flags.H_FORCE1,
+        overL: plan.over_len, overW: plan.over_wid, overH: plan.over_hgt,
+        maxHIn: plan.max_h_in,
+        weightCapped: hit
+      }
+    });
+  }
+  return results;
+}
+
+/* ===== UI: table rendering ===== */
+const tblBody = document.querySelector('#resultTable tbody');
+let computedRows = []; // store all computed results
+let filteredRows = [];
+
+function renderTable(){
+  tblBody.innerHTML='';
+  filteredRows.forEach((r,idx)=>{
+    const tr = document.createElement('tr');
+    // Mark "best per item" is trivial; here all rows are best already
+    tr.classList.add('best');
+    tr.innerHTML = `
+      <td>${escapeHtml(r.ITNBR)}</td>
+      <td>${fmtNum(r.L)}×${fmtNum(r.W)}×${fmtNum(r.H)}</td>
+      <td>${r.best.pallet}</td>
+      <td>${r.best.ori}</td>
+      <td>${r.best.NX}×${r.best.NY}×${r.best.HI}</td>
+      <td>${r.best.TI}</td>
+      <td><b>${r.best.Total}</b></td>
+    `;
+    tr.style.cursor='pointer';
+    tr.addEventListener('click', ()=> preview3D(r));
+    tblBody.appendChild(tr);
+  });
+}
+
+function applyFilter(){
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  filteredRows = computedRows.filter(r => !q || r.ITNBR.toLowerCase().includes(q));
+  renderTable();
+}
+
+/* ===== 3D scene (no auto-spin) ===== */
+const stage = document.getElementById('stage');
+let scene,camera,renderer,controls,palletGroup,cargoMesh;
+
+init3D();
+
+function init3D(){
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xeef2ff);
+
+  camera = new THREE.PerspectiveCamera(55, stage.clientWidth/stage.clientHeight, 0.1, 100);
+  camera.position.set(6.5,6.5,6.5);
+
+  renderer = new THREE.WebGLRenderer({canvas:stage,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(stage.clientWidth,stage.clientHeight,false);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.target.set(0,1.0,0);
+  controls.enableDamping = true;
+
+  const hemi = new THREE.HemisphereLight(0xffffff,0x99a7c2,0.85);
+  scene.add(hemi);
+  const sun = new THREE.DirectionalLight(0xffffff,0.9);
+  sun.position.set(8,12,6); sun.castShadow = true; sun.shadow.mapSize.set(2048,2048);
+  scene.add(sun);
+
+  const grid = new THREE.GridHelper(20,20,0x93c5fd,0xe5e7eb);
+  grid.position.y = -0.001; scene.add(grid);
+
+  palletGroup = new THREE.Group(); scene.add(palletGroup);
+
+  window.addEventListener('resize', ()=>{
+    const w = stage.clientWidth, h = stage.clientHeight || stage.parentElement.clientHeight;
+    camera.aspect = w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h,false);
+  });
+
+  requestAnimationFrame(function loop(){ controls.update(); renderer.render(scene,camera); requestAnimationFrame(loop); });
+}
+
+const scale = 0.02;
+const visualShrink = 0.98;
+
+function buildPalletVisual(PL, PW, maxHIn){
+  palletGroup.clear();
+  const baseGeo = new THREE.BoxGeometry(PL*scale, 0.20, PW*scale);
+  const base = new THREE.Mesh(baseGeo, new THREE.MeshStandardMaterial({color:0x16a34a,roughness:.65,metalness:.05}));
+  base.position.y = -0.10; base.receiveShadow = true; palletGroup.add(base);
+
+  const frameGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(PL*scale, maxHIn*scale, PW*scale));
+  const frame = new THREE.LineSegments(frameGeo, new THREE.LineBasicMaterial({color:0x94a3b8,transparent:true,opacity:.65}));
+  frame.position.y = (maxHIn*scale)/2; palletGroup.add(frame);
+
+  const limGeo = new THREE.PlaneGeometry(PL*scale*1.06, PW*scale*1.06);
+  const limMat = new THREE.MeshBasicMaterial({color:0xef4444,transparent:true,opacity:.18,side:THREE.DoubleSide});
+  const lim = new THREE.Mesh(limGeo,limMat); lim.rotation.x = -Math.PI/2; lim.position.y = maxHIn*scale; palletGroup.add(lim);
+}
+
+function preview3D(row){
+  const plan = row.plan;
+  const [PL,PW] = PALLETS[plan.Pallet];
+  buildPalletVisual(PL, PW, plan.max_h_in);
+
+  // cargo geometry uses oriented dims
+  const boxGeo = new THREE.BoxGeometry(plan.pallet_len_dim*scale*visualShrink, plan.height_dim*scale*visualShrink, plan.pallet_wid_dim*scale*visualShrink);
+  const boxMat = new THREE.MeshStandardMaterial({color:0xfb923c,roughness:.55,metalness:.05});
+  if(cargoMesh){ scene.remove(cargoMesh); cargoMesh.geometry.dispose(); }
+  const count = Math.max(plan.TI*plan.HI,0) || 1;
+  cargoMesh = new THREE.InstancedMesh(boxGeo, boxMat, count);
+  cargoMesh.castShadow = true; cargoMesh.receiveShadow = true;
+
+  let id=0;
+  const nx = plan.NX, ny = plan.NY, hi = plan.HI;
+  if(nx>0 && ny>0 && hi>0){
+    const startX = -(PL*scale)/2, startZ = -(PW*scale)/2;
+    const cellX = (PL/nx)*scale, cellZ = (PW/ny)*scale;
+    for(let h=0; h<hi; h++){
+      for(let ix=0; ix<nx; ix++){
+        for(let iz=0; iz<ny; iz++){
+          const cx = startX + cellX*(ix+.5);
+          const cz = startZ + cellZ*(iz+.5);
+          const cy = (plan.height_dim*scale)*(h+.5);
+          cargoMesh.setMatrixAt(id++, new THREE.Matrix4().makeTranslation(cx,cy,cz));
+        }
+      }
+    }
+  }
+  cargoMesh.count = id;
+  scene.add(cargoMesh);
+
+  // HUD
+  document.getElementById('hudTitle').textContent = `${row.ITNBR}  ·  ${fmtNum(row.L)}×${fmtNum(row.W)}×${fmtNum(row.H)} in`;
+  document.getElementById('mapText').textContent =
+    `${plan.Ori}  |  Pallet ${plan.Pallet}  |  NX×NY×HI = ${plan.NX}×${plan.NY}×${plan.HI}  ·  Total=${plan.Total}`;
+  const tags = [];
+  if(plan.flags.LEN_OVER) tags.push('Length overhang');
+  if(plan.flags.WID_OVER) tags.push('Width overhang');
+  if(plan.flags.H_TOL) tags.push('Height tolerance used');
+  if(plan.flags.H_FORCE1) tags.push('Forced 1 layer');
+  if(row.best.weightCapped) tags.push('1500kg capped');
+  const tagsWrap = document.getElementById('hudTags'); tagsWrap.innerHTML='';
+  tags.forEach(t=>{ const s=document.createElement('span'); s.className='tag'; s.textContent=t; tagsWrap.appendChild(s); });
+}
+
+/* ===== Helpers ===== */
+function fmtNum(x){ return (Math.round(x*100)/100).toString(); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+/* ===== Wire up UI ===== */
+document.getElementById('calcBtn').addEventListener('click', ()=>{
+  const items = parsePasted(document.getElementById('pasteBox').value);
+  if(items.length===0){ alert('No valid rows found. Please paste Item + L/W/H (inches).'); return; }
+  computedRows = computePlans(items);
+  filteredRows = computedRows.slice();
+  renderTable();
+  // auto preview first
+  if(filteredRows.length>0) preview3D(filteredRows[0]);
+});
+
+document.getElementById('sampleBtn').addEventListener('click', ()=>{
+  document.getElementById('pasteBox').value =
+`ITNBR\tCRTLIN\tCRTWIN\tCRTHIN\tITMCLSID\tUnit_Weight(KG)\tSCOOP_Weight(KG)
+D123-01\t40\t30\t20\t\t35.5\t
+R-999\t78\t24\t12\tRAILS\t18.2\t
+Big-8ft\t98\t26\t18\t\t28\t
+Wide-60\t50\t62\t22\t\t20\t`;
+});
+
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  document.getElementById('pasteBox').value = '';
+  tblBody.innerHTML=''; computedRows=[]; filteredRows=[];
+  document.getElementById('hudTitle').textContent='No item selected';
+  document.getElementById('mapText').textContent='Click an item on the left to preview its 3D stacking.';
+  document.getElementById('hudTags').innerHTML='';
+  if(cargoMesh){ scene.remove(cargoMesh); cargoMesh=null; }
+  palletGroup.clear();
+});
+
+document.getElementById('searchBox').addEventListener('input', applyFilter);
+document.getElementById('bestOnlyBtn').addEventListener('click', ()=>{
+  // all rows are already best per item; this toggler just resets filter for convenience
+  document.getElementById('searchBox').value=''; applyFilter();
+});
+</script>
+</body>
+</html>

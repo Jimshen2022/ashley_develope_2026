@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>托盘堆码6种摆放方向3D可视化</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .example-info {
+            background: #e3f2fd;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 16px;
+            border-left: 5px solid #2196F3;
+        }
+        .controls {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .btn {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .btn.active {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            transform: scale(1.05);
+        }
+        .visualization-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 300px;
+            z-index: 100;
+        }
+        .info-panel h3 {
+            margin: 0 0 15px 0;
+            color: #1976d2;
+            font-size: 18px;
+        }
+        .dimension-info {
+            margin: 10px 0;
+            padding: 8px;
+            background: #f0f8ff;
+            border-radius: 5px;
+            border-left: 4px solid #2196F3;
+        }
+        .calculation {
+            background: #fff3e0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #ff9800;
+            font-family: monospace;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        .instructions {
+            text-align: center;
+            padding: 15px;
+            background: #e8f5e8;
+            margin: 20px;
+            border-radius: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 托盘堆码6种摆放方向3D可视化</h1>
+        </div>
+
+        <div class="example-info">
+            <strong>📦 示例货物尺寸：</strong> 长40" × 宽30" × 高20"<br>
+            <strong>🚛 托盘尺寸：</strong> 长84" × 宽60" × 高度限制66.9"<br>
+            <strong>🎲 可视化比例：</strong> 按1:2缩放显示
+        </div>
+
+        <div class="controls">
+            <button class="btn active" onclick="showOrientation(0)">方向1: L→长,W→宽,H→高</button>
+            <button class="btn" onclick="showOrientation(1)">方向2: L→长,H→宽,W→高</button>
+            <button class="btn" onclick="showOrientation(2)">方向3: W→长,L→宽,H→高</button>
+            <button class="btn" onclick="showOrientation(3)">方向4: W→长,H→宽,L→高</button>
+            <button class="btn" onclick="showOrientation(4)">方向5: H→长,L→宽,W→高</button>
+            <button class="btn" onclick="showOrientation(5)">方向6: H→长,W→宽,L→高</button>
+        </div>
+
+        <div class="instructions">
+            🖱️ 鼠标左键拖拽旋转视角 | 滚轮缩放 | 点击按钮切换摆放方向
+        </div>
+
+        <div class="visualization-container" id="canvas-container">
+            <div class="info-panel" id="info-panel">
+                <h3 id="orientation-title">方向1: L→托盘长, W→托盘宽, H→高度</h3>
+                <div class="dimension-info">
+                    <strong>维度分配:</strong><br>
+                    <span id="dimension-mapping">40"→84"方向, 30"→60"方向, 20"→高度</span>
+                </div>
+                <div class="calculation">
+                    <strong>计算结果:</strong><br>
+                    NX = <span id="nx-value">2</span>, NY = <span id="ny-value">2</span><br>
+                    TI = <span id="ti-value">4</span>, HI = <span id="hi-value">3</span><br>
+                    总数量 = <span id="total-value">12</span>
+                </div>
+                <div style="margin-top: 15px; font-size: 14px; color: #666;">
+                    💡 每层可放 <span id="ti-display">4</span> 个，可堆叠 <span id="hi-display">3</span> 层
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff6b35;"></div>
+                <span>🟠 货物 (橙色)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>🟢 托盘底座 (绿色)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: rgba(255,255,255,0.8);"></div>
+                <span>⚪ 托盘边框 (透明)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: rgba(255,0,0,0.3);"></div>
+                <span>🔴 高度限制线</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let scene, camera, renderer, controls;
+        let palletGroup, cargoGroup;
+        let currentOrientation = 0;
+
+        // 货物原始尺寸 (英寸)
+        const cargoL = 40, cargoW = 30, cargoH = 20;
+        // 托盘尺寸 (英寸)
+        const palletL = 84, palletW = 60;
+        // 高度限制 (英寸)
+        const heightLimit = 66.9;
+        // 3D显示缩放比例
+        const scale = 0.02;
+
+        // 6种摆放方向的配置
+        const orientations = [
+            {
+                title: "方向1: L→托盘长, W→托盘宽, H→高度",
+                mapping: "40\"→84\"方向, 30\"→60\"方向, 20\"→高度",
+                palletDir: cargoL, widthDir: cargoW, heightDir: cargoH,
+                nx: Math.floor(palletL / cargoL), ny: Math.floor(palletW / cargoW),
+                description: "长度方向放置，最常见的摆放方式"
+            },
+            {
+                title: "方向2: L→托盘长, H→托盘宽, W→高度",
+                mapping: "40\"→84\"方向, 20\"→60\"方向, 30\"→高度",
+                palletDir: cargoL, widthDir: cargoH, heightDir: cargoW,
+                nx: Math.floor(palletL / cargoL), ny: Math.floor(palletW / cargoH),
+                description: "长度不变，高度和宽度互换"
+            },
+            {
+                title: "方向3: W→托盘长, L→托盘宽, H→高度",
+                mapping: "30\"→84\"方向, 40\"→60\"方向, 20\"→高度",
+                palletDir: cargoW, widthDir: cargoL, heightDir: cargoH,
+                nx: Math.floor(palletL / cargoW), ny: Math.floor(palletW / cargoL),
+                description: "货物侧放，长宽互换"
+            },
+            {
+                title: "方向4: W→托盘长, H→托盘宽, L→高度",
+                mapping: "30\"→84\"方向, 20\"→60\"方向, 40\"→高度",
+                palletDir: cargoW, widthDir: cargoH, heightDir: cargoL,
+                nx: Math.floor(palletL / cargoW), ny: Math.floor(palletW / cargoH),
+                description: "宽度为长，高度为高，长度竖直"
+            },
+            {
+                title: "方向5: H→托盘长, L→托盘宽, W→高度",
+                mapping: "20\"→84\"方向, 40\"→60\"方向, 30\"→高度",
+                palletDir: cargoH, widthDir: cargoL, heightDir: cargoW,
+                nx: Math.floor(palletL / cargoH), ny: Math.floor(palletW / cargoL),
+                description: "高度方向平放在托盘长度方向"
+            },
+            {
+                title: "方向6: H→托盘长, W→托盘宽, L→高度",
+                mapping: "20\"→84\"方向, 30\"→60\"方向, 40\"→高度",
+                palletDir: cargoH, widthDir: cargoW, heightDir: cargoL,
+                nx: Math.floor(palletL / cargoH), ny: Math.floor(palletW / cargoW),
+                description: "高度和宽度平放，长度竖直"
+            }
+        ];
+
+        // 简单的轨道控制实现
+        class SimpleOrbitControls {
+            constructor(camera, domElement) {
+                this.camera = camera;
+                this.domElement = domElement;
+                this.isMouseDown = false;
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.phi = Math.PI / 4;
+                this.theta = Math.PI / 4;
+                this.radius = 8;
+                this.target = new THREE.Vector3(0, 0, 0);
+
+                this.domElement.addEventListener('mousedown', this.onMouseDown.bind(this));
+                this.domElement.addEventListener('mousemove', this.onMouseMove.bind(this));
+                this.domElement.addEventListener('mouseup', this.onMouseUp.bind(this));
+                this.domElement.addEventListener('wheel', this.onWheel.bind(this));
+
+                this.updateCamera();
+            }
+
+            onMouseDown(event) {
+                this.isMouseDown = true;
+                this.mouseX = event.clientX;
+                this.mouseY = event.clientY;
+            }
+
+            onMouseMove(event) {
+                if (!this.isMouseDown) return;
+
+                const deltaX = event.clientX - this.mouseX;
+                const deltaY = event.clientY - this.mouseY;
+
+                this.theta += deltaX * 0.01;
+                this.phi += deltaY * 0.01;
+                this.phi = Math.max(0.1, Math.min(Math.PI - 0.1, this.phi));
+
+                this.mouseX = event.clientX;
+                this.mouseY = event.clientY;
+
+                this.updateCamera();
+            }
+
+            onMouseUp() {
+                this.isMouseDown = false;
+            }
+
+            onWheel(event) {
+                this.radius += event.deltaY * 0.01;
+                this.radius = Math.max(3, Math.min(15, this.radius));
+                this.updateCamera();
+            }
+
+            updateCamera() {
+                const x = this.radius * Math.sin(this.phi) * Math.cos(this.theta);
+                const y = this.radius * Math.cos(this.phi);
+                const z = this.radius * Math.sin(this.phi) * Math.sin(this.theta);
+
+                this.camera.position.set(x, y, z);
+                this.camera.lookAt(this.target);
+            }
+        }
+
+        function init() {
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f8ff);
+
+            // 创建相机
+            camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+            camera.position.set(5, 4, 5);
+
+            // 创建渲染器
+            const container = document.getElementById('canvas-container');
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            // 创建轨道控制
+            controls = new SimpleOrbitControls(camera, renderer.domElement);
+
+            // 添加光源
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 10, 5);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 2048;
+            directionalLight.shadow.mapSize.height = 2048;
+            scene.add(directionalLight);
+
+            // 创建托盘和货物组
+            palletGroup = new THREE.Group();
+            cargoGroup = new THREE.Group();
+            scene.add(palletGroup);
+            scene.add(cargoGroup);
+
+            // 创建托盘
+            createPallet();
+
+            // 显示第一种方向
+            showOrientation(0);
+
+            // 开始渲染循环
+            animate();
+        }
+
+        function createPallet() {
+            palletGroup.clear();
+
+            // 托盘底座
+            const palletGeometry = new THREE.BoxGeometry(palletL * scale, 0.2, palletW * scale);
+            const palletMaterial = new THREE.MeshLambertMaterial({ color: 0x4CAF50 });
+            const palletMesh = new THREE.Mesh(palletGeometry, palletMaterial);
+            palletMesh.position.y = -0.1;
+            palletMesh.receiveShadow = true;
+            palletGroup.add(palletMesh);
+
+            // 托盘边框
+            const edges = new THREE.EdgesGeometry(new THREE.BoxGeometry(palletL * scale, heightLimit * scale, palletW * scale));
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x666666, transparent: true, opacity: 0.3 });
+            const wireframe = new THREE.LineSegments(edges, lineMaterial);
+            wireframe.position.y = (heightLimit * scale) / 2;
+            palletGroup.add(wireframe);
+
+            // 高度限制平面
+            const limitGeometry = new THREE.PlaneGeometry(palletL * scale * 1.1, palletW * scale * 1.1);
+            const limitMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff0000,
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.DoubleSide
+            });
+            const limitPlane = new THREE.Mesh(limitGeometry, limitMaterial);
+            limitPlane.position.y = heightLimit * scale;
+            limitPlane.rotation.x = -Math.PI / 2;
+            palletGroup.add(limitPlane);
+        }
+
+        function createCargo(orientation) {
+            cargoGroup.clear();
+
+            const config = orientations[orientation];
+            const { palletDir, widthDir, heightDir, nx, ny } = config;
+
+            // 计算可堆叠层数
+            const hi = Math.floor(heightLimit / heightDir);
+
+            // 货物几何体和材质
+            const cargoGeometry = new THREE.BoxGeometry(
+                palletDir * scale,
+                heightDir * scale,
+                widthDir * scale
+            );
+            const cargoMaterial = new THREE.MeshLambertMaterial({ color: 0xff6b35 });
+
+            // 放置货物
+            for (let layer = 0; layer < hi; layer++) {
+                for (let i = 0; i < nx; i++) {
+                    for (let j = 0; j < ny; j++) {
+                        const cargoMesh = new THREE.Mesh(cargoGeometry, cargoMaterial);
+
+                        // 计算位置
+                        const x = (i + 0.5) * palletDir * scale - (palletL * scale) / 2;
+                        const z = (j + 0.5) * widthDir * scale - (palletW * scale) / 2;
+                        const y = (layer + 0.5) * heightDir * scale;
+
+                        cargoMesh.position.set(x, y, z);
+                        cargoMesh.castShadow = true;
+                        cargoMesh.receiveShadow = true;
+                        cargoGroup.add(cargoMesh);
+                    }
+                }
+            }
+
+            // 更新信息面板
+            updateInfoPanel(config, hi);
+        }
+
+        function updateInfoPanel(config, hi) {
+            const ti = config.nx * config.ny;
+            const total = ti * hi;
+
+            document.getElementById('orientation-title').textContent = config.title;
+            document.getElementById('dimension-mapping').textContent = config.mapping;
+            document.getElementById('nx-value').textContent = config.nx;
+            document.getElementById('ny-value').textContent = config.ny;
+            document.getElementById('ti-value').textContent = ti;
+            document.getElementById('hi-value').textContent = hi;
+            document.getElementById('total-value').textContent = total;
+            document.getElementById('ti-display').textContent = ti;
+            document.getElementById('hi-display').textContent = hi;
+        }
+
+        function showOrientation(index) {
+            // 更新按钮状态
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+
+            currentOrientation = index;
+            createCargo(index);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // 添加轻微的旋转动画
+            if (cargoGroup.children.length > 0) {
+                cargoGroup.rotation.y += 0.005;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // 窗口大小调整
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('canvas-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        });
+
+        // 初始化
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集装箱装箱模拟器</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .main-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .upload-section {
+            margin-bottom: 30px;
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .file-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .file-upload input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+        
+        .container-selection {
+            margin: 30px 0;
+        }
+        
+        .container-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .container-option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .container-option:hover {
+            border-color: #007bff;
+            background: #e3f2fd;
+        }
+        
+        .container-option.selected {
+            border-color: #007bff;
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .simulate-btn {
+            background: linear-gradient(45deg, #FF6B6B, #ee5a52);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .simulate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .results-panel {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .visualization-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .loading-instructions {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .step-item {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #007bff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        #canvas3d {
+            flex: 1;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .file-info {
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .layer-controls {
+            margin: 20px 0;
+        }
+        
+        .layer-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .layer-btn:hover {
+            background: #495057;
+        }
+        
+        .layer-btn.active {
+            background: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚛 智能集装箱装箱模拟器</h1>
+            <p>优化装箱方案，最大化集装箱利用率</p>
+        </div>
+        
+        <div class="main-panel">
+            <!-- 文件上传区域 -->
+            <div class="upload-section">
+                <h2>📁 上传出货明细</h2>
+                <label class="file-upload">
+                    <input type="file" id="fileInput" accept=".xlsx,.xls" />
+                    📤 选择Excel文件
+                </label>
+                <div id="fileInfo" class="file-info" style="display: none;"></div>
+            </div>
+            
+            <!-- 集装箱选择 -->
+            <div class="container-selection">
+                <h2>📦 选择集装箱规格</h2>
+                <div class="container-options">
+                    <div class="container-option" data-type="20ft">
+                        <strong>20FT</strong><br>
+                        19'4" × 7'8" × 7'10"<br>
+                        (L×W×H)
+                    </div>
+                    <div class="container-option selected" data-type="40ft">
+                        <strong>40FT</strong><br>
+                        39'5" × 7'8" × 7'10"<br>
+                        (L×W×H)
+                    </div>
+                    <div class="container-option" data-type="53ft">
+                        <strong>53FT</strong><br>
+                        53' × 8'6" × 9'6"<br>
+                        (L×W×H)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 开始模拟按钮 -->
+            <button class="simulate-btn" id="simulateBtn" disabled>🚀 开始装箱模拟</button>
+            
+            <div class="progress-bar" id="progressBar" style="display: none;">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        
+        <!-- 结果面板 -->
+        <div class="results-panel" id="resultsPanel">
+            <div class="main-panel">
+                <h2>📊 装箱分析结果</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="utilizationRate">0%</div>
+                        <div>空间利用率</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalItems">0</div>
+                        <div>总件数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalWeight">0kg</div>
+                        <div>总重量</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="loadedItems">0</div>
+                        <div>已装载</div>
+                    </div>
+                </div>
+                
+                <div class="visualization-container">
+                    <div class="loading-instructions">
+                        <h3>📋 装箱指导步骤</h3>
+                        <div class="layer-controls">
+                            <button class="layer-btn active" onclick="showAllLayers()">显示全部</button>
+                            <button class="layer-btn" onclick="showLayer(0)">第1层</button>
+                            <button class="layer-btn" onclick="showLayer(1)">第2层</button>
+                            <button class="layer-btn" onclick="showLayer(2)">第3层</button>
+                        </div>
+                        <div id="instructionsList"></div>
+                    </div>
+                    
+                    <div style="flex: 1;">
+                        <h3>🎯 3D装箱示意图</h3>
+                        <div id="canvas3d" style="width: 100%; height: 500px; background: #f0f0f0;"></div>
+                        <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                            💡 提示: 拖拽旋转视角，滚轮缩放，不同颜色代表不同SKU
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let uploadedData = null;
+        let selectedContainer = '40ft';
+        let scene, camera, renderer, controls;
+        let containerMesh, loadedBoxes = [];
+        let currentLayer = -1;
+        
+        // 集装箱规格 (转换为厘米)
+        const containerSpecs = {
+            '20ft': { length: 589, width: 234, height: 239, maxWeight: 28200 },
+            '40ft': { length: 1201, width: 234, height: 239, maxWeight: 28800 },
+            '53ft': { length: 1615, width: 259, height: 290, maxWeight: 34000 }
+        };
+        
+        // 事件监听器
+        document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+        document.getElementById('simulateBtn').addEventListener('click', startSimulation);
+        
+        // 集装箱选择
+        document.querySelectorAll('.container-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.container-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedContainer = this.dataset.type;
+            });
+        });
+        
+        // 文件上传处理
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const workbook = XLSX.read(e.target.result, { type: 'binary' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const data = XLSX.utils.sheet_to_json(firstSheet);
+                    
+                    uploadedData = processExcelData(data);
+                    displayFileInfo(file.name, uploadedData.length);
+                    document.getElementById('simulateBtn').disabled = false;
+                } catch (error) {
+                    alert('文件读取失败，请检查Excel格式是否正确');
+                }
+            };
+            reader.readAsBinaryString(file);
+        }
+        
+        // 处理Excel数据
+        function processExcelData(data) {
+            return data.map(row => ({
+                tripNumber: row['Trip#'] || row.Trip || '',
+                itemNumber: row['ITNBR'] || row.ItemNumber || '',
+                quantity: parseInt(row['QTY'] || row.Quantity || 1),
+                length: parseFloat(row['CRTLIN'] || row.Length || 0) * 2.54, // 转换为cm
+                width: parseFloat(row['CRTWIN'] || row.Width || 0) * 2.54,
+                height: parseFloat(row['CRTHIN'] || row.Height || 0) * 2.54,
+                weight: parseFloat(row['Unit_Weight(KG)'] || row.Weight || 0)
+            }));
+        }
+        
+        // 显示文件信息
+        function displayFileInfo(fileName, recordCount) {
+            const fileInfo = document.getElementById('fileInfo');
+            fileInfo.innerHTML = `
+                <strong>已上传:</strong> ${fileName}<br>
+                <strong>记录数:</strong> ${recordCount} 条
+            `;
+            fileInfo.style.display = 'block';
+        }
+        
+        // 开始模拟
+        function startSimulation() {
+            if (!uploadedData) {
+                alert('请先上传Excel文件');
+                return;
+            }
+            
+            showProgress(true);
+            updateProgress(20, '正在分析数据...');
+            
+            setTimeout(() => {
+                updateProgress(50, '计算最优装箱方案...');
+                const result = calculateOptimalLoading();
+                
+                setTimeout(() => {
+                    updateProgress(80, '生成3D可视化...');
+                    displayResults(result);
+                    
+                    setTimeout(() => {
+                        updateProgress(100, '完成!');
+                        showProgress(false);
+                        document.getElementById('resultsPanel').style.display = 'block';
+                        document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+                    }, 500);
+                }, 500);
+            }, 500);
+        }
+        
+        // 显示/隐藏进度条
+        function showProgress(show) {
+            document.getElementById('progressBar').style.display = show ? 'block' : 'none';
+            if (!show) {
+                document.getElementById('progressFill').style.width = '0%';
+            }
+        }
+        
+        // 更新进度
+        function updateProgress(percent, message) {
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+        
+        // 计算最优装箱方案
+        function calculateOptimalLoading() {
+            const containerSpec = containerSpecs[selectedContainer];
+            const items = [];
+            
+            // 展开数量，创建单个物品
+            uploadedData.forEach(item => {
+                for (let i = 0; i < item.quantity; i++) {
+                    items.push({
+                        id: `${item.itemNumber}_${i + 1}`,
+                        itemNumber: item.itemNumber,
+                        length: item.length,
+                        width: item.width,
+                        height: item.height,
+                        weight: item.weight,
+                        volume: item.length * item.width * item.height
+                    });
+                }
+            });
+            
+            // 按体积从大到小排序 (First Fit Decreasing)
+            items.sort((a, b) => b.volume - a.volume);
+            
+            const loadedItems = [];
+            const layers = [];
+            let currentZ = 0;
+            let totalWeight = 0;
+            let totalVolume = 0;
+            
+            // 简化的3D装箱算法
+            for (const item of items) {
+                if (totalWeight + item.weight > containerSpec.maxWeight) continue;
+                
+                const position = findBestPosition(item, containerSpec, loadedItems, currentZ);
+                if (position) {
+                    const loadedItem = {
+                        ...item,
+                        position: position,
+                        layer: Math.floor(position.z / 50) // 粗略计算层数
+                    };
+                    
+                    loadedItems.push(loadedItem);
+                    totalWeight += item.weight;
+                    totalVolume += item.volume;
+                    
+                    // 检查是否需要新层
+                    if (position.z + item.height > currentZ + 50) {
+                        currentZ += 100;
+                        layers.push([]);
+                    }
+                    
+                    if (layers.length === 0) layers.push([]);
+                    layers[layers.length - 1].push(loadedItem);
+                }
+            }
+            
+            const containerVolume = containerSpec.length * containerSpec.width * containerSpec.height;
+            const utilizationRate = (totalVolume / containerVolume * 100).toFixed(1);
+            
+            return {
+                loadedItems,
+                layers,
+                totalItems: items.length,
+                loadedCount: loadedItems.length,
+                totalWeight,
+                utilizationRate,
+                containerSpec
+            };
+        }
+        
+        // 寻找最佳位置
+        function findBestPosition(item, containerSpec, loadedItems, currentZ) {
+            const positions = [];
+            
+            // 尝试不同的旋转方向
+            const rotations = [
+                { l: item.length, w: item.width, h: item.height },
+                { l: item.width, w: item.length, h: item.height },
+                { l: item.height, w: item.width, h: item.length }
+            ];
+            
+            for (const rotation of rotations) {
+                if (rotation.l > containerSpec.length || 
+                    rotation.w > containerSpec.width || 
+                    rotation.h > containerSpec.height) continue;
+                
+                // 尝试底层放置
+                for (let x = 0; x <= containerSpec.length - rotation.l; x += 20) {
+                    for (let y = 0; y <= containerSpec.width - rotation.w; y += 20) {
+                        const z = currentZ;
+                        
+                        if (z + rotation.h <= containerSpec.height) {
+                            const position = { x, y, z, l: rotation.l, w: rotation.w, h: rotation.h };
+                            
+                            if (!isColliding(position, loadedItems)) {
+                                positions.push({
+                                    ...position,
+                                    score: x + y + z // 优先靠近原点
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // 返回最佳位置
+            positions.sort((a, b) => a.score - b.score);
+            return positions[0] || null;
+        }
+        
+        // 检查碰撞
+        function isColliding(newPos, loadedItems) {
+            for (const item of loadedItems) {
+                const pos = item.position;
+                if (newPos.x < pos.x + pos.l && newPos.x + newPos.l > pos.x &&
+                    newPos.y < pos.y + pos.w && newPos.y + newPos.w > pos.y &&
+                    newPos.z < pos.z + pos.h && newPos.z + newPos.h > pos.z) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        // 显示结果
+        function displayResults(result) {
+            // 更新统计信息
+            document.getElementById('utilizationRate').textContent = result.utilizationRate + '%';
+            document.getElementById('totalItems').textContent = result.totalItems;
+            document.getElementById('totalWeight').textContent = Math.round(result.totalWeight) + 'kg';
+            document.getElementById('loadedItems').textContent = result.loadedCount;
+            
+            // 生成装箱指导
+            generateLoadingInstructions(result.layers);
+            
+            // 创建3D可视化
+            create3DVisualization(result);
+        }
+        
+        // 生成装箱指导
+        function generateLoadingInstructions(layers) {
+            const instructionsList = document.getElementById('instructionsList');
+            let html = '';
+            
+            layers.forEach((layer, layerIndex) => {
+                html += `<div class="step-item">
+                    <span class="step-number">${layerIndex + 1}</span>
+                    <strong>第${layerIndex + 1}层装载 (${layer.length}件)</strong>
+                    <div style="margin-top: 10px; font-size: 14px;">`;
+                
+                const itemGroups = {};
+                layer.forEach(item => {
+                    if (!itemGroups[item.itemNumber]) {
+                        itemGroups[item.itemNumber] = [];
+                    }
+                    itemGroups[item.itemNumber].push(item);
+                });
+                
+                Object.keys(itemGroups).forEach(itemNumber => {
+                    const count = itemGroups[itemNumber].length;
+                    const sample = itemGroups[itemNumber][0];
+                    html += `<div style="margin: 5px 0; padding: 5px; background: #f8f9fa; border-radius: 5px;">
+                        📦 SKU: ${itemNumber} × ${count}件<br>
+                        📏 尺寸: ${Math.round(sample.length/2.54)}"×${Math.round(sample.width/2.54)}"×${Math.round(sample.height/2.54)}" 
+                        ⚖️ ${sample.weight}kg/件
+                    </div>`;
+                });
+                
+                html += '</div></div>';
+            });
+            
+            instructionsList.innerHTML = html;
+        }
+        
+        // 创建3D可视化
+        function create3DVisualization(result) {
+            const container = document.getElementById('canvas3d');
+            container.innerHTML = '';
+            
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f0f0);
+            
+            // 创建相机
+            const aspect = container.offsetWidth / container.offsetHeight;
+            camera = new THREE.PerspectiveCamera(75, aspect, 1, 10000);
+            camera.position.set(1500, 1000, 1500);
+            
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+            
+            // 创建光照
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1000, 1000, 1000);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+            
+            // 创建集装箱轮廓
+            const containerSpec = result.containerSpec;
+            const containerGeometry = new THREE.BoxGeometry(
+                containerSpec.length, 
+                containerSpec.height, 
+                containerSpec.width
+            );
+            const containerMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x888888, 
+                wireframe: true, 
+                transparent: true, 
+                opacity: 0.3 
+            });
+            containerMesh = new THREE.Mesh(containerGeometry, containerMaterial);
+            containerMesh.position.set(
+                containerSpec.length / 2, 
+                containerSpec.height / 2, 
+                containerSpec.width / 2
+            );
+            scene.add(containerMesh);
+            
+            // 创建货物
+            loadedBoxes = [];
+            const colors = [0xff6b6b, 0x4ecdc4, 0x45b7d1, 0xf9ca24, 0xf0932b, 0xeb4d4b, 0x6c5ce7];
+            const itemColors = {};
+            let colorIndex = 0;
+            
+            result.loadedItems.forEach(item => {
+                if (!itemColors[item.itemNumber]) {
+                    itemColors[item.itemNumber] = colors[colorIndex % colors.length];
+                    colorIndex++;
+                }
+                
+                const geometry = new THREE.BoxGeometry(
+                    item.position.l, 
+                    item.position.h, 
+                    item.position.w
+                );
+                const material = new THREE.MeshLambertMaterial({ 
+                    color: itemColors[item.itemNumber],
+                    transparent: true,
+                    opacity: 0.8
+                });
+                
+                const box = new THREE.Mesh(geometry, material);
+                box.position.set(
+                    item.position.x + item.position.l / 2,
+                    item.position.z + item.position.h / 2,
+                    item.position.y + item.position.w / 2
+                );
+                box.userData = { 
+                    layer: item.layer,
+                    itemNumber: item.itemNumber
+                };
+                
+                // 添加边框
+                const edges = new THREE.EdgesGeometry(geometry);
+                const lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000, opacity: 0.5 });
+                const wireframe = new THREE.LineSegments(edges, lineMaterial);
+                box.add(wireframe);
+                
+                scene.add(box);
+                loadedBoxes.push(box);
+            });
+            
+            // 添加控制器
+            addOrbitControls();
+            
+            // 渲染
+            animate();
+        }
+        
+        // 添加轨道控制器
+        function addOrbitControls() {
+            // 简单的鼠标控制
+            let isMouseDown = false;
+            let mouseX = 0, mouseY = 0;
+            
+            renderer.domElement.addEventListener('mousedown', (event) => {
+                isMouseDown = true;
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+            });
+            
+            renderer.domElement.addEventListener('mousemove', (event) => {
+                if (!isMouseDown) return;
+                
+                const deltaX = event.clientX - mouseX;
+                const deltaY = event.clientY - mouseY;
+                
+                // 围绕Y轴旋转
+                const spherical = new THREE.Spherical();
+                spherical.setFromVector3(camera.position);
+                spherical.theta -= deltaX * 0.01;
+                spherical.phi += deltaY * 0.01;
+                spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.phi));
+                
+                camera.position.setFromSpherical(spherical);
+                camera.lookAt(new THREE.Vector3(600, 120, 120));
+                
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+            });
+            
+            renderer.domElement.addEventListener('mouseup', () => {
+                isMouseDown = false;
+            });
+            
+            renderer.domElement.addEventListener('wheel', (event) => {
+                event.preventDefault();
+                const scale = event.deltaY > 0 ? 1.1 : 0.9;
+                camera.position.multiplyScalar(scale);
+            });
+        }
+        
+        // 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        
+        // 显示指定层
+        function showLayer(layerIndex) {
+            document.querySelectorAll('.layer-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            loadedBoxes.forEach(box => {
+                if (layerIndex === -1 || box.userData.layer === layerIndex) {
+                    box.visible = true;
+                    box.material.opacity = 0.8;
+                } else {
+                    box.

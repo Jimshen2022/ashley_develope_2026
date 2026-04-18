@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36705.20 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "InventoryManagement", "PythonApplication1\InventoryManagement.pyproj", "{5FCD04F1-AEF0-4E14-A49C-4D85CF05B176}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DW_EDW", "..\DW_EDW\DW_EDW.sqlproj", "{7F543187-D58F-4BE7-BA11-667526FF058D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5FCD04F1-AEF0-4E14-A49C-4D85CF05B176}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FCD04F1-AEF0-4E14-A49C-4D85CF05B176}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F543187-D58F-4BE7-BA11-667526FF058D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F543187-D58F-4BE7-BA11-667526FF058D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F543187-D58F-4BE7-BA11-667526FF058D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7F543187-D58F-4BE7-BA11-667526FF058D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F543187-D58F-4BE7-BA11-667526FF058D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F543187-D58F-4BE7-BA11-667526FF058D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A236A90-BE67-4560-93EF-0B0BB5E0E5DA}
+	EndGlobalSection
+EndGlobal

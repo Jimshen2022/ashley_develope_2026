@@ -1,0 +1,20 @@
+{
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python-envs.pythonProjects": [],
+    "sqltools.connections": [
+        {
+            "connectionMethod": "DSN",
+            "odbcOptions": {
+                "dbms": "Auto-detect",
+                "showTblRecords": "DBMS"
+            },
+            "previewLimit": 10,
+            "driver": "SQLTools ODBC Driver",
+            "name": "AFIPROD",
+            "username": "JIMSHEN",
+            "password": "MJ2085",
+            "dsnString": "AMFLIBA.ITEMASA"
+        }
+    ]
+}

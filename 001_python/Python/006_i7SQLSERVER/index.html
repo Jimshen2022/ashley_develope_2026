@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>item_master 查询</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        button, a {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>查询 item_master 数据表</h1>
+    <button onclick="fetchData()">查询数据</button>
+    <a href="http://127.0.0.1:5000/api/download/csv" target="_blank">下载 CSV</a>
+    <a href="http://127.0.0.1:5000/api/download/excel" target="_blank">下载 Excel</a>
+
+    <div id="table-container"></div>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch('http://127.0.0.1:5000/api/query');
+            const data = await response.json();
+            renderTable(data);
+        }
+
+        function renderTable(data) {
+            if (data.length === 0) {
+                document.getElementById('table-container').innerHTML = '<p>没有数据。</p>';
+                return;
+            }
+
+            let table = '<table><thead><tr>';
+            Object.keys(data[0]).forEach(key => {
+                table += `<th>${key}</th>`;
+            });
+            table += '</tr></thead><tbody>';
+
+            data.forEach(row => {
+                table += '<tr>';
+                Object.values(row).forEach(value => {
+                    table += `<td>${value}</td>`;
+                });
+                table += '</tr>';
+            });
+
+            table += '</tbody></table>';
+            document.getElementById('table-container').innerHTML = table;
+        }
+    </script>
+</body>
+</html>

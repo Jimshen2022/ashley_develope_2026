@@ -1,0 +1,40 @@
+# --- Python related ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.log
+*.tmp
+*.bak
+
+# --- Conda / Virtual Envs ---
+.conda/
+.venv/
+env/
+venv/
+env.bak/
+.conda_env/
+*.conda
+*.env
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- IDE / Editor files ---
+.vscode/
+.idea/
+*.iml
+
+# --- OS specific ---
+.DS_Store
+Thumbs.db
+
+# --- Project build or cache ---
+dist/
+build/
+.eggs/
+*.egg-info/
+
+# --- Data caches ---
+.cache/

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互式托盘堆码计算与3D可视化</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .input-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        .input-group {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .input-group h3 {
+            margin: 0 0 20px 0;
+            color: #2c3e50;
+            font-size: 18px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .input-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .input-field {
+            flex: 1;
+        }
+        .input-field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+        .input-field input, .input-field select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .input-field input:focus, .input-field select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        .unit {
+            color: #7f8c8d;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .calculate-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 100%;
+            margin-top: 20px;
+        }
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .results-section {
+            display: none;
+            padding: 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+        .results-section.show {
+            display: block;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+        .results-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .table-header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 15px 20px;
+            font-weight: bold;
+        }
+        .table-content {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .result-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+            padding: 12px 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .result-row:hover {
+            background-color: #f8f9fa;
+        }
+        .result-row.selected {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196F3;
+        }
+        .result-header {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+            padding: 10px 20px;
+            background: #34495e;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .visualization-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .info-panel {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 250px;
+            z-index: 100;
+            font-size: 14px;
+        }
+        .info-panel h4 {
+            margin: 0 0 10px 0;
+            color: #1976d2;
+            font-size: 16px;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            padding: 3px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .metric:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+        .instructions {
+            text-align: center;
+            padding: 10px;
+            background: #e8f5e8;
+            margin: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-style: italic;
+        }
+        .best-indicator {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚛 交互式托盘堆码计算与3D可视化</h1>
+        </div>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <h3>📦 托盘规格设置</h3>
+                <div class="input-row">
+                    <div class="input-field">
+                        <label>托盘长度 <span class="unit">(英寸)</span></label>
+                        <input type="number" id="pallet-length" value="84" min="10" max="200">
+                    </div>
+                    <div class="input-field">
+                        <label>托盘宽度 <span class="unit">(英寸)</span></label>
+                        <input type="number" id="pallet-width" value="60" min="10" max="200">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-field">
+                        <label>高度限制 <span class="unit">(英寸)</span></label>
+                        <input type="number" id="height-limit" value="66.9" min="10" max="200" step="0.1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <h3>📋 产品尺寸设置</h3>
+                <div class="input-row">
+                    <div class="input-field">
+                        <label>产品长度 <span class="unit">(英寸)</span></label>
+                        <input type="number" id="cargo-length" value="40" min="0.1" step="0.1">
+                    </div>
+                    <div class="input-field">
+                        <label>产品宽度 <span class="unit">(英寸)</span></label>
+                        <input type="number" id="cargo-width" value="30" min="0.1" step="0.1">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-field">
+                        <label>产品高度 <span class="unit">(英寸)</span></label>
+                        <input type="number" id="cargo-height" value="20" min="0.1" step="0.1">
+                    </div>
+                </div>
+                <button class="calculate-btn" onclick="calculateStacking()">🔍 计算最优堆码方案</button>
+            </div>
+        </div>
+
+        <div class="results-section" id="results-section">
+            <div class="results-grid">
+                <div class="results-table">
+                    <div class="table-header">
+                        📊 堆码方案对比 (按优化程度排序)
+                    </div>
+                    <div class="result-header">
+                        <div>方向</div>
+                        <div>维度分配</div>
+                        <div>每层(TI)</div>
+                        <div>层数(HI)</div>
+                        <div>总数</div>
+                    </div>
+                    <div class="table-content" id="results-table">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+
+                <div>
+                    <div class="visualization-container" id="canvas-container">
+                        <div class="info-panel" id="info-panel" style="display: none;">
+                            <h4 id="selected-title">请选择一个方案</h4>
+                            <div class="metric">
+                                <span>每层数量:</span>
+                                <span id="ti-value">-</span>
+                            </div>
+                            <div class="metric">
+                                <span>层数:</span>
+                                <span id="hi-value">-</span>
+                            </div>
+                            <div class="metric">
+                                <span>占地利用率:</span>
+                                <span id="footprint-util">-</span>
+                            </div>
+                            <div class="metric">
+                                <span>空间利用率:</span>
+                                <span id="volume-util">-</span>
+                            </div>
+                            <div class="metric">
+                                <span>总数量:</span>
+                                <span id="total-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="instructions">
+                        🖱️ 鼠标拖拽旋转视角 | 滚轮缩放 | 点击表格行查看3D效果
+                    </div>
+
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff6b35;"></div>
+                            <span>产品</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #4CAF50;"></div>
+                            <span>托盘</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: rgba(255,255,255,0.8);"></div>
+                            <span>边界</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: rgba(255,0,0,0.3);"></div>
+                            <span>高度限制</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let scene, camera, renderer, controls;
+        let palletGroup, cargoGroup;
+        let currentResults = [];
+        let palletDimensions = { length: 84, width: 60, height: 66.9 };
+        let cargoDimensions = { length: 40, width: 30, height: 20 };
+
+        // 轨道控制
+        class SimpleOrbitControls {
+            constructor(camera, domElement) {
+                this.camera = camera;
+                this.domElement = domElement;
+                this.isMouseDown = false;
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.phi = Math.PI / 4;
+                this.theta = Math.PI / 4;
+                this.radius = 8;
+                this.target = new THREE.Vector3(0, 0, 0);
+                
+                this.domElement.addEventListener('mousedown', this.onMouseDown.bind(this));
+                this.domElement.addEventListener('mousemove', this.onMouseMove.bind(this));
+                this.domElement.addEventListener('mouseup', this.onMouseUp.bind(this));
+                this.domElement.addEventListener('wheel', this.onWheel.bind(this));
+                
+                this.updateCamera();
+            }
+            
+            onMouseDown(event) {
+                this.isMouseDown = true;
+                this.mouseX = event.clientX;
+                this.mouseY = event.clientY;
+            }
+            
+            onMouseMove(event) {
+                if (!this.isMouseDown) return;
+                
+                const deltaX = event.clientX - this.mouseX;
+                const deltaY = event.clientY - this.mouseY;
+                
+                this.theta += deltaX * 0.01;
+                this.phi += deltaY * 0.01;
+                this.phi = Math.max(0.1, Math.min(Math.PI - 0.1, this.phi));
+                
+                this.mouseX = event.clientX;
+                this.mouseY = event.clientY;
+                
+                this.updateCamera();
+            }
+            
+            onMouseUp() {
+                this.isMouseDown = false;
+            }
+            
+            onWheel(event) {
+                this.radius += event.deltaY * 0.01;
+                this.radius = Math.max(3, Math.min(15, this.radius));
+                this.updateCamera();
+            }
+            
+            updateCamera() {
+                const x = this.radius * Math.sin(this.phi) * Math.cos(this.theta);
+                const y = this.radius * Math.cos(this.phi);
+                const z = this.radius * Math.sin(this.phi) * Math.sin(this.theta);
+                
+                this.camera.position.set(x, y, z);
+                this.camera.lookAt(this.target);
+            }
+        }
+
+        function init3D() {
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f8ff);
+
+            // 创建相机
+            camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+
+            // 创建渲染器
+            const container = document.getElementById('canvas-container');
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            // 创建轨道控制
+            controls = new SimpleOrbitControls(camera, renderer.domElement);
+
+            // 添加光源
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 10, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            // 创建组
+            palletGroup = new THREE.Group();
+            cargoGroup = new THREE.Group();
+            scene.add(palletGroup);
+            scene.add(cargoGroup);
+
+            // 开始渲染
+            animate();
+        }
+
+        function createPallet() {
+            palletGroup.clear();
+            const scale = 0.02;
+
+            // 托盘底座
+            const palletGeometry = new THREE.BoxGeometry(
+                palletDimensions.length * scale, 
+                0.2, 
+                palletDimensions.width * scale
+            );
+            const palletMaterial = new THREE.MeshLambertMaterial({ color: 0x4CAF50 });
+            const palletMesh = new THREE.Mesh(palletGeometry, palletMaterial);
+            palletMesh.position.y = -0.1;
+            palletMesh.receiveShadow = true;
+            palletGroup.add(palletMesh);
+
+            // 边框
+            const edges = new THREE.EdgesGeometry(new THREE.BoxGeometry(
+                palletDimensions.length * scale, 
+                palletDimensions.height * scale, 
+                palletDimensions.width * scale
+            ));
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x666666, transparent: true, opacity: 0.3 });
+            const wireframe = new THREE.LineSegments(edges, lineMaterial);
+            wireframe.position.y = (palletDimensions.height * scale) / 2;
+            palletGroup.add(wireframe);
+
+            // 高度限制平面
+            const limitGeometry = new THREE.PlaneGeometry(
+                palletDimensions.length * scale * 1.1, 
+                palletDimensions.width * scale * 1.1
+            );
+            const limitMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xff0000, 
+                transparent: true, 
+                opacity: 0.1,
+                side: THREE.DoubleSide 
+            });
+            const limitPlane = new THREE.Mesh(limitGeometry, limitMaterial);
+            limitPlane.position.y = palletDimensions.height * scale;
+            limitPlane.rotation.x = -Math.PI / 2;
+            palletGroup.add(limitPlane);
+        }
+
+        function calculateStacking() {
+            // 获取输入值
+            palletDimensions.length = parseFloat(document.getElementById('pallet-length').value);
+            palletDimensions.width = parseFloat(document.getElementById('pallet-width').value);
+            palletDimensions.height = parseFloat(document.getElementById('pallet-height').value);
+            
+            cargoDimensions.length = parseFloat(document.getElementById('cargo-length').value);
+            cargoDimensions.width = parseFloat(document.getElementById('cargo-width').value);
+            cargoDimensions.height = parseFloat(document.getElementById('cargo-height').value);
+
+            // 计算6种方向
+            const orientations = [
+                {
+                    name: "L→长,W→宽,H→高",
+                    mapping: `${cargoDimensions.length}"→${palletDimensions.length}", ${cargoDimensions.width}"→${palletDimensions.width}", ${cargoDimensions.height}"→高`,
+                    palletDir: cargoDimensions.length,
+                    widthDir: cargoDimensions.width,
+                    heightDir: cargoDimensions.height
+                },
+                {
+                    name: "L→长,H→宽,W→高",
+                    mapping: `${cargoDimensions.length}"→${palletDimensions.length}", ${cargoDimensions.height}"→${palletDimensions.width}", ${cargoDimensions.width}"→高`,
+                    palletDir: cargoDimensions.length,
+                    widthDir: cargoDimensions.height,
+                    heightDir: cargoDimensions.width
+                },
+                {
+                    name: "W→长,L→宽,H→高",
+                    mapping: `${cargoDimensions.width}"→${palletDimensions.length}", ${cargoDimensions.length}"→${palletDimensions.width}", ${cargoDimensions.height}"→高`,
+                    palletDir: cargoDimensions.width,
+                    widthDir: cargoDimensions.length,
+                    heightDir: cargoDimensions.height
+                },
+                {
+                    name: "W→长,H→宽,L→高",
+                    mapping: `${cargoDimensions.width}"→${palletDimensions.length}", ${cargoDimensions.height}"→${palletDimensions.width}", ${cargoDimensions.length}"→高`,
+                    palletDir: cargoDimensions.width,
+                    widthDir: cargoDimensions.height,
+                    heightDir: cargoDimensions.length
+                },
+                {
+                    name: "H→长,L→宽,W→高",
+                    mapping: `${cargoDimensions.height}"→${palletDimensions.length}", ${cargoDimensions.length}"→${palletDimensions.width}", ${cargoDimensions.width}"→高`,
+                    palletDir: cargoDimensions.height,
+                    widthDir: cargoDimensions.length,
+                    heightDir: cargoDimensions.width
+                },
+                {
+                    name: "H→长,W→宽,L→高",
+                    mapping: `${cargoDimensions.height}"→${palletDimensions.length}", ${cargoDimensions.width}"→${palletDimensions.width}", ${cargoDimensions.length}"→高`,
+                    palletDir: cargoDimensions.height,
+                    widthDir: cargoDimensions.width,
+                    heightDir: cargoDimensions.length
+                }
+            ];
+
+            // 计算每种方向的结果
+            currentResults = orientations.map((ori, index) => {
+                const nx = Math.floor(palletDimensions.length / ori.palletDir);
+                const ny = Math.floor(palletDimensions.width / ori.widthDir);
+                const ti = nx * ny;
+                const hi = Math.floor(palletDimensions.height / ori.heightDir);
+                const total = ti * hi;
+                
+                const footprintUtil = (ti * ori.palletDir * ori.widthDir) / (palletDimensions.length * palletDimensions.width);
+                const volumeUtil = (total * ori.palletDir * ori.widthDir * ori.heightDir) / 
+                                  (palletDimensions.length * palletDimensions.width * palletDimensions.height);
+
+                return {
+                    ...ori,
+                    index,
+                    nx, ny, ti, hi, total,
+                    footprintUtil: footprintUtil * 100,
+                    volumeUtil: volumeUtil * 100
+                };
+            }).filter(result => result.total > 0);
+
+            // 按总数量和利用率排序
+            currentResults.sort((a, b) => {
+                if (b.total !== a.total) return b.total - a.total;
+                return b.volumeUtil - a.volumeUtil;
+            });
+
+            // 显示结果
+            displayResults();
+            document.getElementById('results-section').classList.add('show');
+            
+            // 创建托盘
+            createPallet();
+        }
+
+        function displayResults() {
+            const tableContent = document.getElementById('results-table');
+            tableContent.innerHTML = '';
+
+            currentResults.forEach((result, index) => {
+                const row = document.createElement('div');
+                row.className = 'result-row';
+                if (index === 0) {
+                    row.classList.add('selected');
+                }
+                row.onclick = () => selectResult(index);
+
+                row.innerHTML = `
+                    <div>${result.name} ${index === 0 ? '<span class="best-indicator">最优</span>' : ''}</div>
+                    <div style="font-size: 11px;">${result.mapping}</div>
+                    <div>${result.ti}</div>
+                    <div>${result.hi}</div>
+                    <div><strong>${result.total}</strong></div>
+                `;
+
+                tableContent.appendChild(row);
+            });
+
+            // 默认选择最优方案
+            if (currentResults.length > 0) {
+                selectResult(0);
+            }
+        }
+
+        function selectResult(index) {
+            // 更新选中状态
+            document.querySelectorAll('.result-row').forEach((row, i) => {
+                row.classList.toggle('selected', i === index);
+            });
+
+            const result = currentResults[index];
+            
+            // 更新信息面板
+            document.getElementById('info-panel').style.display = 'block';
+            document.getElementById('selected-title').textContent = result.name;
+            document.getElementById('ti-value').textContent = result.ti;
+            document.getElementById('hi-value').textContent = result.hi;
+            document.getElementById('footprint-util').textContent = result.footprintUtil.toFixed(1) + '%';
+            document.getElementById('volume-util').textContent = result.volumeUtil.toFixed(1) + '%';
+            document.getElementById('total-value').textContent = result.total;
+
+            // 创建3D货物
+            createCargo(result);
+        }
+
+        function createCargo(result) {
+            cargoGroup.clear();
+            const scale = 0.02;
+
+            const cargoGeometry = new THREE.BoxGeometry(
+                result.palletDir * scale,
+                result.heightDir * scale,
+                result.widthDir * scale
+            );
+            const cargoMaterial = new THREE.MeshLambertMaterial({ color: 0xff6b35 });
+
+            // 放置货物 - 不旋转，保持静态
+            for (let layer = 0; layer < result.hi; layer++) {
+                for (let i = 0; i < result.nx; i++) {
+                    for (let j = 0; j < result.ny; j++) {
+                        const cargoMesh = new THREE.Mesh(cargoGeometry, cargoMaterial);
+                        
+                        const x = (i + 0.5) * result.palletDir * scale - (palletDimensions.length * scale) / 2;
+                        const z = (j + 0.5) * result.widthDir * scale - (palletDimensions.width * scale) / 2;
+                        const y = (layer + 0.5) * result.heightDir * scale;
+                        
+                        cargoMesh.position.set(x, y, z);
+                        cargoMesh.castShadow = true;
+                        cargoMesh.receiveShadow = true;
+                        cargoGroup.add(cargoMesh);
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            // 移除自动旋转 - 保持货物静态
+            renderer.render(scene, camera);
+        }
+
+        // 窗口大小调整
+        window.addEventListener('resize', () => {
+            if (renderer) {
+                const container = document.getElementById('canvas-container');
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
+            }
+        });
+
+        // 页面加载时初始化3D
+        window.addEventListener('load', () => {
+            init3D();
+        });
+    </script>
+</body>
+</html>

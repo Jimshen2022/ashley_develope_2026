@@ -1,0 +1,67 @@
+1、利用 Python 原生的列表完成
+
+list1 = [1, 3, 5]
+list2 = [2, 4, 6]
+list3 = []
+for i in range(len(list2)):
+    list3.append(list1[i] + list2[i])
+
+print(list1)
+print(list2)
+print('两个列表相加得到的列表：')
+print(list3)
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+
+输出结果：
+
+[1, 3, 5]
+[2, 4, 6]
+两个列表相加得到的列表：
+[3, 7, 11]
+
+    1
+    2
+    3
+    4
+
+2、利用 NumPy 提供的数组来实现算术运算
+
+In [6]:import numpy as np
+
+In [7]:arr1 = np.array([1, 3, 5])
+
+In [8]:arr2 = np.array([2, 4, 6])
+
+In [9]:arr1 + arr2
+Out[9]: array([ 3,  7, 11])
+
+In [10]:arr1 - arr2
+Out[10]: array([-1, -1, -1])
+
+In [11]:arr1 * arr2
+Out[11]: array([ 2, 12, 30])
+
+In [12]:arr1 / arr2
+Out[12]: array([0.5       , 0.75      , 0.83333333])
+
+In [13]:arr1 // arr2
+Out[13]: array([0, 0, 0], dtype=int32)
+
+In [14]:arr1 + 100
+Out[14]: array([101, 103, 105])
+
+In [15]:arr1 ** 2
+Out[15]: array([ 1,  9, 25], dtype=int32)
+————————————————
+版权声明：本文为CSDN博主「iFulling」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/realoser/article/details/122152810
