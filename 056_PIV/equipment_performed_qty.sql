@@ -1,5 +1,3 @@
-select top 100 * from t_tran_log
-
 SELECT
         location_id AS equipment_id,
         CAST(start_tran_date AS DATE) AS tran_date,

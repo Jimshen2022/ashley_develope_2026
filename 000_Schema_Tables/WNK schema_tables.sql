@@ -17,6 +17,8 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%import%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%zone%'
 */
 
+select * from t_tran_log where lot_number = '503953294685'
+
 -- menu
 select * from t_process_department
 select top 10 * from t_current_menu_option

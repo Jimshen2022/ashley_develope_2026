@@ -20,7 +20,8 @@ order by t1.item_number, t1.start_tran_date, t1.start_tran_time
 
 
 -- check transactions
-SELECT tran_type,description,start_tran_date,start_tran_time,employee_id,control_number,control_number_2,wh_id,location_id,hu_id,item_number,lot_number,tran_qty,location_id_2,employee_id_2,
+SELECT tran_type,description,start_tran_date,start_tran_time,
+       employee_id,control_number,control_number_2,wh_id,location_id,hu_id,item_number,lot_number,tran_qty,location_id_2,employee_id_2,
 sn_coo,process,equipment_zone
 from t_tran_log as t1
 WHERE t1.wh_id = '335'

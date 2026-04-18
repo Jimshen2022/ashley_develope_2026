@@ -1,14 +1,31 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%barcode%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%barcode%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%attribute%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%attribute%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
 select * from t_la_employee_clock_in_out
 select * from INC0644370_t_la_employee_clock_in_out_bkp
 
-
 */
+
+select commodity_code,start_tran_date, sum(case when tran_type = '951' then -tran_qty else tran_qty end) as qty
+from t_tran_log
+where start_tran_date between '2026-04-12' and '2026-04-17'
+and tran_type in ('151','951')
+group by commodity_code,start_tran_date
+
+-- PIV
+select * from t_user
+select
+select * from t_OSHA_checklist_attributes
+
+select top 10 * from t_OSHA_attributes
+select top 10 * from t_OSHA_checklist_attributes
+select top 10 * from t_employee_attribute
+select top 10 * from t_equipment_attributes
+
+
 
 --   location barcode
 select location_id, location_barcode, building, type, status
@@ -17,6 +34,11 @@ from t_location
 
 
 select * from t_location where location_id like '[SD]%' and building = 'A3' and location_id = 'D100'
+
+--PIV OSHA
+select top 10 * from t_equipment_attributes
+select top 10 * from t_OSHA_attributes
+select top 10 * from t_OSHA_checklist_attributes
 
 
 select top 10 * from t_item_master where item_number = 'D824-924'
