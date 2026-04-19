@@ -214,7 +214,7 @@ select top 10 * from t_exception_log
 select top 10 * from t_exception_tran_log
 select  * from t_import_ONHOLD where imported >= '2026-03-19'
 
-
+SELECT top 10 * FROM t_tran_log order by start_tran_date desc, start_tran_time desc
 --battery table
 select * from t_battery
 

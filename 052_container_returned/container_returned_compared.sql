@@ -10,8 +10,7 @@ select * from t_tran_log where lot_number in ('631051104193') order by start_tra
 
 
 -- returned containers 171
-select *
-from t_tran_log 
+select  * from t_tran_log
 where tran_type = '171'
 
 
