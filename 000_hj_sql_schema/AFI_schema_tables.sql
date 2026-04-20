@@ -414,6 +414,7 @@ select * from t_tran_log where lot_number = '503950857188' order by start_tran_d
 
 
 -- by sn 
+select * from t_tran_log where lot_number = '661420010313' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '605590406108' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '503950857188' order by start_tran_date desc, start_tran_time desc
