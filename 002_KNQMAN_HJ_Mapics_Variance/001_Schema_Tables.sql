@@ -212,6 +212,8 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%equipment%
 
 
 SELECT top 10  *  FROM MasterData_ItemMaster_MIL.ITEMBL
+SELECT top 10  *  FROM MasterData_ItemMaster_AFI.ITMRVA
+SELECT top 1000  * FROM Distribution_Warehouse_Wholesale.t_item_master WHERE wh_id = '335'
 
 
 

@@ -2,7 +2,7 @@
 -- location creation dynamic
 select * from t_eil_xml_msg
 select top 10 * from t_rei_master
-select * from t_location where wh_id = '36'
+select * from t_location where location_id like 'A3025[DF][A-Z]2%'
 
 -- yard door location
 select * from t_ya_location where type = 'DOOR'
