@@ -1,3 +1,32 @@
+-- check inbound by item
+SELECT start_tran_date,
+       control_number,control_number_2,item_number, sum(CASE when tran_type = '951' then -tran_qty else tran_qty end) as qty
+from t_tran_log as t1
+WHERE
+	 t1.tran_type in ('151','951')
+-- 	AND t1.control_number_2 like '0039312%'
+    AND t1.item_number IN ('A3000224')
+    AND t1.start_tran_date >= '2026-04-05'
+group by start_tran_date,
+       control_number,control_number_2,item_number
+order by t1.item_number, t1.start_tran_date
+
+
+-- check outbound by item
+SELECT start_tran_date,
+       control_number,control_number_2,item_number, sum(CASE when tran_type = '951' then -tran_qty else tran_qty end) as qty
+
+from t_tran_log as t1
+WHERE
+	 t1.tran_type in ('347')
+-- 	AND t1.control_number_2 like '0039312%'
+    AND t1.item_number IN ('1080129')
+    AND t1.start_tran_date >= '2026-04-05'
+group by start_tran_date,
+       control_number,control_number_2,item_number
+order by t1.item_number, t1.start_tran_date
+
+
 -- by item
 SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
 from t_tran_log as t1
@@ -38,7 +67,7 @@ from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('151','347')
  	AND t1.control_number_2 in ('P2RHQ32')
-    AND t1.item_number IN ('B814-58')
+    AND t1.item_number IN ('A3000224')
     AND t1.start_tran_date >= '2025-12-06'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2
 order by t1.item_number, t1.start_tran_date
