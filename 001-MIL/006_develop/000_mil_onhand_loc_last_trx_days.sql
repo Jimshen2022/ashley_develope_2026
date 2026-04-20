@@ -3,18 +3,19 @@ WITH oh1 AS (
         a1.ITNBR,
         t2.ITDSC,
         t2.ITCLS,
+        t2.UNMSR,
         a1.HOUSE,
         a1.LLOCN,
         SUM(a1.LQNTY) AS ONHAND
     FROM Manufacturing_ProductionPlanning_MIL.SLQNTY AS a1
     LEFT JOIN (
-        SELECT a.ITNBR, a.ITCLS, a.ITDSC
+        SELECT a.ITNBR, a.ITCLS, a.ITDSC, a.UNMSR
         FROM MasterData_ItemMaster_MIL.ITMRVA AS a
         WHERE a.STID IN ('51')
     ) AS t2 ON a1.ITNBR = t2.ITNBR
     WHERE a1.HOUSE IN ('51')
       AND a1.LLOCN NOT IN ('RS001','S01ST1','PIC01','LMF001')
-    GROUP BY a1.ITNBR, t2.ITDSC, t2.ITCLS, a1.HOUSE, a1.LLOCN
+    GROUP BY a1.ITNBR, t2.ITDSC, t2.ITCLS, t2.UNMSR, a1.HOUSE, a1.LLOCN
 ),
 
 last_trx AS (
@@ -52,22 +53,18 @@ SELECT
     oh1.ITDSC                                               AS "Description",
     oh1.ITCLS                                               AS "Category",
     oh1.ONHAND                                              AS "Qty",
-    'EA'                                                    AS "Unit",
+    oh1.UNMSR                                               AS "UOM",
     oh1.LLOCN                                               AS "Location",
-    CAST(CONCAT('20',
-        SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(8)), 2, 2), '-',
-        SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(8)), 4, 2), '-',
-        SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(8)), 6, 2)
-    ) AS DATE)                                              AS "Last Transaction Date",
+    CONVERT(DATE,
+        '20' + SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(7)), 2, 6),
+        112)                                                AS "Last Transaction Date",
     lt.LAST_TCODE                                           AS "Last Transaction Type",
     CASE
         WHEN lt.LAST_UPDDT IS NULL THEN NULL
         ELSE DATEDIFF(DAY,
-            CAST(CONCAT('20',
-                SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(8)), 2, 2), '-',
-                SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(8)), 4, 2), '-',
-                SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(8)), 6, 2)
-            ) AS DATE),
+            CONVERT(DATE,
+                '20' + SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(7)), 2, 6),
+                112),
             CAST(GETDATE() AS DATE))
     END                                                     AS "Days Since Last Movement"
 

@@ -201,7 +201,7 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%equipment%c
 
 select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccounting_Enh%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%PowerBI_Finance%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%serial%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%ITEMBL%'  order by tpkRowCount DESC
 
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%EMP%'
@@ -211,7 +211,8 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%equipment%
 
 
 
-SELECT top 10  *  FROM Distribution_Wrk.InvoicedUnitsDetails
+SELECT top 10  *  FROM MasterData_ItemMaster_MIL.ITEMBL
+
 
 
 
