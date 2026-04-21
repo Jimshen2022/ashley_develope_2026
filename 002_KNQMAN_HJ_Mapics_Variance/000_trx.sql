@@ -1,3 +1,5 @@
+select top 10 * from t_employee
+
 -- check inbound by item
 SELECT start_tran_date,
        control_number,control_number_2,item_number, sum(CASE when tran_type = '951' then -tran_qty else tran_qty end) as qty
@@ -12,16 +14,34 @@ group by start_tran_date,
 order by t1.item_number, t1.start_tran_date
 
 
+-- check inbound by item
+SELECT t1.start_tran_date,t1.start_tran_time,
+       t1.control_number,t1.control_number_2,t1.item_number,
+       t2.commodity_code,t2.pick_put_id,
+       sum(CASE when t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as qty,
+       t1.employee_id,t3.name,t3.supervisor
+from t_tran_log as t1
+left join t_item_master as t2 on t1.item_number = t2.item_number
+left join t_employee as t3 on t1.employee_id = t3.emp_number
+WHERE
+	 t1.tran_type in ('151','951')
+	--AND t1.control_number_2 like 'P2V1217%'
+    --AND t1.item_number IN ('A3000224')
+    AND t1.start_tran_date > '2026-01-01'
+group by t1.start_tran_date,t1.start_tran_time,
+       t1.control_number,t2.pick_put_id, t1.employee_id, t3.name,t3.supervisor, t1.control_number_2,t1.item_number, t2.commodity_code
+order by t1.item_number, t1.start_tran_date
+
+
 -- check outbound by item
 SELECT start_tran_date,
        control_number,control_number_2,item_number, sum(CASE when tran_type = '951' then -tran_qty else tran_qty end) as qty
-
 from t_tran_log as t1
 WHERE
 	 t1.tran_type in ('347')
 -- 	AND t1.control_number_2 like '0039312%'
-    AND t1.item_number IN ('1080129')
-    AND t1.start_tran_date >= '2026-04-05'
+    AND t1.item_number IN ('5950438')
+    AND t1.start_tran_date >= '2026-04-12'
 group by start_tran_date,
        control_number,control_number_2,item_number
 order by t1.item_number, t1.start_tran_date

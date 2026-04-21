@@ -518,7 +518,7 @@ from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('151','851','951')
     --AND t1.item_number IN ('A8010414')
-	AND t1.control_number_2 IN ('P2SNX90')
+	AND t1.control_number_2 IN ('P2V0G87')
     AND t1.start_tran_date >= '2026-01-28'
 GROUP by  t1.start_tran_date,t1.control_number, t1.control_number_2,t1.tran_type, t1.item_number
 order by t1.start_tran_date desc
