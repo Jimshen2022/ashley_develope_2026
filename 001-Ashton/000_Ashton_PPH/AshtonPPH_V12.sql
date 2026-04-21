@@ -1,3 +1,23 @@
+/*  Jan.06.2026,  Defined of transactions created by Jim,Shen
+
+151 --- Receiving
+183 --- Receiving
+951 --- undo lp receiving (negative receiving)
+321 --- Loading
+363 --- picking
+372 --- picking (crossdock)
+347 --- piece shipped
+252 --- Replenishment
+254 --- Put away
+262 --- Replenishment
+202 --- put away
+Reference like 'RS%' and to_location like 'A%' ----- "Putting Away"
+Reference like 'RS%' and to_location like 'DR%' ----- "Putting Away"
+tran_code = '202' and reference like 'CN%' and  to_location like 'A%' ----- "Receiving"
+tran_code = '202' and reference like 'CN%' and  to_location like 'UL%' ----- "Receiving"
+tran_code = '202' and reference like 'UL%' and  to_location like 'A%' -----  "Putting Away"
+*/
+
 DECLARE @wh_id_list AS VARCHAR(500);
 DECLARE @tran_list AS VARCHAR(500);
 DECLARE @StartDate DATETIME;
@@ -5,27 +25,23 @@ DECLARE @EndDate DATETIME;
 SET @wh_id_list = '335,335';
 SET @tran_list = '151,183,951,321,363,372,347,252,254,262,202';
 
-SET @StartDate = DATEADD(DAY, -7, CAST(CAST(GETDATE() AS DATE) AS DATETIME)) + '07:00:00.000';
--- SET @StartDate = '2025-01-21 07:00:00.000';
+--SET @StartDate = DATEADD(DAY, -31, CAST(CAST(GETDATE() AS DATE) AS DATETIME)) + '07:00:00.000';
+SET @StartDate = '2025-01-01 07:00:00.000';
 SET @EndDate = CAST(CAST(GETDATE() AS DATE) AS DATETIME) + '06:59:59.997';
 
 With itm as (
     select distinct
         t3.ITNBR as item_number,
-        t1.wh_id,
-        t1.description,
-        t1.commodity_code,
+        t3.STID as wh_id,
+        t3.ITDSC AS description,
+        t3.ITCLS as commodity_code,
         t4.PICKPUT as pick_put_id,
         t3.ITCLS,
         t3.B2Z95S,
         t3.B2Z95S * 0.028317 as Unit_CBM,
         CASE
-            WHEN LEFT(t3.ITNBR, 4) = '100-'
-                OR LEFT(t3.ITNBR, 1) IN ('A', 'B', 'D', 'H', 'L', 'Q', 'R', 'T', 'W', 'M', 'E')
-                OR t3.ITNBR IN ('7340321', '9910160', '4400021', '4400022', '7390160',
-                                '5920230', '1300021', '1660021', '6280260')
-            THEN 'CG'
-            ELSE 'UPH'
+            WHEN t4.PICKPUT = 'UPH' THEN 'UPH'
+            ELSE 'CG'
         END AS product,
         t4.TIHIUNLD,
         t4.ITMCLSID,
@@ -34,9 +50,7 @@ With itm as (
         t4.UNITSDEEP,
         t4.SCOOPQTY,
         t4.SKIDSIZE
-    from (SELECT a1.ITNBR, a1.ITCLS, a1.B2Z95S FROM MasterData_ItemMaster_AFI.ITMRVA AS a1 WHERE a1.STID IN ('335')) as t3
-    left join (select a1.item_number, a1.wh_id, a1.description, a1.commodity_code from Distribution_Warehouse_Wholesale.t_item_master as a1 where a1.wh_id = '335') as t1
-        on t1.item_number = t3.ITNBR
+    from (SELECT a1.STID, a1.ITNBR, a1.ITCLS, a1.B2Z95S, a1.ITDSC FROM MasterData_ItemMaster_AFI.ITMRVA AS a1 WHERE a1.STID IN ('335')) as t3
     left join (SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2.UNITSDEEP,a2.SCOOPQTY,a2.SKIDSIZE
                       FROM MasterData_ItemMaster_AFI.ITBEXT AS a2 WHERE a2.HOUSE IN ('335')) as t4
         ON t3.ITNBR = t4.ITNBR
@@ -103,11 +117,7 @@ trx AS (
         t1.equipment_zone,
         CAST(t1.start_tran_date AS DATETIME) + CAST(t1.start_tran_time AS DATETIME) AS trx_date_time,
          case when i.product is not null then i.product
-            WHEN LEFT(t1.item_number, 4) = '100-'
-                OR LEFT(t1.item_number, 1) IN ('A', 'B', 'D', 'H', 'L', 'Q', 'R', 'T', 'W', 'M', 'E')
-                OR t1.item_number IN ('7340321', '9910160', '4400021', '4400022', '7390160',
-                                '5920230', '1300021', '1660021', '6280260') THEN 'CG'
-            ELSE 'UPH'
+            ELSE 'CG'
         END AS product,
         CASE
             WHEN t1.tran_type IN ('951') THEN t1.tran_qty * -1
@@ -134,7 +144,8 @@ trx AS (
             WHEN t1.tran_type = '202' and t1.control_number_2 like 'CN%' and t1.location_id_2 like 'A%' then 'Unloading'
             WHEN t1.tran_type = '202' and t1.control_number_2 like 'UL%' and t1.location_id_2 like 'A%' then 'Put away'
             ELSE 'not_pph_trx'
-        END AS pph_type
+        END AS pph_type,
+        i.scoopqty
     FROM (
         SELECT *
         FROM Distribution_Warehouse_Wholesale.TranLog
@@ -172,15 +183,66 @@ trx_2 as (
         END as row_num
     FROM trx AS t
     where t.pph_type not in ('not_pph_trx')
-)
+),
+trx_3 as (
 SELECT
    t9.*,
     CASE WHEN t9.rn = 1 THEN 1 ELSE 0 END AS Pallet_Qty,
     CASE
         WHEN t9.row_num in (0,1) THEN t9.trx_qty
         ELSE 0
-    END AS pieces,
+    END AS pieces, -- get rid of duplicate serial numbers trx on same day for same item by same employee
+    CASE
+        WHEN t9.pph_type in ('Picking','Loading') THEN 'CG/UPH'
+        ELSE t9.product END as product_category,
      CONCAT(CAST(t9.shift_date AS VARCHAR(20)),'_',t9.employee_id,'_', t9.pph_type) as emp_date_job_string,
      CONCAT(CAST(t9.shift_date AS VARCHAR(20)),'_',t9.employee_id) as emp_date_string
 FROM trx_2 AS t9
-Order by t9.trx_date_time, t9.employee_id, t9.item_number
+)
+select d.item_number,
+    d.commodity_code,
+    d.pick_put_id,
+    d.whse,
+    d.tran_type,
+    d.[description],
+    d.employee_id,
+    d.emp_name,
+    d.dept_nbr,
+    d.deparment,
+    d.group_nbr,
+    d.group_name,
+    d.supervisor_nbr,
+    d.supervisor,
+    d.start_tran_date,
+    d.product,
+    d.shift_date,
+    d.[shift],
+    d.pph_type,
+    d.product_category,
+    d.SCOOPQTY,
+    SUM(d.Pallet_Qty) as Pallet_Qty,
+    SUM(d.pieces) as pieces
+from trx_3 as d
+where d.pieces > 0
+group by d.item_number,
+    d.commodity_code,
+    d.pick_put_id,
+    d.whse,
+    d.tran_type,
+    d.[description],
+    d.employee_id,
+    d.emp_name,
+    d.dept_nbr,
+    d.deparment,
+    d.group_nbr,
+    d.group_name,
+    d.supervisor_nbr,
+    d.supervisor,
+    d.start_tran_date,
+    d.product,
+    d.shift_date,
+    d.[shift],
+    d.pph_type,
+    d.product_category,
+    d.SCOOPQTY
+order by d.shift_date, d.item_number, d.pph_type, d.employee_id;
