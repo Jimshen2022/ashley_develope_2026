@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>RP 流程图 - 专业版</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 40px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+        }
+        h2 {
+            color: #2980b9;
+            background: #ecf0f1;
+            padding: 10px 15px;
+            border-left: 5px solid #2980b9;
+            font-size: 1.2em;
+        }
+        .section {
+            margin-bottom: 60px;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #95a5a6;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Replacement Parts (RP) 业务流程图</h1>
+
+    <div class="section">
+        <h2>1. RP 收货流程 (Receiving Process) - Whse 335</h2>
+        <div class="mermaid">
+        graph TD
+            Start([<b>开始: RP Receiving</b>]) --> SCP[SCP 在 AS.COM 创建 RP 订单<br/>Option 0683 / RPP070]
+            SCP --> Supplier[供应商 Supplier]
+            Supplier --> ASN[生成 ASN]
+            ASN --> ASCOM[AS.COM 系统处理]
+            ASCOM --> Arrive[容器/货物到达]
+            Arrive --> ASNCheck[ASN Check In]
+
+            ASNCheck --> UpdateAS[更新 AshleySupplier PO]
+            ASNCheck --> AFIPROD[AFIPROD TRDATA<br/>记录 RP 交易至 Whse 335]
+
+            AFIPROD --> HJScan[HighJump 扫描物料/数量<br/>至 Whse 335 默认库位]
+            HJScan --> HJMove[HighJump 移库至 RP 专用位<br/>例如: RP998XL1]
+
+            style Start fill:#f1c40f,stroke:#f39c12,color:black
+            style HJMove fill:#3498db,stroke:#2980b9,color:white
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2. RP 拣货与包装流程 (Pick & Pack Process)</h2>
+        <div class="mermaid">
+        graph TD
+            P_Start([<b>开始: RP Delivery</b>]) --> Entry{订单录入方式}
+
+            %% 录入路径
+            Entry -->|Ashley Direct| SQL[写入 SQL Server Table]
+            SQL --> Submit[用户点击 Submit<br/>写入 AS400 文件]
+            Entry -->|AS400 Option 0065| RPP015[程序 RPP015]
+
+            %% 数据核心
+            Submit --> DB[(<b>核心表:</b><br/>ARPHEDR / ARPDETL<br/>ARPOCOM / ARPICOM<br/>VCBCTL)]
+            RPP015 --> DB
+
+            DB --> SendHJ[发送 RP 订单至 HighJump]
+
+            %% 分支流程
+            SendHJ --> Branch{订单类型?}
+
+            %% 快递流程
+            Branch -->|加急/Express| CSEmail[CS 团队邮件通知仓库]
+            CSEmail --> WhsePick335[从 Whse 335 拣货]
+            WhsePick335 --> Close1402[通过 1402 程序结案<br/>扣减 335 库存]
+
+            %% 日常流程
+            Branch -->|常规/Daily| Print1552[1552 打印 RP 订单<br/>RPP059]
+            Print1552 --> Package[打包所有 RP 订单]
+            Package --> MoveRP999[移至库位 RP999SP1]
+
+            %% 贴标与出货
+            MoveRP999 --> PrintLabel[1380 打印装箱单/序列号<br/>更新 LOCINV/TAGINVD - RP033A]
+            PrintLabel --> MoveStaging[移动至 RP 出货暂存区<br/>DW015H: RP999SP1 -> RP042AA1]
+
+            MoveStaging --> TripCheck{系统检查 1320<br/>是否存在该客户 Trip}
+            TripCheck --> UpdateHdr[更新 ARPHEDR<br/>记录 Trip/Drop - CS141BB]
+            UpdateHdr --> AddScanning[添加至扫描文件<br/>BTTRIPH / BTTRIPD - DWPO13F]
+
+            AddScanning --> HJLoad[HighJump 导入 Trip 并装载]
+            HJLoad --> HJClose[HJ 装载序列号至容器<br/>作为正常成品关闭容器]
+
+            %% 结算
+            HJClose --> HJ321E[回传数据至 AS400<br/>HJ321E]
+            HJ321E --> Nightly[夜间批处理 RP016<br/>更新 ACTCOD = 'S']
+            Nightly --> SATrans[生成 SA 交易 / 更新 RF 位<br/>准备发票数据]
+            SATrans --> Invoice[生成结算报表 / 财务手工结算]
+
+            style P_Start fill:#f1c40f,stroke:#f39c12,color:black
+            style DB fill:#e74c3c,stroke:#c0392b,color:white
+            style Branch fill:#9b59b6,stroke:#8e44ad,color:white
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2026 Ashley Furniture - WMS 流程规范
+    </div>
+</div>
+
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'neutral',
+        flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            curve: 'basis'
+        }
+    });
+</script>
+
+</body>
+</html>

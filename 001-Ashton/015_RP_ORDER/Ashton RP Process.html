@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RP 业务流程操作规范 (SOP)</title>
+    <style>
+        :root {
+            --primary-blue: #2c3e50;
+            --secondary-blue: #34495e;
+            --accent-blue: #3498db;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #fff;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary-blue);
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            color: var(--primary-blue);
+            font-size: 28px;
+        }
+        .header p {
+            margin: 10px 0 0;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        h2 {
+            background: var(--primary-blue);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 20px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: var(--secondary-blue);
+            border-left: 5px solid var(--accent-blue);
+            padding-left: 15px;
+            margin-top: 30px;
+            font-size: 18px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background-color: var(--light-bg);
+            color: var(--primary-blue);
+            font-weight: bold;
+            text-align: left;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+        }
+        td {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+        tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+        .lang-en {
+            color: #555;
+            display: block;
+            margin-top: 4px;
+            font-size: 13px;
+        }
+        .code-ref {
+            font-family: "Consolas", "Monaco", monospace;
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+            color: #c0392b;
+        }
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 12px;
+            color: #95a5a6;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>RP 业务流程操作规范</h1>
+    <p>Replacement Parts (RP) Standard Operating Procedure</p>
+    <p>版本: 1.0 | 更新日期: 2026-04-21</p>
+</div>
+
+<h2>1. RP 收货流程 (Whse 335) / RP Receiving Process</h2>
+<table>
+    <thead>
+        <tr>
+            <th style="width: 8%;">序号<br><span class="lang-en">No.</span></th>
+            <th>作业说明 (中英文对照)<br><span class="lang-en">Operating Description (Chinese/English)</span></th>
+            <th style="width: 25%;">系统/库位参考<br><span class="lang-en">System/Loc Ref</span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>01</td>
+            <td>SCP 在 AS.COM 根据选项 0683 创建 RP 订单。<br><span class="lang-en">SCP creates the RP order on AS.COM based on option 0683.</span></td>
+            <td><span class="code-ref">RPP070</span></td>
+        </tr>
+        <tr>
+            <td>02</td>
+            <td>供应商处理订单并生成 ASN (提前发货通知)。<br><span class="lang-en">Supplier processes the order and generates ASN.</span></td>
+            <td>AS.COM / ASN</td>
+        </tr>
+        <tr>
+            <td>03</td>
+            <td>RP 订单容器到达，执行 ASN 签入。<br><span class="lang-en">Container with RP order arrives and perform ASN Check In.</span></td>
+            <td>Whse Check-in</td>
+        </tr>
+        <tr>
+            <td>04</td>
+            <td>在 AshleySupplier 上更新 PO，并将 RP 交易记入 AFIPROD 中的 335 仓库。<br><span class="lang-en">Update PO on AshleySupplier and record RP transaction into whs 335 on AFIPROD.</span></td>
+            <td><span class="code-ref">TRDATA</span></td>
+        </tr>
+        <tr>
+            <td>05</td>
+            <td>HighJump (HJ) 扫描特定物料及数量至 HJ 库存及 335 默认库位。<br><span class="lang-en">HJ scans RP specific item# & Qty to HJ stock and whs 335 default location.</span></td>
+            <td>WMS Scanning</td>
+        </tr>
+        <tr>
+            <td>06</td>
+            <td>HJ 将 RP 特定物料移动至 335 专属库位。<br><span class="lang-en">HJ moves the RP specific item to 335 specific location.</span></td>
+            <td><span class="code-ref">RP998XL1</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>2. RP 拣货与包装流程 / RP Pick & Pack Process</h2>
+
+<h3>2.1 订单录入方式 / Order Entry Methods</h3>
+<table>
+    <thead>
+        <tr>
+            <th style="width: 30%;">途径 / <span class="lang-en">Channel</span></th>
+            <th>描述 / <span class="lang-en">Description</span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Ashley Direct</strong></td>
+            <td>订单写入 SQL Server 表，用户点击 Submit 按钮写入 AS400 文件。<br><span class="lang-en">Orders written to SQL Server, user clicks submit to write to AS400 files.</span></td>
+        </tr>
+        <tr>
+            <td><strong>AFI AS400</strong></td>
+            <td>通过选项 0065 直接在系统录入。<br><span class="lang-en">Entered directly via option 0065.</span></td>
+        </tr>
+    </tbody>
+</table>
+<p><em>* 核心表包含：<span class="code-ref">ARPHEDR</span> (头表), <span class="code-ref">ARPDETL</span> (明细), <span class="code-ref">ARPOCOM</span>, <span class="code-ref">ARPICOM</span>, <span class="code-ref">VCBCTL</span>。</em></p>
+
+<h3>2.2 仓库 fulfillment 工作流 / Fulfillment Workflow</h3>
+<table>
+    <thead>
+        <tr>
+            <th style="width: 20%;">类别 / <span class="lang-en">Category</span></th>
+            <th>作业步骤 / <span class="lang-en">Work Steps</span></th>
+            <th style="width: 20%;">相关程序 / <span class="lang-en">Program</span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>加急<br>Express</strong></td>
+            <td>1. CS 团队发送邮件通知仓库。<br>2. 仓库从 335 拣货并发送。<br>3. 在 1402 程序结案并扣减库存。<br><span class="lang-en">1. CS email whse. 2. Whse pick from 335. 3. Close in 1402 to reduce inventory.</span></td>
+            <td><span class="code-ref">1402</span></td>
+        </tr>
+        <tr>
+            <td><strong>日常<br>Daily</strong></td>
+            <td>1. 每日使用 1552 程序打印订单。<br>2. 包装并移至库位 RP999SP1。<br>3. 打印序列号标签并贴在包裹上。<br>4. 移动至出货暂存区。<br><span class="lang-en">1. Print orders via 1552 daily. 2. Package & move to RP999SP1. 3. Print & paste SN label. 4. Move to staging.</span></td>
+            <td><span class="code-ref">RPP059</span><br><span class="code-ref">RP033A</span><br><span class="code-ref">DW015H</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>3. 出货与结算 / Shipping & Invoicing</h2>
+<table>
+    <thead>
+        <tr>
+            <th>逻辑环节 / <span class="lang-en">Logic Step</span></th>
+            <th>详细描述 / <span class="lang-en">Detailed Description</span></th>
+            <th style="width: 25%;">系统交互 / <span class="lang-en">Interaction</span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Trip 校验</strong></td>
+            <td>创建 Trip (1320) 时，系统检查该客户是否有 RP，并更新订单头表。<br><span class="lang-en">As Trip is created, system checks for RP and updates ARPHEDR.</span></td>
+            <td><span class="code-ref">CS141BB</span></td>
+        </tr>
+        <tr>
+            <td><strong>HJ 装载</strong></td>
+            <td>将 RP 项添加至扫描文件并导入 HJ。HJ 将序列号装入容器并关闭。<br><span class="lang-en">Add RP items to scanning files and import to HJ. HJ loads SN and closes container.</span></td>
+            <td><span class="code-ref">DWPO13F</span></td>
+        </tr>
+        <tr>
+            <td><strong>数据回传</strong></td>
+            <td>将已装载的数据发送回 AS400 系统。<br><span class="lang-en">Send loaded data back into AS400.</span></td>
+            <td><span class="code-ref">HJ321E</span></td>
+        </tr>
+        <tr>
+            <td><strong>夜间结算</strong></td>
+            <td>更新 ACTCOD 字段为 "S"，生成 SA 交易，填充结算文件。<br><span class="lang-en">Update ACTCOD to 'S', create SA transactions and populate invoicing file.</span></td>
+            <td><span class="code-ref">RP016</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="footer">
+    © 2026 Ashley Furniture - WMS 流程文档
+</div>
+
+</body>
+</html>
