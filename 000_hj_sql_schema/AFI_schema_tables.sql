@@ -18,7 +18,7 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%release%'
 
 
 
-
+ select top 10 * from t_tran_log where item_number = 'R80130' order by start_tran_date desc, start_tran_time desc
  select top 10 * from t_tran_log order by start_tran_date desc, start_tran_time desc 
  select top 10 * from t_tran_log_holding order by start_tran_date desc, start_tran_time desc
  select top 100 * from t_items_on_hold_released where item_number = 'D954-50'
