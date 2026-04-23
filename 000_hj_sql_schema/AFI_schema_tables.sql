@@ -10,16 +10,37 @@ select * from t_la_employee_clock_in_out
 select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE 'description'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Acadia%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%putaway%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%class%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%release%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%hold%'
 */
 
 
 
+
+select location_id, location_barcode  from t_location where location_id like 'D2%A'
+select location_id, location_barcode  from t_location where location_id like 'S2%A'
+select top 10 * from t_stored_item where location_id = 'D076A'
+select top 10 * from t_serial_active
+select top 10 * from t_serial_master
+select top 10 * from t_item_master
+select top 10 * from t_item_uom
+select top 10 * from t_hu_detail
+select top 10 * from t_item_setup
+select top 10 * from t_work_q
+select top 10 * from t_put_profile
+select top 10 * from t_slot_available_locs
+select top 10 * from dt_item_uom_duplicates
+
+
+ select * from t_tran_log WHERE location_id = 'D076A' and item_number = 'RP ORDER' order by start_tran_date desc, start_tran_time desc
+ select * from t__log WHERE location_id = 'D076A' and item_number = 'RP ORDER' order by start_tran_date desc, start_tran_time desc
+
+
+ select  * from t_items_on_hold where date_added >= '2026-04-22'
  select top 10 * from t_tran_log where item_number = 'R80130' order by start_tran_date desc, start_tran_time desc
- select top 10 * from t_tran_log order by start_tran_date desc, start_tran_time desc 
+ select top 10 * from t_tran_log order by start_tran_date desc, start_tran_time desc
  select top 10 * from t_tran_log_holding order by start_tran_date desc, start_tran_time desc
  select top 100 * from t_items_on_hold_released where item_number = 'D954-50'
 
@@ -363,6 +384,22 @@ select top 10 * from t_exception_tran_log
 select  * from t_import_ONHOLD where imported >= '2026-03-19'
 
 
+
+-- fwd
+select top 1000 * from t_fwd_pick  as f
+select top 10 * from t_uom  
+select top 10 * from t_item_master
+select top 10 * from t_item_class
+
+
+select  l.location_id,l.type, si.item_number, sum(si.actual_qty) as onhand 
+from t_location  as l
+left join t_stored_item as si on si.location_id = l.location_id
+where l.location_id like 'A3010[CEGJLN]%[1]%' 
+group by l.location_id, l.type, si.item_number
+
+
+
 --battery table
 select * from t_battery
 
@@ -628,6 +665,9 @@ select  * from t_stored_item where type like '%68433%'
 select top 10 * from t_item_forecast_allocation 
 select top 10 * from t_item_allocation_hotload 
 select top 10 * from t_item_plate_section 
+select top 10 * from t_item_master
+
+
 
 -- locations
 select top 10 * from t_location

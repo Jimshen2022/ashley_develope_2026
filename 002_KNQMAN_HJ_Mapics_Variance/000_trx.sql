@@ -1,4 +1,4 @@
-select top 10 * from t_employee
+select top 10 * from
 
 -- check inbound by item
 SELECT start_tran_date,
@@ -7,7 +7,7 @@ from t_tran_log as t1
 WHERE
 	 t1.tran_type in ('151','951')
 -- 	AND t1.control_number_2 like '0039312%'
-    AND t1.item_number IN ('A3000224')
+    AND t1.item_number IN ('A3000031')
     AND t1.start_tran_date >= '2026-04-05'
 group by start_tran_date,
        control_number,control_number_2,item_number
@@ -52,7 +52,7 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.l
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('855')
-    AND t1.item_number IN ('B916-93')
+    AND t1.item_number IN ('L235954')
     AND t1.start_tran_date >= '2026-03-15'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
 order by t1.item_number, t1.start_tran_date
@@ -62,7 +62,7 @@ SELECT tran_type,description,start_tran_date,start_tran_time,employee_id,control
 sn_coo,process,equipment_zone
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
-    AND t1.lot_number IN ('503952904749')
+    AND t1.lot_number IN ('667048023507')
     AND t1.start_tran_date >= '2025-12-14'
 order by t1.item_number, t1.start_tran_date, t1.start_tran_time
 

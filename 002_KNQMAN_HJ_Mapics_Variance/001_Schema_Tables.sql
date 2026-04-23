@@ -250,6 +250,30 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
+select a1.STID, a1.ITNBR, a1.ITCLS, a1.B2Z95S, a1.ITDSC from MasterData_ItemMaster_MIL.ITMRVA as a1 where a1.STID = '51' AND a1.ITNBR = 'EB3392-245'
+
+
+
+SELECT tran_type, start_tran_date, start_tran_time, item_number,
+       employee_id, location_id, tran_qty, COUNT(*) as cnt
+FROM Distribution_Warehouse_Wholesale.TranLog
+WHERE lot_number = '501605724158'
+  AND start_tran_date = '2026-04-16'
+GROUP BY tran_type, start_tran_date, start_tran_time, item_number,
+         employee_id, location_id, tran_qty
+HAVING COUNT(*) > 1
+
+
+
+
+SELECT *
+FROM Distribution_Warehouse_Wholesale.TranLog
+WHERE lot_number = '501605724158'
+  AND start_tran_date = '2026-04-16'
+
+
+
+
 -- sn check by sites
 select * from Distribution_Warehouse_Wholesale.t_serial_active where item_number = 'D954-50' AND po_number in  ('P2S3T23','P2S3T14','P2S3T20','P2TC102','P2TGQ80')
 

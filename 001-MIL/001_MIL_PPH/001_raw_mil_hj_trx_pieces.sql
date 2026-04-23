@@ -8,7 +8,7 @@ IF OBJECT_ID('tempdb..#Employees_mil') IS NOT NULL DROP TABLE #Employees_mil;
 -- Optimize variable declarations by combining them
 DECLARE
     @wh_id_list VARCHAR(500) = '51',
-    @tran_list VARCHAR(500) = '111,374',
+    @tran_list VARCHAR(500) = '111,368,374',
     @StartDate DATETIME,
     @EndDate DATETIME;
 SET @StartDate = DATEADD(DAY, -7, CAST(CAST(GETDATE() AS DATE) AS DATETIME)) + '07:00:00.000';
@@ -29,47 +29,61 @@ INSERT INTO #TransactionTypes_mil
 SELECT TRIM(value) FROM STRING_SPLIT(@tran_list, ',');
 
 -- Create temp table for item master data
-SELECT DISTINCT
-    t3.ITNBR as item_number,
-    t1.wh_id,
-    t1.description,
-    t1.commodity_code,
-    t4.PICKPUT as pick_put_id,
-    t3.ITCLS,
-    t3.B2Z95S,
-    t3.B2Z95S * 0.028317 as Unit_CBM,
-    CASE
-        WHEN t3.ITCLS LIKE 'Z%' AND LEFT(t3.ITNBR,1) IN ('B','E','W','H')  THEN 'CG'
-        WHEN t3.ITCLS LIKE 'Z%' AND LEFT(t3.ITNBR,1) IN ('M') THEN 'Bedding'
-        ELSE 'CHECK'
-    END AS product,
-    t4.TIHIUNLD,
-    t4.ITMCLSID,
-    t4.UNITSWIDE,
-    t4.UNITLAYERS,
-    t4.UNITSDEEP,
-    t4.SCOOPQTY,
-    t4.SKIDSIZE
+SELECT
+    item_number,
+    wh_id,
+    commodity_code,
+    pick_put_id,
+    product
 INTO #ItemMaster_mil
-FROM (select * from MasterData_ItemMaster_MIL.ITMRVA as t0 where t0.STID = '51') as t3
-LEFT JOIN (select * from Distribution_Warehouse_Wholesale.t_item_master  where wh_id = '51') as t1
-    ON t1.item_number = t3.ITNBR
-LEFT JOIN MasterData_ItemMaster_MIL.ITBEXT t4
-    ON t3.ITNBR = t4.ITNBR
-WHERE 
+FROM (
+    SELECT
+        t3.ITNBR AS item_number,
+        t3.STID AS wh_id,
+        t3.ITCLS AS commodity_code,
+        t4.PICKPUT AS pick_put_id,
+        CASE
+            WHEN t3.ITCLS LIKE 'Z%' AND LEFT(t3.ITNBR,1) IN ('B','E','W','H') THEN 'CG'
+            WHEN t3.ITCLS LIKE 'Z%' AND LEFT(t3.ITNBR,1) IN ('M') THEN 'Bedding'
+            ELSE 'CHECK'
+        END AS product,
+        ROW_NUMBER() OVER (PARTITION BY t3.ITNBR ORDER BY t3.ITNBR) AS rn
+    FROM (
+        SELECT a1.STID, a1.ITNBR, a1.ITCLS, a1.B2Z95S, a1.ITDSC
+        FROM MasterData_ItemMaster_MIL.ITMRVA AS a1
+        WHERE a1.STID = '51'
+    ) AS t3
+    LEFT JOIN (
+        SELECT a2.ITNBR, a2.PICKPUT, a2.TIHIUNLD, a2.ITMCLSID, a2.UNITSWIDE,
+               a2.UNITLAYERS, a2.UNITSDEEP, a2.SCOOPQTY, a2.SKIDSIZE
+        FROM MasterData_ItemMaster_MIL.ITBEXT AS a2
+        WHERE a2.HOUSE = '51'
+    ) AS t4
+        ON t3.ITNBR = t4.ITNBR
+) subq
+WHERE rn = 1;
 
 -- Create temp table for locations
-SELECT distinct
+SELECT
     wh_id,
     location_id,
-    status,
+    --status,
     TypeDescription
 INTO #Locations_mil
-FROM Distribution_Warehouse_Wholesale.t_location
-WHERE wh_id IN (SELECT wh_id FROM #Warehouses_mil);
+FROM (
+    SELECT
+        wh_id,
+        location_id,
+        --status,
+        TypeDescription,
+        ROW_NUMBER() OVER (PARTITION BY location_id ORDER BY location_id) AS rn
+    FROM Distribution_Warehouse_Wholesale.t_location
+    WHERE wh_id IN (SELECT wh_id FROM #Warehouses_mil)
+) subq
+WHERE rn = 1;
 
 -- Create temp table for employees
-SELECT Distinct
+SELECT
     wh_id,
     emp_number,
     name,
@@ -78,9 +92,20 @@ SELECT Distinct
     supervisor_nbr,
     supervisor
 INTO #Employees_mil
-FROM Distribution_Warehouse_Wholesale.t_employee
-WHERE wh_id IN (SELECT wh_id FROM #Warehouses_mil);
-
+FROM (
+    SELECT
+        wh_id,
+        emp_number,
+        name,
+        dept,
+        group_nbr,
+        supervisor_nbr,
+        supervisor,
+        ROW_NUMBER() OVER (PARTITION BY emp_number ORDER BY emp_number) AS rn
+    FROM Distribution_Warehouse_Wholesale.t_employee
+    WHERE wh_id IN ('51')
+) subq
+WHERE rn = 1;
 -- Optimize final query using temp tables
 WITH TransactionBase AS (
     SELECT t1.*,
@@ -135,22 +160,22 @@ WITH TransactionBase AS (
         BETWEEN @StartDate AND @EndDate
 )
 SELECT t.*,
-                       i.product,
-                       i.commodity_code,
-                       i.pick_put_id,
-                       l1.TypeDescription                                                             as loc_type,
-                       l2.TypeDescription                                                             as loc_type_2,
-                       e.name                                                                         as emp_name,
-                       e.dept                                                                         as dept_nbr,
-                       CONCAT(CAST(t.shift_date AS VARCHAR(20)), '_', t.employee_id, '_',
-                              t.pph_type)                                                             as emp_date_job_string,
-                       CONCAT(CAST(t.shift_date AS VARCHAR(20)), '_', t.employee_id)                  as emp_date_string
-                FROM TransactionBase t
-                         LEFT JOIN #ItemMaster_mil i ON t.item_number = i.item_number AND t.wh_id = i.wh_id
-                         LEFT JOIN #Locations_mil l1 ON t.wh_id = l1.wh_id AND t.location_id = l1.location_id
-                         LEFT JOIN #Locations_mil l2 ON t.wh_id = l2.wh_id AND t.location_id_2 = l2.location_id
-                         LEFT JOIN #Employees_mil e ON t.wh_id = e.wh_id AND t.employee_id = e.emp_number
-
+       i.product,
+       i.commodity_code,
+       i.pick_put_id,
+       l1.TypeDescription                                                             as loc_type,
+       l2.TypeDescription                                                             as loc_type_2,
+       e.name                                                                         as emp_name,
+       e.dept                                                                         as dept_nbr,
+       CONCAT(CAST(t.shift_date AS VARCHAR(20)), '_', t.employee_id, '_',
+              t.pph_type)                                                             as emp_date_job_string,
+       CONCAT(CAST(t.shift_date AS VARCHAR(20)), '_', t.employee_id)                 as emp_date_string
+FROM TransactionBase t
+         LEFT JOIN #ItemMaster_mil i ON t.item_number = i.item_number AND t.wh_id = i.wh_id
+         LEFT JOIN #Locations_mil l1 ON t.wh_id = l1.wh_id AND t.location_id = l1.location_id
+         LEFT JOIN #Locations_mil l2 ON t.wh_id = l2.wh_id AND t.location_id_2 = l2.location_id
+         LEFT JOIN #Employees_mil e ON t.wh_id = e.wh_id AND t.employee_id = e.emp_number
+--where t.lot_number = '501605724158' and t.start_tran_date>='2026-04-16'
 -- Clean up temp tables
 DROP TABLE #Warehouses_mil;
 DROP TABLE #TransactionTypes_mil;

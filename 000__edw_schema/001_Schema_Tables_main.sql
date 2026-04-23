@@ -247,7 +247,141 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
+-- Create temp table for item master data
+SELECT
+    item_number,
+    wh_id,
+    commodity_code,
+    pick_put_id,
+    product
+FROM (
+    SELECT
+        t3.ITNBR AS item_number,
+        t3.STID AS wh_id,
+        t3.ITCLS AS commodity_code,
+        t4.PICKPUT AS pick_put_id,
+        CASE
+            WHEN t3.ITCLS LIKE 'Z%' AND LEFT(t3.ITNBR,1) IN ('B','E','W','H') THEN 'CG'
+            WHEN t3.ITCLS LIKE 'Z%' AND LEFT(t3.ITNBR,1) IN ('M') THEN 'Bedding'
+            ELSE 'CHECK'
+        END AS product,
+        ROW_NUMBER() OVER (PARTITION BY t3.ITNBR ORDER BY t3.ITNBR) AS rn
+    FROM (
+        SELECT a1.STID, a1.ITNBR, a1.ITCLS, a1.B2Z95S, a1.ITDSC 
+        FROM MasterData_ItemMaster_MIL.ITMRVA AS a1 
+        WHERE a1.STID = '51'
+    ) AS t3
+    LEFT JOIN (
+        SELECT a2.ITNBR, a2.PICKPUT, a2.TIHIUNLD, a2.ITMCLSID, a2.UNITSWIDE, 
+               a2.UNITLAYERS, a2.UNITSDEEP, a2.SCOOPQTY, a2.SKIDSIZE
+        FROM MasterData_ItemMaster_MIL.ITBEXT AS a2 
+        WHERE a2.HOUSE = '51'
+    ) AS t4
+        ON t3.ITNBR = t4.ITNBR
+) subq
+WHERE rn = 1;
+
+
+
+
+
+
+
+
+
+SELECT
+    wh_id,
+    emp_number,
+    name,
+    dept,
+    group_nbr,
+    supervisor_nbr,
+    supervisor
+FROM (
+    SELECT
+        wh_id,
+        emp_number,
+        name,
+        dept,
+        group_nbr,
+        supervisor_nbr,
+        supervisor,
+        ROW_NUMBER() OVER (PARTITION BY emp_number ORDER BY emp_number) AS rn
+    FROM Distribution_Warehouse_Wholesale.t_employee
+    WHERE wh_id IN ('51')
+) subq
+WHERE rn = 1
+ORDER BY emp_number;
+
+
+
+-- Create temp table for employees
+SELECT 
+    emp_number,
+    COUNT(*) AS row_count
+FROM (
+    SELECT DISTINCT
+        wh_id,
+        emp_number,
+        name,
+        dept,
+        group_nbr,
+        supervisor_nbr,
+        supervisor
+    FROM Distribution_Warehouse_Wholesale.t_employee
+    WHERE wh_id IN ('51')
+) subq
+GROUP BY emp_number
+HAVING COUNT(*) > 1
+ORDER BY row_count DESC;
+
+-- Create temp table for locations
+SELECT distinct
+    wh_id,
+    location_id,
+    status,
+    TypeDescription
+FROM Distribution_Warehouse_Wholesale.t_location
+WHERE wh_id IN ('51') and location_id in ('FOOT16668','D720A')
+
+
+
+
+SELECT DISTINCT
+    t3.ITNBR as item_number,
+    t3.STID as wh_id ,
+    t3.ITDSC as description,
+    t3.ITCLS as commodity_code,
+    t4.PICKPUT as pick_put_id,
+    t3.ITCLS,
+    t3.B2Z95S,
+    t3.B2Z95S * 0.028317 as Unit_CBM,
+    CASE
+        WHEN t3.ITCLS LIKE 'Z%' AND LEFT(t3.ITNBR,1) IN ('B','E','W','H')  THEN 'CG'
+        WHEN t3.ITCLS LIKE 'Z%' AND LEFT(t3.ITNBR,1) IN ('M') THEN 'Bedding'
+        ELSE 'CHECK'
+    END AS product,
+    t4.TIHIUNLD,
+    t4.ITMCLSID,
+    t4.UNITSWIDE,
+    t4.UNITLAYERS,
+    t4.UNITSDEEP,
+    t4.SCOOPQTY,
+    t4.SKIDSIZE
+FROM (SELECT a1.STID, a1.ITNBR, a1.ITCLS, a1.B2Z95S, a1.ITDSC FROM MasterData_ItemMaster_MIL.ITMRVA as a1 where a1.STID = '51') as t3
+LEFT JOIN (SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2.UNITSDEEP,a2.SCOOPQTY,a2.SKIDSIZE
+                      FROM MasterData_ItemMaster_MIL.ITBEXT as a2 where a2.HOUSE = '51') AS t4
+    ON t3.ITNBR = t4.ITNBR
+WHERE t3.ITNBR = 'EB3392-245'
+
+
+select a1.STID, a1.ITNBR, a1.ITCLS, a1.B2Z95S, a1.ITDSC from MasterData_ItemMaster_MIL.ITMRVA as a1 where a1.STID = '51' AND a1.ITNBR = 'EB3392-245'
+SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2.UNITSDEEP,a2.SCOOPQTY,a2.SKIDSIZE FROM MasterData_ItemMaster_MIL.ITBEXT as a2 where a2.HOUSE = '51' AND a2.ITNBR = 'EB3392-245'
+SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2.UNITSDEEP,a2.SCOOPQTY,a2.SKIDSIZE
+                      FROM MasterData_ItemMaster_MIL.ITBEXT as a2 where a2.HOUSE = '51'
+
 -- sn check by sites
+
 select * from Distribution_Warehouse_Wholesale.t_serial_active where item_number = 'D954-50' AND po_number in  ('P2S3T23','P2S3T14','P2S3T20','P2TC102','P2TGQ80')
 
 
