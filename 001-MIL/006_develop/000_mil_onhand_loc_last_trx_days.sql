@@ -15,9 +15,7 @@ WITH oh1 AS (
     ) AS t2 ON a1.ITNBR = t2.ITNBR
     WHERE a1.HOUSE IN ('51')
       AND a1.LLOCN NOT IN ('RS001','S01ST1','PIC01','LMF001')
-    GROUP BY a1.ITNBR, t2.ITDSC, t2.ITCLS, t2.UNMSR, a1.HOUSE, a1.LLOCN
-),
-
+    GROUP BY a1.ITNBR, t2.ITDSC, t2.ITCLS, t2.UNMSR, a1.HOUSE, a1.LLOCN),
 last_trx AS (
     SELECT
         ITNBR,
@@ -32,22 +30,20 @@ last_trx AS (
         FROM Manufacturing_Inventory_MIL.IMHIST AS T1
         WHERE T1.HOUSE = '51'
           AND T1.TRQTY <> 0
-          AND EXISTS (
-              SELECT 1
-              FROM (
-                  SELECT i.ITNBR
-                  FROM Manufacturing_ProductionPlanning_MIL.SLQNTY AS i
-                  WHERE i.LQNTY <> 0
-                    AND i.HOUSE IN ('51')
-                    AND i.LLOCN NOT IN ('RS001','S01ST1','PIC01','LMF001')
-                  GROUP BY i.ITNBR
-              ) AS b1
-              WHERE b1.ITNBR = T1.ITNBR
-          )
+          --AND EXISTS (
+          --    SELECT 1
+          --    FROM (
+          --        SELECT i.ITNBR
+          --        FROM Manufacturing_ProductionPlanning_MIL.SLQNTY AS i
+          --        WHERE i.LQNTY <> 0
+          --          AND i.HOUSE IN ('51')
+          --          AND i.LLOCN NOT IN ('RS001','S01ST1','PIC01','LMF001')
+          --        GROUP BY i.ITNBR
+          --    ) AS b1
+          --    WHERE b1.ITNBR = T1.ITNBR
+          --)
     ) AS ranked
-    WHERE RN = 1
-)
-
+    WHERE RN = 1)
 SELECT
     oh1.ITNBR                                               AS "Item",
     oh1.ITDSC                                               AS "Description",
@@ -66,9 +62,20 @@ SELECT
                 '20' + SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(7)), 2, 6),
                 112),
             CAST(GETDATE() AS DATE))
-    END                                                     AS "Days Since Last Movement"
-
+    END                                                     AS "Days Since Last Movement",
+    
+    -- 新增的 Day ranges 列
+    CASE
+        WHEN lt.LAST_UPDDT IS NULL THEN NULL
+        WHEN DATEDIFF(DAY, CONVERT(DATE, '20' + SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(7)), 2, 6), 112), CAST(GETDATE() AS DATE)) <= 3 THEN '0~3 days'
+        WHEN DATEDIFF(DAY, CONVERT(DATE, '20' + SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(7)), 2, 6), 112), CAST(GETDATE() AS DATE)) <= 7 THEN '3~7 days'
+        WHEN DATEDIFF(DAY, CONVERT(DATE, '20' + SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(7)), 2, 6), 112), CAST(GETDATE() AS DATE)) <= 14 THEN '7~14 days'
+        WHEN DATEDIFF(DAY, CONVERT(DATE, '20' + SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(7)), 2, 6), 112), CAST(GETDATE() AS DATE)) <= 30 THEN '14~30 days'
+        WHEN DATEDIFF(DAY, CONVERT(DATE, '20' + SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(7)), 2, 6), 112), CAST(GETDATE() AS DATE)) <= 60 THEN '30~60 days'
+        WHEN DATEDIFF(DAY, CONVERT(DATE, '20' + SUBSTRING(CAST(lt.LAST_UPDDT AS VARCHAR(7)), 2, 6), 112), CAST(GETDATE() AS DATE)) <= 90 THEN '60~90 days'
+        ELSE '90+ days'
+    END                                                     AS "Day ranges"
+    
 FROM oh1
 LEFT JOIN last_trx lt ON oh1.ITNBR = lt.ITNBR
-
 ORDER BY "Days Since Last Movement" DESC

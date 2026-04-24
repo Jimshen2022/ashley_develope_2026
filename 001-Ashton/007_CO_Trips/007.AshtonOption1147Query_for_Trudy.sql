@@ -28,6 +28,7 @@ SELECT
     a1.CSHPNO,
     a1.CUSNM,
     a1.CUSPO,
+    char(a1.ORDTE) as Order_Date,
     char(a1.TKNDAT) as Order_Taken_Date,
     char(a1.FRZDAT) as Original_Request_Date,
     char(a1.RQSDAT) as CRD,
@@ -51,7 +52,7 @@ FROM
 (
     SELECT  
         t1.HOUSE, t1.ORDNO, t1.ITMSQ, t1.ITNBR, t1.ITDSC, t1.ITCLS, t1.CCUSNO,
-        t3.CUSNM, T1.CSHPNO,t4.CUSPD, T1.RQIDT, T1.MFIDT, T1.UNMSR,
+        t3.CUSNM, T1.CSHPNO,t4.ORDTE,T1.RQIDT, T1.MFIDT, T1.UNMSR,
         t4.CUSPO, t4.SHINS, t4.TERMD as Terms,
         t4.SHLTC as Load_Lead_Time,
         i.product, 

@@ -1,5 +1,5 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%sto%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_import%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMNS LIKE '%CROSS%'
@@ -11,11 +11,54 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%putaway%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%class%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Dmg%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%hold%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%tran_type%'
 */
 
+
+
+-- receiving undo LP failed for UPH
+
+
+select * from t_asn_detail where customer_po_number = 'P2V1W63' 
+
+select * from t_tran_log where lot_number IN ('833500834507','833500834509','833500834506','833500834508') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where control_number_2 = 'P2V1W63' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where tran_type = '951' AND employee_id = '80054'
+select * from t_tran_log where log_id = '150408360' 
+select * from t_tran_log where item_number = 'P114-820'  and control_number_2 = 'P2V1W63'
+select * from t_tran_log where item_number = 'P108-835'  and control_number_2 = 'P2V1W63'
+select * from t_tran_log where item_number = '7550938' and tran_type ='152'
+
+
+
+select * from t_hu_master(nolock) where hu_id LIKE '%00000039388093%'
+select * from t_hu_detail(nolock)  where hu_id LIKE '%00000039388093%'
+select * status from t_hu_master(nolock) where 
+select * from t_hu_master(nolock) where location_id = 'RS032AA1' and item_number = 'P108-835'
+select * from t_hu_detail(nolock) where item_number = 'P108-835' 
+select * from t_item_master(nolock) where item_number = 'P108-835' 
+select * from t_item_master(nolock) where item_number = 'P108-835' 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Dmg%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%asn%'
 
 
 
@@ -194,6 +237,7 @@ group by location_id,item_number
 
 
 
+select top 100 * from t_during_move_log
 select top 100 * from t_during_move_log
 select top 100 * from t_equipment_attributes
 select  * from t_equipment_attributes
@@ -451,33 +495,17 @@ select * from t_tran_log where lot_number = '503950857188' order by start_tran_d
 
 
 -- by sn 
-select * from t_tran_log where lot_number = '661420010313' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '833500834507' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '688075336774' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '605590406108' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '503950857188' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '833500834109' order by start_tran_date desc, start_tran_time desc
-select * from t_tran_log where lot_number IN (
-'666158264678','666158264679','666158264680','666158264682','666158264683',
-'666158264684','666158264685','666158264686','666158264687','666158264688',
-'666158264676','666158339870','666158339869','666158339871','666158339880',
-'666158339882','666158339862','666158339863','666158339864','666158339866',
-'666158339867','666158339868','666158339881','666158264694','666158264695',
-'666158264696','666158264697','666158264698','666158264699','666158339865',
-'666158339877','666158339878','666158339879','666158264690','666158264691',
-'666158264692','666158264693','666158264667','666158264673','666158264681',
-'666158264669','666158264670','666158264671','666158264674','666158264675',
-'666158264677','666158264642','666158264644','666158264645','666158264646',
-'666158264652','666158264640','666158264768','666158264769','666158264770',
-'666158264771','666158264772','666158264773','666158264774','666158264776',
-'666158264779','666158264766','666158264767','666158264780','666158264784',
-'666158264785','666158264786','666158264775','666158264658','666158264641',
-'666158264643','666158264654','666158264655','666158264656','666158264657',
-'666158264782','666158264783','666158264648','666158264661','666158264662',
-'666158264777','666158264787','666158264788','666158264781','666158264666',
-'666158264765','666158264664','666158264665','666158264653','666158264660',
-'666158264663','666158264651','666158264649','666158264650'
-) order by start_tran_date desc, start_tran_time desc
 
+
+
+select top 10 * from t_serial_master where serial_number IN ('833500834507','833500834509','833500834506','833500834508')
+select top 10 * from t_asn_detail where customer_po_number = 'P2V1W63' and item_number in ('P108-835')
+                                      serial_number IN ('833500834507','833500834509','833500834506','833500834508')
 
  select  * from t_serial_active
  where serial_number in (

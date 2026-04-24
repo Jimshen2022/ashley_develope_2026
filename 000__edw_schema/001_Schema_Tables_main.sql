@@ -247,6 +247,19 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
+
+SELECT
+            T1.ITNBR,
+            T1.UPDDT  AS LAST_UPDDT,
+            T1.TCODE,
+            ROW_NUMBER() OVER (PARTITION BY T1.ITNBR ORDER BY T1.UPDDT DESC) AS RN
+        FROM Manufacturing_Inventory_MIL.IMHIST AS T1
+        WHERE T1.HOUSE = '51'
+          AND T1.TRQTY <> 0
+          AND T1.ITNBR = '9210417SUN'
+
+
+
 -- Create temp table for item master data
 SELECT
     item_number,
@@ -345,6 +358,15 @@ FROM Distribution_Warehouse_Wholesale.t_location
 WHERE wh_id IN ('51') and location_id in ('FOOT16668','D720A')
 
 
+
+SELECT distinct
+    wh_id,
+    location_id,
+    status,
+    TypeDescription,
+    item_hu_indicator
+FROM Distribution_Warehouse_Wholesale.t_location
+WHERE wh_id IN ('5') and location_id like 'RS%'
 
 
 SELECT DISTINCT
