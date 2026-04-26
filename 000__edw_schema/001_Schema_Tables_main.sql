@@ -201,12 +201,12 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%equipment%c
 
 select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccounting_Enh%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%PowerBI_Finance%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%serial%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%SLQNTY%'  order by tpkRowCount DESC
 
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%EMP%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Ecommerce Invoicing%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%HR%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%SLQNTY%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%equipment%log%'
 
 
@@ -246,6 +246,25 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+
+select top 10 * from Manufacturing_ProductionPlanning_MIL.SLQNTY_Snapshot_MIL order by SnapshotDate desc
+
+
+-- 1. 创建临时表
+CREATE TABLE #TestTemp (
+    ID INT,
+    Name NVARCHAR(50)
+);
+
+-- 2. 插入一条测试数据
+INSERT INTO #TestTemp (ID, Name)
+VALUES (1, 'Test Connection');
+
+-- 3. 查询临时表中的数据
+SELECT * FROM #TestTemp;
+
+-- 4. 使用完后删除（养成好习惯，虽然连接断开会自动删除）
+DROP TABLE #TestTemp;
 
 
 SELECT
