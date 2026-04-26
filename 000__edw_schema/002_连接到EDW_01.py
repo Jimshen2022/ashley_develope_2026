@@ -16,7 +16,7 @@ database = 'ASHLEY_EDW'
 
 # 创建连接URL
 params = urllib.parse.quote_plus(
-    "DRIVER={ODBC Driver 18 for SQL Server};"
+    "DRIVER={ODBC Driver 17 for SQL Server};"
     f"SERVER={server};"
     f"DATABASE={database};"
     "Authentication=ActiveDirectoryIntegrated;"
@@ -33,7 +33,7 @@ query = """
 SELECT *
 FROM Distribution_Warehouse_Wholesale.TranLog AS t1
 WHERE t1.wh_id IN ('335')
-  AND t1.start_tran_date = '2025-06-25'
+  AND t1.start_tran_date = '2026-04-26'
   AND t1.tran_type IN ('151');
 
 
