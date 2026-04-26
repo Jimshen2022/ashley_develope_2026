@@ -10,8 +10,11 @@ from sqlalchemy import create_engine
 
 server = os.getenv("EDW_SERVER", "ashley-edw.database.windows.net")
 database = os.getenv("EDW_DATABASE", "ASHLEY_EDW")
-authentication = os.getenv("EDW_AUTHENTICATION", "ActiveDirectoryIntegrated")
+authentication = os.getenv("EDW_AUTHENTICATION", "ActiveDirectoryServicePrincipal")
 connection_timeout = os.getenv("EDW_CONNECT_TIMEOUT", "300")
+client_id = os.getenv("EDW_CLIENT_ID")
+client_secret = os.getenv("EDW_CLIENT_SECRET")
+tenant_id = os.getenv("EDW_TENANT_ID")
 
 
 def get_edw_driver():
@@ -37,15 +40,29 @@ WHERE t1.wh_id IN ('335')
 
 
 def create_edw_engine():
-    params = urllib.parse.quote_plus(
-        f"DRIVER={{{get_edw_driver()}}};"
-        f"SERVER={server};"
-        f"DATABASE={database};"
-        f"Authentication={authentication};"
-        "Encrypt=yes;"
-        "TrustServerCertificate=no;"
-        f"Connection Timeout={connection_timeout};"
-    )
+    conn_parts = [
+        f"DRIVER={{{get_edw_driver()}}}",
+        f"SERVER={server}",
+        f"DATABASE={database}",
+        f"Authentication={authentication}",
+        "Encrypt=yes",
+        "TrustServerCertificate=no",
+        f"Connection Timeout={connection_timeout}",
+    ]
+    if authentication == "ActiveDirectoryServicePrincipal":
+        missing = [
+            name
+            for name, value in {
+                "EDW_CLIENT_ID": client_id,
+                "EDW_CLIENT_SECRET": client_secret,
+            }.items()
+            if not value
+        ]
+        if missing:
+            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
+        conn_parts.extend([f"UID={client_id}", f"PWD={client_secret}"])
+
+    params = urllib.parse.quote_plus(";".join(conn_parts) + ";")
     return create_engine(f"mssql+pyodbc:///?odbc_connect={params}")
 
 

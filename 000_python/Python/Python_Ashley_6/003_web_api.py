@@ -12,9 +12,12 @@ app = Flask(__name__)
 
 EDW_SERVER = os.getenv("EDW_SERVER", "ashley-edw.database.windows.net")
 EDW_DATABASE = os.getenv("EDW_DATABASE", "ASHLEY_EDW")
-EDW_AUTHENTICATION = os.getenv("EDW_AUTHENTICATION", "ActiveDirectoryIntegrated")
+EDW_AUTHENTICATION = os.getenv("EDW_AUTHENTICATION", "ActiveDirectoryServicePrincipal")
 EDW_DRIVER = os.getenv("EDW_DRIVER")
 EDW_CONNECT_TIMEOUT = os.getenv("EDW_CONNECT_TIMEOUT", "300")
+EDW_CLIENT_ID = os.getenv("EDW_CLIENT_ID")
+EDW_CLIENT_SECRET = os.getenv("EDW_CLIENT_SECRET")
+EDW_TENANT_ID = os.getenv("EDW_TENANT_ID")
 
 QUERY = """
 SELECT TOP 10 *
@@ -38,24 +41,41 @@ def get_edw_driver():
 
 
 def create_edw_engine():
-    params = urllib.parse.quote_plus(
-        f"DRIVER={{{get_edw_driver()}}};"
-        f"SERVER={EDW_SERVER};"
-        f"DATABASE={EDW_DATABASE};"
-        f"Authentication={EDW_AUTHENTICATION};"
-        "Encrypt=yes;"
-        "TrustServerCertificate=no;"
-        f"Connection Timeout={EDW_CONNECT_TIMEOUT};"
-    )
+    conn_parts = [
+        f"DRIVER={{{get_edw_driver()}}}",
+        f"SERVER={EDW_SERVER}",
+        f"DATABASE={EDW_DATABASE}",
+        f"Authentication={EDW_AUTHENTICATION}",
+        "Encrypt=yes",
+        "TrustServerCertificate=no",
+        f"Connection Timeout={EDW_CONNECT_TIMEOUT}",
+    ]
+    if EDW_AUTHENTICATION == "ActiveDirectoryServicePrincipal":
+        missing = [
+            name
+            for name, value in {
+                "EDW_CLIENT_ID": EDW_CLIENT_ID,
+                "EDW_CLIENT_SECRET": EDW_CLIENT_SECRET,
+            }.items()
+            if not value
+        ]
+        if missing:
+            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
+        conn_parts.extend([f"UID={EDW_CLIENT_ID}", f"PWD={EDW_CLIENT_SECRET}"])
+
+    params = urllib.parse.quote_plus(";".join(conn_parts) + ";")
     return create_engine(f"mssql+pyodbc:///?odbc_connect={params}")
 
 
 @app.route('/health', methods=['GET'])
 def health():
     return {
+        "authentication": EDW_AUTHENTICATION,
+        "client_id_configured": bool(EDW_CLIENT_ID),
         "database": EDW_DATABASE,
         "driver": get_edw_driver(),
         "server": EDW_SERVER,
+        "tenant_id_configured": bool(EDW_TENANT_ID),
     }
 
 
