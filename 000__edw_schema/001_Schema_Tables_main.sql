@@ -247,6 +247,8 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
+CREATE USER [JimShen_Testing] FROM EXTERNAL PROVIDER;
+
 select top 10 * from Manufacturing_ProductionPlanning_MIL.SLQNTY_Snapshot_MIL order by SnapshotDate desc
 
 
