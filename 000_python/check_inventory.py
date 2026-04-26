@@ -2,23 +2,26 @@ import pandas as pd
 import pyodbc
 from datetime import datetime
 import os
+import sys
 
 # ==========================================
 # 数据库连接配置 (AshtonWHJSQLprod / HJ SQL Server)
 # ==========================================
-SERVER = 'AshtonWHJSQLprod'
-DATABASE = 'AAD'
+SERVER = os.getenv('HJ_SERVER', 'AshtonWHJSQLprod')
+DATABASE = os.getenv('HJ_DATABASE', 'AAD')
+DRIVER = os.getenv('HJ_DRIVER', 'ODBC Driver 17 for SQL Server')
+CONNECT_TIMEOUT = os.getenv('HJ_CONNECT_TIMEOUT', '300')
 
 def get_connection_string():
     """生成连接字符串 (Windows Authentication)"""
-    driver = '{ODBC Driver 17 for SQL Server}' 
     return (
-        f"DRIVER={driver};"
+        f"DRIVER={{{DRIVER}}};"
         f"SERVER={SERVER};"
         f"DATABASE={DATABASE};"
         f"Trusted_Connection=yes;"  
         f"Encrypt=yes;"             
         f"TrustServerCertificate=yes;" 
+        f"Connection Timeout={CONNECT_TIMEOUT};"
     )
 
 def check_item_inventory(item_number, wh_id='335'):
@@ -62,18 +65,18 @@ def check_item_inventory(item_number, wh_id='335'):
             LEFT JOIN t_item_master i WITH (NOLOCK) 
                 ON s.item_number = i.item_number AND s.wh_id = i.wh_id
             WHERE 
-                s.wh_id = '{wh_id}' 
-                AND s.item_number = '{item_number}'
+                s.wh_id = ?
+                AND s.item_number = ?
                 AND s.actual_qty > 0
             ORDER BY 
                 s.location_id, s.status;
             """
             
-            df = pd.read_sql(sql_query, conn)
+            df = pd.read_sql(sql_query, conn, params=[wh_id, item_number])
             
             if df.empty:
                 print(f"警告: 在仓库 {wh_id} 中未找到物料 {item_number} 的库存记录，或库存为 0。")
-                return
+                return False
             
             # 打印控制台预览 (只展示部分核心字段防止太宽)
             print("📍 【详细库存与储位分布】 (预览):")
@@ -86,6 +89,7 @@ def check_item_inventory(item_number, wh_id='335'):
             # ---------------------------------------------------------
             # 自动获取当前 Windows 用户的 Downloads 文件夹路径
             downloads_folder = os.path.join(os.path.expanduser('~'), 'Downloads')
+            os.makedirs(downloads_folder, exist_ok=True)
             
             # 生成带时间戳的文件名
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -99,12 +103,15 @@ def check_item_inventory(item_number, wh_id='335'):
             print(f"总计找到 {len(df)} 条明细记录。")
             print(f"📁 详细数据已成功导出至: {output_file}")
             print("=" * 60)
+            return True
 
     except pyodbc.Error as ex:
         print(f"\n[数据库连接错误]: {ex}")
     except Exception as e:
         print(f"\n发生未预期的错误: {e}")
+    return False
 
 if __name__ == "__main__":
-    TARGET_ITEM = 'B3381-99'
-    check_item_inventory(TARGET_ITEM)
+    TARGET_ITEM = os.getenv('HJ_ITEM', 'B3381-99')
+    TARGET_WH_ID = os.getenv('HJ_WH_ID', '335')
+    sys.exit(0 if check_item_inventory(TARGET_ITEM, TARGET_WH_ID) else 1)
