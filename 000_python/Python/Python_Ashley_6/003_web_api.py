@@ -1,24 +1,69 @@
-from flask import Flask, render_template_string
-import pyodbc
+import os
+import urllib
 import webbrowser
 from threading import Timer
 
+import pandas as pd
+import pyodbc
+from flask import Flask, render_template_string
+from sqlalchemy import create_engine
+
 app = Flask(__name__)
+
+EDW_SERVER = os.getenv("EDW_SERVER", "ashley-edw.database.windows.net")
+EDW_DATABASE = os.getenv("EDW_DATABASE", "ASHLEY_EDW")
+EDW_AUTHENTICATION = os.getenv("EDW_AUTHENTICATION", "ActiveDirectoryIntegrated")
+EDW_DRIVER = os.getenv("EDW_DRIVER")
+EDW_CONNECT_TIMEOUT = os.getenv("EDW_CONNECT_TIMEOUT", "60")
+
+QUERY = """
+SELECT TOP 10 *
+FROM Distribution_Warehouse_Wholesale.TranLog AS t1
+WHERE t1.wh_id IN ('335')
+  AND t1.start_tran_date = '2026-04-26'
+  AND t1.tran_type IN ('151');
+"""
+
+
+def get_edw_driver():
+    if EDW_DRIVER:
+        return EDW_DRIVER
+
+    drivers = pyodbc.drivers()
+    if "ODBC Driver 17 for SQL Server" in drivers:
+        return "ODBC Driver 17 for SQL Server"
+    if "ODBC Driver 18 for SQL Server" in drivers:
+        return "ODBC Driver 18 for SQL Server"
+    return "ODBC Driver 17 for SQL Server"
+
+
+def create_edw_engine():
+    params = urllib.parse.quote_plus(
+        f"DRIVER={{{get_edw_driver()}}};"
+        f"SERVER={EDW_SERVER};"
+        f"DATABASE={EDW_DATABASE};"
+        f"Authentication={EDW_AUTHENTICATION};"
+        "Encrypt=yes;"
+        "TrustServerCertificate=no;"
+        f"Connection Timeout={EDW_CONNECT_TIMEOUT};"
+    )
+    return create_engine(f"mssql+pyodbc:///?odbc_connect={params}")
+
+
+@app.route('/health', methods=['GET'])
+def health():
+    return {
+        "database": EDW_DATABASE,
+        "driver": get_edw_driver(),
+        "server": EDW_SERVER,
+    }
+
 
 @app.route('/data', methods=['GET'])
 def get_data():
-    conn = pyodbc.connect(
-        "Driver={ODBC Driver 18 for SQL Server};"
-        "Server=ashley-edw.database.windows.net;"
-        "Database=ASHLEY_EDW;"
-        "Authentication=ActiveDirectoryInteractive;"
-        "Encrypt=yes;TrustServerCertificate=no;"
-    )
-    cursor = conn.cursor()
-    cursor.execute("SELECT TOP 10 * FROM Distribution_Warehouse_Wholesale.t_employee WHERE wh_id = '335'")
-    cols = [c[0] for c in cursor.description]
-    rows = cursor.fetchall()
-    conn.close()
+    df = pd.read_sql(QUERY, create_edw_engine())
+    cols = df.columns.tolist()
+    rows = df.itertuples(index=False, name=None)
 
     html = """
     <html>
@@ -32,7 +77,7 @@ def get_data():
         </style>
     </head>
     <body>
-        <h2>Top 10 Employees (wh_id=335)</h2>
+        <h2>Top 10 TranLog Rows (wh_id=335, tran_type=151)</h2>
         <table>
             <tr>{% for c in cols %}<th>{{ c }}</th>{% endfor %}</tr>
             {% for row in rows %}
