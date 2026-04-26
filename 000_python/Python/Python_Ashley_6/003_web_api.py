@@ -14,7 +14,7 @@ EDW_SERVER = os.getenv("EDW_SERVER", "ashley-edw.database.windows.net")
 EDW_DATABASE = os.getenv("EDW_DATABASE", "ASHLEY_EDW")
 EDW_AUTHENTICATION = os.getenv("EDW_AUTHENTICATION", "ActiveDirectoryIntegrated")
 EDW_DRIVER = os.getenv("EDW_DRIVER")
-EDW_CONNECT_TIMEOUT = os.getenv("EDW_CONNECT_TIMEOUT", "60")
+EDW_CONNECT_TIMEOUT = os.getenv("EDW_CONNECT_TIMEOUT", "300")
 
 QUERY = """
 SELECT TOP 10 *

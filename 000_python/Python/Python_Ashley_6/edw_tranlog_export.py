@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 server = os.getenv("EDW_SERVER", "ashley-edw.database.windows.net")
 database = os.getenv("EDW_DATABASE", "ASHLEY_EDW")
 authentication = os.getenv("EDW_AUTHENTICATION", "ActiveDirectoryIntegrated")
-connection_timeout = os.getenv("EDW_CONNECT_TIMEOUT", "60")
+connection_timeout = os.getenv("EDW_CONNECT_TIMEOUT", "300")
 
 
 def get_edw_driver():
