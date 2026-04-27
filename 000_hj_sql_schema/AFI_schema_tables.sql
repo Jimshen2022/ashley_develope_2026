@@ -22,15 +22,25 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
 -- receiving undo LP failed for UPH
 
 
-select * from t_asn_detail where customer_po_number = 'P2V1W63' 
+select * from t_asn_detail where customer_po_number = 'P2V4J92' 
 
 select * from t_tran_log where lot_number IN ('833500834507','833500834509','833500834506','833500834508') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where control_number_2 = 'P2V1V24' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where control_number_2 = 'P2V1W63' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where tran_type = '951' AND employee_id = '80054'
 select * from t_tran_log where log_id = '150408360' 
 select * from t_tran_log where item_number = 'P114-820'  and control_number_2 = 'P2V1W63'
 select * from t_tran_log where item_number = 'P108-835'  and control_number_2 = 'P2V1W63'
-select * from t_tran_log where item_number = '7550938' and tran_type ='152'
+
+-- by item receiving by PO
+select t.start_tran_date, t.item_number, control_number_2, sum(case when tran_type = '151' then tran_qty else -tran_qty end) as tran_qty  
+from t_tran_log t where t.item_number = 'U2710415' and t.tran_type in ('151','951')
+group by t.start_tran_date, t.item_number, control_number_2
+
+-- by item receiving by PO
+select t.start_tran_date, t.item_number, control_number_2, sum(case when tran_type = '151' then tran_qty else -tran_qty end) as tran_qty  
+from t_tran_log t where t.item_number = 'U2710418' and t.tran_type in ('151','951')
+group by t.start_tran_date, t.item_number, control_number_2
 
 
 
@@ -41,20 +51,6 @@ select * from t_hu_master(nolock) where location_id = 'RS032AA1' and item_number
 select * from t_hu_detail(nolock) where item_number = 'P108-835' 
 select * from t_item_master(nolock) where item_number = 'P108-835' 
 select * from t_item_master(nolock) where item_number = 'P108-835' 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -115,14 +111,6 @@ select  * from t_order_comment
 select  * from t_order_mfg 
 select  * from t_hj_as400_transferorder 
 select  * from t_order_mfg_detail_breakdown 
-
-
-
-
-
-
-
-
 
 
 
@@ -559,7 +547,7 @@ where sn.wh_id = '335' and sn.serial_no_status not in ('O',)
 
 
 -- SN
-SELECT * FROM t_tran_log where lot_number ='689251446936' order by start_tran_date, start_tran_time
+SELECT * FROM t_tran_log where lot_number ='679310297991' order by start_tran_date, start_tran_time
  
 select  distinct serial_no_status from t_serial_active  
 
@@ -570,10 +558,10 @@ SELECT t1.start_tran_date+t1.start_tran_time as tran_datetime, t1.item_number,t1
        sum(CASE when  t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','851','951')
-    AND t1.item_number IN ('A8010414')
+	AND t1.tran_type in ('855','161','165')
+    AND t1.item_number IN ('R405101')
 	--AND t1.control_number_2 IN ('P2RNT74','P2RSC61','P2RSC85','P2RSD96')
-    AND t1.start_tran_date >= '2026-01-28'
+    AND t1.start_tran_date >= '2026-04-01'
 GROUP by  t1.start_tran_date+t1.start_tran_time,t1.item_number,t1.control_number, t1.control_number_2,t1.tran_type, t1.lot_number
 order by t1.item_number, t1.start_tran_date+t1.start_tran_time desc
 
