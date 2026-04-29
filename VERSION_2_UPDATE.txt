@@ -1,0 +1,283 @@
+================================================================================
+  Power BI PBIX to PBIP Batch Conversion Tool - Version 2.0 Update
+================================================================================
+
+✅ ISSUES FIXED / 问题已解决:
+─────────────────────────────────────────────────────────────────────────────
+
+1. ❌ → ✅ Encoding Issues (中文乱码问题)
+   已修复 - 使用新的 run_power_bi_converter_v2.bat
+
+2. ❌ → ✅ Path Configuration (路径配置问题)
+   已修复 - 创建了 config_paths.bat 和 find_pbix_files.bat
+
+
+================================================================================
+📦 NEW FILES / 新增文件
+================================================================================
+
+运行工具 (Tools):
+┌─────────────────────────────────────────┐
+│ run_power_bi_converter_v2.bat ⭐ 推荐    │  Enhanced menu with all features
+│ find_pbix_files.bat                     │  Find .pbix files on your system
+│ config_paths.bat                        │  Configure source/target paths
+└─────────────────────────────────────────┘
+
+文档 (Documentation):
+┌─────────────────────────────────────────┐
+│ QUICK_START_v2.md ⭐ 推荐               │  Latest quick start guide
+│ TROUBLESHOOTING.md ⭐ 重要             │  Detailed troubleshooting guide
+│ README_START.txt                        │  Original startup guide
+│ QUICK_START.md                          │  Original quick reference
+└─────────────────────────────────────────┘
+
+
+================================================================================
+🚀 QUICK START / 快速开始 (3 Steps)
+================================================================================
+
+Step 1️⃣: Find Your Power BI Files
+┌─────────────────────────────────────────┐
+│ Double-click: find_pbix_files.bat       │
+│ This will scan for all .pbix files      │
+└─────────────────────────────────────────┘
+
+Step 2️⃣: Configure Paths
+┌─────────────────────────────────────────┐
+│ Double-click: config_paths.bat          │
+│ Enter your source and target directories│
+└─────────────────────────────────────────┘
+
+Step 3️⃣: Start Conversion
+┌─────────────────────────────────────────┐
+│ Double-click: run_power_bi_converter_v2.bat │
+│ Select option 1 to start conversion     │
+└─────────────────────────────────────────┘
+
+
+================================================================================
+💡 IMPORTANT TIPS / 重要提示
+================================================================================
+
+✅ Do This:
+  • Use the new v2.0 tools (they fixed the encoding issue)
+  • Run scripts as Administrator for best results
+  • Check TROUBLESHOOTING.md if you have problems
+  • Backup important files before conversion
+
+❌ Don't Do This:
+  • Don't close Power BI during conversion
+  • Don't save as .pbix instead of .pbip
+  • Don't interrupt the conversion process
+  • Don't use very old Power BI Desktop versions
+
+
+================================================================================
+📂 TYPICAL WORKFLOW / 典型工作流程
+================================================================================
+
+Scenario: "I don't know where my Power BI files are"
+──────────────────────────────────────────────────
+
+1. Double-click: find_pbix_files.bat
+   → Lists all .pbix files found on your system
+   → Copy the path of your files
+
+2. Double-click: config_paths.bat
+   → Paste the source directory path
+   → Set target directory
+   → Confirm
+
+3. Double-click: run_power_bi_converter_v2.bat
+   → Menu appears
+   → Select "1" for Start Conversion
+   → Follow prompts in Power BI
+
+4. Check results:
+   → Power BI project files (.pbip) saved to target directory
+   → Original .pbix files remain unchanged
+
+
+================================================================================
+🔧 TROUBLESHOOTING / 故障排除
+================================================================================
+
+Problem: "Source directory does not exist"
+Solution:
+  1. Run find_pbix_files.bat to locate your files
+  2. Run config_paths.bat to set correct paths
+  3. Try again
+
+Problem: "Menu shows garbled characters"
+Solution:
+  1. Use run_power_bi_converter_v2.bat (version 2.0)
+  2. Or use Convert-PowerBIFiles.ps1
+  3. Or use Python: python power_bi_converter.py
+
+Problem: "Python not found"
+Solution:
+  1. Install Python from https://www.python.org/downloads/
+  2. Make sure to check "Add Python to PATH"
+  3. Restart your computer
+
+Problem: "Power BI not found"
+Solution:
+  1. Download from https://powerbi.microsoft.com/downloads/
+  2. Install latest version
+  3. Restart your computer
+
+For more help, see: TROUBLESHOOTING.md
+
+
+================================================================================
+📋 FILE REFERENCE / 文件参考
+================================================================================
+
+RUNNING TOOLS (Choose one):
+┌──────────────────────────────────┐
+│ run_power_bi_converter_v2.bat ⭐ │  Best for everyone
+│ Convert-PowerBIFiles.ps1         │  For PowerShell users
+│ python power_bi_converter.py     │  For Python users
+└──────────────────────────────────┘
+
+HELPER TOOLS (Use when needed):
+┌──────────────────────────────────┐
+│ find_pbix_files.bat              │  Find Power BI files
+│ config_paths.bat                 │  Configure paths
+└──────────────────────────────────┘
+
+DOCUMENTATION (Read when needed):
+┌──────────────────────────────────┐
+│ QUICK_START_v2.md ⭐             │  Start here
+│ TROUBLESHOOTING.md ⭐            │  Problems?
+│ POWER_BI_README.md               │  Details
+│ DEPLOYMENT_SUMMARY.md            │  Full guide
+└──────────────────────────────────┘
+
+
+================================================================================
+✨ WHAT'S NEW IN V2.0 / V2.0 新增功能
+================================================================================
+
+✓ Fixed encoding issues (中文乱码问题已修复)
+✓ Better menu system (更好的菜单系统)
+✓ Path configuration tool (路径配置工具)
+✓ File finder utility (文件查找工具)
+✓ Better error handling (更好的错误处理)
+✓ Clearer instructions (更清晰的说明)
+✓ Troubleshooting guide (故障排除指南)
+✓ Configuration validation (配置验证)
+
+
+================================================================================
+🎯 NEXT STEPS / 后续步骤
+================================================================================
+
+Immediate Action:
+1. Double-click: find_pbix_files.bat
+2. Double-click: config_paths.bat
+3. Double-click: run_power_bi_converter_v2.bat
+
+For Help:
+• QUICK_START_v2.md - Latest guide
+• TROUBLESHOOTING.md - Problem solving
+• README_START.txt - Original guide
+
+For Details:
+• POWER_BI_README.md - Technical info
+• DEPLOYMENT_SUMMARY.md - Complete guide
+
+
+================================================================================
+📞 SUPPORT / 支持
+================================================================================
+
+If you encounter issues:
+
+1. CHECK THIS FIRST:
+   → TROUBLESHOOTING.md (故障排除指南)
+
+2. CHECK LOG FILE:
+   → power_bi_conversion.log (转换日志)
+
+3. VERIFY YOUR SETUP:
+   → Run: find_pbix_files.bat (找到你的文件)
+   → Run: config_paths.bat (配置路径)
+
+4. TRY DIFFERENT METHOD:
+   → Use: Convert-PowerBIFiles.ps1 (PowerShell)
+   → Use: python power_bi_converter.py (Python)
+
+
+================================================================================
+✅ SUCCESS CHECKLIST / 成功检查清单
+================================================================================
+
+After conversion, verify:
+☐ Conversion log shows "Successfully converted"
+☐ .pbip files appear in target directory
+☐ .pbip files can be opened in Power BI
+☐ Original .pbix files are still intact
+☐ File sizes are reasonable
+
+
+================================================================================
+🚀 START NOW / 立即开始
+================================================================================
+
+RECOMMENDED (推荐):
+  Double-click: run_power_bi_converter_v2.bat
+
+OR if you need to find files first:
+  Step 1: Double-click find_pbix_files.bat
+  Step 2: Double-click config_paths.bat
+  Step 3: Double-click run_power_bi_converter_v2.bat
+
+OR use PowerShell:
+  .\Convert-PowerBIFiles.ps1
+
+OR use Python:
+  python power_bi_converter.py
+
+
+================================================================================
+📚 DOCUMENT GUIDE / 文档指南
+================================================================================
+
+Start Here:
+  QUICK_START_v2.md ..................... Latest quick start
+
+Have Problems?
+  TROUBLESHOOTING.md .................... Problem solving
+
+Need Quick Reference?
+  QUICK_START.md ....................... Quick reference
+
+Want Full Details?
+  POWER_BI_README.md ................... Technical details
+  DEPLOYMENT_SUMMARY.md ................ Complete guide
+
+Original Instructions?
+  README_START.txt ..................... Original guide
+
+
+================================================================================
+✨ Version Information
+================================================================================
+
+Tool Version: 2.0
+Release Date: 2024
+Status: ✅ Fully Functional
+
+Components:
+├── Run Tools (4)
+├── Helper Tools (2)
+├── Documentation (7)
+└── Configuration Files
+
+Latest Update: Fixed encoding issues, added path configuration
+
+
+================================================================================
+祝您使用愉快！🎉 Enjoy!
+================================================================================
