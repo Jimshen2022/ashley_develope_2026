@@ -767,12 +767,16 @@ select * from Wholesale_CODIS.ATOFILE where hous = '335'
 
 -- Invoice
 
+
+
+
 select top 10 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335' and shcTripNumber = ''
 select top 10 * from Wholesale_SalesHistory_AFI.InvoiceDetail
 
 
 select top 1000 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335' and shcTripNumber = '97827'
 select top 1000 * from Wholesale_SalesHistory_AFI.InvoiceDetail where   Warehouse = '335' and TripNumber = '97827' order by InvoiceDate desc
+
 select  * from Wholesale_SalesHistory_AFI.InvoiceDetail where  OrderNumber = 'D739656'  and Warehouse = '335'
 select top 10 * from Wholesale_SalesHistory_AFI.InvoiceDetail where Warehouse = '335' and CustomerNumber = '3223700' and TripNumber = '24436'
 where ORDNO = 'D739656'

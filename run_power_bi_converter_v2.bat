@@ -11,7 +11,7 @@ if exist "config.ini" (
     )
 ) else (
     REM Default paths
-    set "SOURCE_DIR=D:\GitHub\power_bi_develop_2026\DC BI"
+    set "SOURCE_DIR=D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI"
     set "TARGET_DIR=D:\GitHub\power_bi_develop_2026\US_PBIP"
 )
 

@@ -1,44 +1,44 @@
 WITH
--- 1) 基表精简与预筛
+-- 1) Base tables with pre-filtering (ITMRVA as primary)
+ITMRVA_CTE AS (
+    SELECT d.ITNBR, d.B2Z95S, d.ITDSC, d.STID
+    FROM MasterData_ItemMaster_AFI.ITMRVA d
+    WHERE d.STID IN ('335')
+),
 ITEMBL_CTE AS (
     SELECT a.ITNBR, a.HOUSE, a.MOHTQ, a.WHSLC, a.ITCLS, a.QTSYR, a.MPUPQ, a.USEYR, a.LDQOH, a.DOFLS, a.PLREQ, a.RECPL, a.SAFTY
-    FROM AMFLIBA.ITEMBL a
+    FROM MasterData_ItemMaster_AFI.ITEMBL a
     WHERE a.MOHTQ > 0
       AND a.HOUSE IN ('335')
 ),
 ITBEXT_CTE AS (
     SELECT b.ITNBR, b.HOUSE, b.TIHIUNLD, b.PICKPUT, b.ITMCLSID,
            b.UNITSWIDE, b.UNITLAYERS, b.UNITSDEEP, b.SCOOPQTY, b.SKIDSIZE, b.MFPUS, b.OVRFLWBLDG, b.TOHLD, b.ATPQT
-    FROM AFILELIB.ITBEXT b
+    FROM MasterData_ItemMaster_AFI.ITBEXT b
     WHERE b.HOUSE IN ('335')
 ),
 ITMEXT_CTE AS (
     SELECT c.ITNBR, c.QTYCR, c.NBSEAT, c.CRTWIN, c.CRTLIN, c.CRTHIN,
            c.PRDWIN, c.PRDHIN, c.PRDLIN, c.ITMWEGHT, c.MFPUS, c.SERIES, c.UUCCIM, c.PRDDDES
-    FROM AFILELIB.ITMEXT c
-),
-ITMRVA_CTE AS (
-    SELECT d.ITNBR, d.B2Z95S, d.ITDSC, d.STID
-    FROM AMFLIBA.ITMRVA d
-    WHERE d.STID IN ('335')
+    FROM MasterData_ItemMaster_AFI.ITMEXT c
 ),
 
--- 2) 统一关联合并
+-- 2) Unified join (ITMRVA as primary table)
 MERGED AS (
     SELECT
-        t2.ITNBR,
-        t2.HOUSE,
+        t4.ITNBR,
+        t4.STID AS HOUSE,
         t2.MOHTQ,
         t2.WHSLC,
         t2.ITCLS,
         t2.QTSYR,
         t2.MPUPQ AS OPEN_PO,
-        t2.USEYR AS "Quantity used this year",
-        t2.LDQOH AS "Last date affecting quantity on hand", 
-        t2.DOFLS AS "Date of last sale", 
-        t2.PLREQ as "Pick list requirements", 
-        t2.RECPL as "Quantity received since last plan",
-        t2.SAFTY AS "Safety stock",
+        t2.USEYR AS [Quantity used this year],
+        t2.LDQOH AS [Last date affecting quantity on hand],
+        t2.DOFLS AS [Date of last sale],
+        t2.PLREQ AS [Pick list requirements],
+        t2.RECPL AS [Quantity received since last plan],
+        t2.SAFTY AS [Safety stock],
         t4.B2Z95S,
         t4.ITDSC,
         t1.TIHIUNLD,
@@ -49,61 +49,67 @@ MERGED AS (
         t1.UNITSDEEP,
         t1.SCOOPQTY,
         t1.SKIDSIZE,
-        t1.MFPUS AS "Manu. Status Code", 
-        t1.OVRFLWBLDG, 
-        t1.TOHLD AS "Total_Hold_Qty", 
+        t1.MFPUS AS [Manu. Status Code],
+        t1.OVRFLWBLDG,
+        t1.TOHLD AS [Total_Hold_Qty],
         t1.ATPQT,
         t3.QTYCR,
         t3.NBSEAT,
-        t3.CRTWIN,
-        t3.CRTLIN,
-        t3.CRTHIN,
-        t3.PRDWIN,
-        t3.PRDHIN,
-        t3.PRDLIN,
+        t3.CRTWIN AS [CRTWIN(inch)],
+        t3.CRTLIN AS [CRTLIN(inch)],
+        t3.CRTHIN AS [CRTHIN(inch)],
+        t3.PRDWIN AS [PRDWIN(inch)],
+        t3.PRDHIN AS [PRDHIN(inch)],
+        t3.PRDLIN AS [PRDLIN(inch)],
         t3.ITMWEGHT,
-        t3.MFPUS, 
-        t3.SERIES, 
-        t3.UUCCIM AS "Financial Division", 
-        t3.PRDDDES AS "Dimension Description"
-    FROM ITEMBL_CTE t2
+        t3.MFPUS,
+        t3.SERIES,
+        t3.UUCCIM AS [Financial Division],
+        t3.PRDDDES AS [Dimension Description]
+    FROM ITMRVA_CTE t4
+    LEFT JOIN ITEMBL_CTE t2
+        ON t2.ITNBR = t4.ITNBR
+       AND t2.HOUSE = t4.STID
     LEFT JOIN ITBEXT_CTE t1
-        ON t1.ITNBR = t2.ITNBR
-       AND t1.HOUSE = t2.HOUSE
+        ON t1.ITNBR = t4.ITNBR
+       AND t1.HOUSE = t4.STID
     LEFT JOIN ITMEXT_CTE t3
-        ON t3.ITNBR = t2.ITNBR
-    LEFT JOIN ITMRVA_CTE t4
-        ON t4.ITNBR = t2.ITNBR
-       AND t4.STID  = t2.HOUSE
+        ON t3.ITNBR = t4.ITNBR
 ),
 
--- 3) 统一计算（全部重量转为 KG）
+-- 3) Unified calculations (all weights converted to KG)
 METRICS AS (
     SELECT
         m.*,
 
-        -- 单位重量(kg)
-        DECIMAL(m.ITMWEGHT * 0.453592, 18, 6) AS UNIT_WEIGHT_KG,
+        -- Unit weight (KG)
+        CAST(m.ITMWEGHT * 0.453592 AS DECIMAL(18, 6)) AS UNIT_WEIGHT_KG,
 
-        -- 每 Scoop 重量(kg)
-        DECIMAL(CASE
+        -- Scoop weight (KG)
+        CAST(CASE
             WHEN m.SCOOPQTY IS NOT NULL AND m.ITMWEGHT IS NOT NULL
                  THEN m.SCOOPQTY * m.ITMWEGHT * 0.453592
             ELSE NULL
-        END, 18, 6) AS SCOOP_WEIGHT_KG,
+        END AS DECIMAL(18, 6)) AS SCOOP_WEIGHT_KG,
 
-        -- 托盘数（至少 1 托）
+        -- Carton dimensions (inch → mm, 1 inch = 25.4 mm)
+        CAST([CRTWIN(inch)] * 25.4 AS DECIMAL(10, 2)) AS [CRTWIN(mm)],
+        CAST([CRTLIN(inch)] * 25.4 AS DECIMAL(10, 2)) AS [CRTLIN(mm)],
+        CAST([CRTHIN(inch)] * 25.4 AS DECIMAL(10, 2)) AS [CRTHIN(mm)],
+
+        -- Pallet count (minimum 1 pallet)
         CASE
             WHEN m.SCOOPQTY IS NULL OR m.SCOOPQTY = 0 THEN NULL
+            WHEN m.MOHTQ IS NULL THEN NULL
             WHEN m.MOHTQ <= m.SCOOPQTY THEN 1
-            ELSE CEIL( m.MOHTQ / NULLIF(m.SCOOPQTY, 0) )
+            ELSE CEILING(m.MOHTQ / NULLIF(m.SCOOPQTY, 0))
         END AS PALLETS
     FROM MERGED m
 )
 
--- 4) 最终选择 + 分档标签
+-- 4) Final select + category labels
 SELECT
-    -- 基本信息
+    -- Basic info
     ITNBR,
     HOUSE,
     MOHTQ,
@@ -112,19 +118,19 @@ SELECT
     QTSYR,
     OPEN_PO,
 
-    -- ITEMBL 增加字段
-    "Quantity used this year",
-    "Last date affecting quantity on hand",
-    "Date of last sale",
-    "Pick list requirements",
-    "Quantity received since last plan",
-    "Safety stock",
+    -- Additional ITEMBL fields
+    [Quantity used this year],
+    [Last date affecting quantity on hand],
+    [Date of last sale],
+    [Pick list requirements],
+    [Quantity received since last plan],
+    [Safety stock],
 
-    -- ITMRVA
+    -- ITMRVA fields
     B2Z95S,
     ITDSC,
 
-    -- ITBEXT 字段
+    -- ITBEXT fields
     TIHIUNLD,
     PICKPUT,
     ITMCLSID,
@@ -133,31 +139,49 @@ SELECT
     UNITSDEEP,
     SCOOPQTY,
     SKIDSIZE,
-    "Manu. Status Code",
+    [Manu. Status Code],
     OVRFLWBLDG,
-    "Total_Hold_Qty",
+    [Total_Hold_Qty],
     ATPQT,
 
-    -- ITMEXT 字段
+    -- ITMEXT fields
     QTYCR,
     NBSEAT,
-    CRTWIN,
-    CRTLIN,
-    CRTHIN,
-    PRDWIN,
-    PRDHIN,
-    PRDLIN,
+    [CRTWIN(inch)],
+    [CRTLIN(inch)],
+    [CRTHIN(inch)],
+    [CRTWIN(mm)],
+    [CRTLIN(mm)],
+    [CRTHIN(mm)],
+    [PRDWIN(inch)],
+    [PRDHIN(inch)],
+    [PRDLIN(inch)],
     ITMWEGHT,
     SERIES,
-    "Financial Division",
-    "Dimension Description",
+    [Financial Division],
+    [Dimension Description],
 
-    -- 计算字段
+    -- Product category logic
+    CASE
+        WHEN ITCLS NOT LIKE 'Z%' THEN 'RP'
+        WHEN PICKPUT = 'UPH' THEN 'UPH'
+        ELSE 'CG'
+    END AS PRODUCT_CATEGORY,
+
+    -- Sub-category logic
+    CASE
+        WHEN ITMCLSID IN ('FLOOR') THEN 'BULK'
+        WHEN ITMCLSID IN ('RUGS') THEN 'RUG'
+        WHEN PICKPUT = 'UPH' THEN 'UPH'
+        ELSE 'CG'
+    END AS SUB_CATEGORY,
+
+    -- Calculated fields
     UNIT_WEIGHT_KG,
     PALLETS,
     SCOOP_WEIGHT_KG,
 
-    -- 单位重量分档（KG）
+    -- Unit weight range (KG)
     CASE
         WHEN UNIT_WEIGHT_KG < 10   THEN 'A. 0-10'
         WHEN UNIT_WEIGHT_KG < 20   THEN 'B. 10-20'
@@ -180,7 +204,7 @@ SELECT
         ELSE 'T. Over 180'
     END AS UNIT_WEIGHT_RANGE_KG,
 
-    -- Scoop 总重分档（KG）
+    -- Scoop total weight range (KG)
     CASE
         WHEN SCOOP_WEIGHT_KG < 100   THEN 'A. 0-100'
         WHEN SCOOP_WEIGHT_KG < 200   THEN 'B. 100-200'
@@ -207,4 +231,4 @@ SELECT
     END AS SCOOP_WEIGHT_RANGE_KG
 
 FROM METRICS
-WHERE PICKPUT = 'PALLT'
+WHERE PICKPUT = 'PALLT';
