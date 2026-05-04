@@ -1178,7 +1178,7 @@ SELECT top 1000 * FROM  Wholesale_Invoicing_AFI.DW013EW1 where WHSNO = '335'
 SELECT top 10 * FROM  Wholesale_Invoicing_AFI.MBF9REP
 
 select * FROM Distribution_Warehouse_Wholesale.t_stored_item where wh_id in  ('35','33','31')
-select * FROM Distribution_Warehouse_Wholesale.t_stored_item where wh_id in  ('335')
+select top 10 * FROM Distribution_Warehouse_Wholesale.t_stored_item where wh_id in  ('335')
 SELECT top 100 * FROM   Wholesale_CODIS.WHFILRQ AS t where t.FLHOUSE = '335' order by t.FLTRIPNO, t.FLRDTE
 
 SELECT
