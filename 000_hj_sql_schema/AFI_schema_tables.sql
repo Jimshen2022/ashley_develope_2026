@@ -18,6 +18,11 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
 */
 
 
+-- on hand
+select * 
+FROM t_stored_item as oh
+where oh.wh_id in  ('335')
+
 
 -- receiving undo LP failed for UPH
 
