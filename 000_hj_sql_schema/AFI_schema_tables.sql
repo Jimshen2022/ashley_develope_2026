@@ -17,6 +17,27 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
 */
 
+-- by PO receiving
+select * from t_tran_log where control_number_2 = 'P2V0B58'
+select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  from t_tran_log where item_number = 'B100-14' and tran_type in ('151')  group by start_tran_date, control_number,control_number_2 order by start_tran_date,control_number,control_number_2
+select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  from t_tran_log where item_number = 'B100-14' and tran_type in ('347')  group by start_tran_date, control_number,control_number_2 order by start_tran_date,control_number,control_number_2
+
+
+-- sn trx
+select * from t_tran_log where lot_number IN ('688075519780') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('666158354602') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('633124331289') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('666158453067','666158453082') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+
+select * from t_tran_log where item_number = 'B756-58' and tran_type in ('165','855') and control_number = 'P2V3X03'
+select * from t_tran_log where item_number = 'B756-58' and tran_type in ('151') and control_number_2 = 'P2V3X03' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+
+-- container shipped check
+select * from t_tran_log where control_number = 'TGHU6403382' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where control_number_2 = '0028975-00' AND tran_type = '347' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where tran_type = '347' AND routing_code like 'UETU7134359%' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where tran_type = '347' AND routing_code like 'CMAU4746950%' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+
 
 -- on hand
 select * 
@@ -28,6 +49,7 @@ where oh.wh_id in  ('335')
 
 
 select * from t_asn_detail where customer_po_number = 'P2V1W63' 
+select * from t_asn_detail where customer_po_number = 'P2V0B58' 
 
 select * from t_tran_log where lot_number IN ('833500834507','833500834509','833500834506','833500834508') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
@@ -36,7 +58,8 @@ select * from t_tran_log where tran_type = '951' AND employee_id = '80054'
 select * from t_tran_log where log_id = '150408360' 
 select * from t_tran_log where item_number = 'P114-820'  and control_number_2 = 'P2V1W63'
 select * from t_tran_log where item_number = 'P108-835'  and control_number_2 = 'P2V1W63'
-select * from t_tran_log where item_number = '7550938' and tran_type ='152'
+
+
 
 
 
@@ -47,12 +70,6 @@ select * from t_hu_master(nolock) where location_id = 'RS032AA1' and item_number
 select * from t_hu_detail(nolock) where item_number = 'P108-835' 
 select * from t_item_master(nolock) where item_number = 'P108-835' 
 select * from t_item_master(nolock) where item_number = 'P108-835' 
-
-
-
--- sn trx
-select * from t_tran_log where lot_number IN ('633124331289') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
-
 
 
 
