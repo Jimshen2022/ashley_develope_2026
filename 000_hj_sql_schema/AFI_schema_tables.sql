@@ -30,6 +30,7 @@ where oh.wh_id in  ('335')
 select * from t_asn_detail where customer_po_number = 'P2V1W63' 
 
 select * from t_tran_log where lot_number IN ('833500834507','833500834509','833500834506','833500834508') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+
 select * from t_tran_log where control_number_2 = 'P2V1W63' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where tran_type = '951' AND employee_id = '80054'
 select * from t_tran_log where log_id = '150408360' 
@@ -49,7 +50,8 @@ select * from t_item_master(nolock) where item_number = 'P108-835'
 
 
 
-
+-- sn trx
+select * from t_tran_log where lot_number IN ('633124331289') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
 
 
