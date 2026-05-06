@@ -18,8 +18,18 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
 */
 
 -- by PO receiving
-select * from t_tran_log where control_number_2 = 'P2V0B58'
-select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  from t_tran_log where item_number = 'B100-14' and tran_type in ('151')  group by start_tran_date, control_number,control_number_2 order by start_tran_date,control_number,control_number_2
+select start_tran_date, item_number, control_number,control_number_2, sum(tran_qty) as qty  
+from t_tran_log 
+where control_number_2 = 'P2V0B18' and tran_type in ('151')  
+group by start_tran_date, item_number,control_number,control_number_2 
+order by start_tran_date, control_number,control_number_2
+
+
+
+
+
+select * from t_tran_log where control_number_2 = 'P2V6F28'
+select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  from t_tran_log where item_number = 'U2710513' and tran_type in ('151')  group by start_tran_date, control_number,control_number_2 order by start_tran_date,control_number,control_number_2
 select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  from t_tran_log where item_number = 'B100-14' and tran_type in ('347')  group by start_tran_date, control_number,control_number_2 order by start_tran_date,control_number,control_number_2
 
 

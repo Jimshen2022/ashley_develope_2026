@@ -11,6 +11,45 @@ select top 10 * from t_order_detail
 select top 10 * from t_order_detail_breakdown
 
 
+-- 151， 951 abnormal transactions by item
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, sum(case when t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('151','951')
+    AND t1.item_number IN ('B742-46')
+    AND t1.start_tran_date >= '2026-04-19'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type
+order by t1.item_number, t1.start_tran_date
+
+
+
+-- 161,165, 851, 855 abnormal transactions by item
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('161','165','851','855')
+    AND t1.item_number IN ('T402-13')
+    AND t1.start_tran_date >= '2026-04-19'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
+order by t1.item_number, t1.start_tran_date
+
+
+-- by sn
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('855','165')
+    AND t1.item_number IN ('6730564')
+    AND t1.start_tran_date >= '2026-04-19'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
+order by t1.item_number, t1.start_tran_date
+
+
+-- sn history
+select * from t_tran_log where lot_number in ('833500835252','630570021844') order by lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number in ('683811716878') order by lot_number, start_tran_date desc, start_tran_time desc
+
+
 -- trx
 select top 10 * from t_tran_log where start_tran_date = cast(getdate() as date)  order by start_tran_date desc, start_tran_time desc
 
@@ -45,15 +84,7 @@ and control_number_2 like '%1746%'
 group by start_tran_date,start_tran_time, tran_type, description, item_number, left(control_number_2,7)
 
 
--- by item
-SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.lot_number, sum(t1.tran_qty) as tran_qty
-from t_tran_log as t1
-WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('161','165','851','855')
-    AND t1.item_number IN ('B949-93')
-    AND t1.start_tran_date >= '2026-03-01'
-GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
-order by t1.item_number, t1.start_tran_date
+
 
 -- by sn
 SELECT tran_type,description,start_tran_date,start_tran_time,employee_id,control_number,control_number_2,wh_id,location_id,hu_id,item_number,lot_number,tran_qty,location_id_2,employee_id_2,
