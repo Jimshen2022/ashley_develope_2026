@@ -24,8 +24,17 @@ where control_number_2 = 'P2V0B18' and tran_type in ('151')
 group by start_tran_date, item_number,control_number,control_number_2 
 order by start_tran_date, control_number,control_number_2
 
+select top 10 * from t_serial_active where serial_number = '688075633760'
+select top 10 * from t_serial_master where serial_number = '688075633760'
+select * from t_tran_log where lot_number IN ('688075633760') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
+select distinct serial_no_status from t_serial_master where serial_number = '688075633760'
 
+-- sn status check
+select t.*, m.serial_no_status
+from t_serial_active(nolock) as t 
+left join t_serial_master(nolock) as m on t.serial_number = m.serial_number
+where t.serial_no_status != m.serial_no_status and t.serial_no_status in ('R')
 
 
 select * from t_tran_log where control_number_2 = 'P2V6F28'
