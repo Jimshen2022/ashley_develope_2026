@@ -17,6 +17,10 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
 */
 
+-- location master
+select  * from t_location where location_id like 'RS%'
+
+
 -- by PO receiving
 select start_tran_date, item_number, control_number,control_number_2, sum(tran_qty) as qty  
 from t_tran_log 
