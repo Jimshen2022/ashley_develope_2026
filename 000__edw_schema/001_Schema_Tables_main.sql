@@ -288,6 +288,11 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '635930176074' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '688075336774' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 
+-- 350 fill check
+Select * from Distribution_Warehouse_Wholesale.tranlog where tran_type = '350' and control_number_2 like '%39904%'
+
+start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503950857188' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '694370110319' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '638920006379' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time

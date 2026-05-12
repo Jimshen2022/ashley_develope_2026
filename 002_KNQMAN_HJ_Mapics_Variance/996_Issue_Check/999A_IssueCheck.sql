@@ -9,13 +9,14 @@ select top 10 * from t_item_master
 select top 10 * from t_item_master where item_number = 'U6600014'
 select top 10 * from t_order_detail
 select top 10 * from t_order_detail_breakdown
+select top 10 * from t_tran_log order by lot_number, start_tran_date desc, start_tran_time desc
 
 -- 347 abnormal transactions by item
 SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, sum(case when t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type like '3%' or tran_type like '8%'
-    AND t1.item_number IN ('R407301')
+    AND t1.item_number IN ('R57522')
     AND t1.start_tran_date >= '2026-05-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type
 order by t1.item_number, t1.start_tran_date
@@ -28,8 +29,8 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, sum(
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('151','951')
-    AND t1.item_number IN ('B742-46')
-    AND t1.start_tran_date >= '2026-04-19'
+    AND t1.item_number IN ('R57522')
+    AND t1.start_tran_date >= '2026-01-19'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type
 order by t1.item_number, t1.start_tran_date
 

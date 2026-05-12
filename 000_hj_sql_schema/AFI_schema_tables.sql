@@ -17,6 +17,9 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
 */
 
+-- 350 fill
+Select * from t_tran_log where tran_type = '350' and control_number_2 like '%36129%'
+
 -- location master
 select  * from t_location where location_id like 'RS%'
 
