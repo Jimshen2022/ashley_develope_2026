@@ -1,4 +1,4 @@
-﻿/*
+/*
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%sto%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_import%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
@@ -14,8 +14,12 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%putaway%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Dmg%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%transfer%'
 */
+-- t_transfer_whse
+select * from t_transfer_whse 
+select * FROM t_stored_item where 
+
 
 -- 350 fill
 Select * from t_tran_log where tran_type = '350' and control_number_2 like '%36129%'
@@ -31,10 +35,9 @@ where control_number_2 = 'P2V0B18' and tran_type in ('151')
 group by start_tran_date, item_number,control_number,control_number_2 
 order by start_tran_date, control_number,control_number_2
 
-select top 10 * from t_serial_active where serial_number = '526404172037'
-select top 10 * from t_serial_active where serial_number = '645521626057'
+select top 10 * from t_serial_active where serial_number = '688075633760'
 select top 10 * from t_serial_master where serial_number = '688075633760'
-select * from t_tran_log where lot_number IN ('645521626057') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('688075633760') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
 select distinct serial_no_status from t_serial_master where serial_number = '688075633760'
 
@@ -51,7 +54,7 @@ select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  f
 
 
 -- sn trx
-select * from t_tran_log where lot_number IN ('618268701679') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('688075519780') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('666158354602') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('633124331289') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('666158453067','666158453082') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
@@ -72,6 +75,7 @@ FROM t_stored_item as oh
 where oh.wh_id in  ('335')
 
 
+-- receiving undo LP failed for UPH
 -- receiving undo LP failed for UPH
 
 
@@ -168,7 +172,7 @@ select  * from t_hj_as400_transferorder
 select  * from t_order_mfg_detail_breakdown 
 
 
-
+select  * from t_order where wh_id= '35'
 
 
 

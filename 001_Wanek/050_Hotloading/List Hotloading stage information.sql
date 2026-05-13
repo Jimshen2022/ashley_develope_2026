@@ -1,6 +1,6 @@
 ﻿-- 设置参数值
 DECLARE @wh_id       VARCHAR(10) = '35',
-        @arrive_date VARCHAR(10) = '2025-01-01',
+        @arrive_date VARCHAR(10) = '2025-05-12',
         @destination VARCHAR(30) = '%'
 
 -- 查询语句

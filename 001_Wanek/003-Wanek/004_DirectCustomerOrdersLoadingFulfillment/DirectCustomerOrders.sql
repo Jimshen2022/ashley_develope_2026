@@ -1,4 +1,4 @@
-﻿/*
+/*
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%sto%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_import%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
@@ -31,10 +31,9 @@ where control_number_2 = 'P2V0B18' and tran_type in ('151')
 group by start_tran_date, item_number,control_number,control_number_2 
 order by start_tran_date, control_number,control_number_2
 
-select top 10 * from t_serial_active where serial_number = '526404172037'
-select top 10 * from t_serial_active where serial_number = '645521626057'
+select top 10 * from t_serial_active where serial_number = '688075633760'
 select top 10 * from t_serial_master where serial_number = '688075633760'
-select * from t_tran_log where lot_number IN ('645521626057') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('688075633760') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
 select distinct serial_no_status from t_serial_master where serial_number = '688075633760'
 
@@ -51,7 +50,7 @@ select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  f
 
 
 -- sn trx
-select * from t_tran_log where lot_number IN ('618268701679') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('688075519780') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('666158354602') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('633124331289') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('666158453067','666158453082') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
@@ -1141,7 +1140,7 @@ SELECT  top 10 *  FROM t_stored_item where item_number = 'B5168-197W1'
 SELECT  top 10 *  FROM t_serial_active where item_number = 'B5168-197W1'
 
 
-B5168-197W1
+
 
 
 SELECT DISTINCT right(t.location_id,1), COUNT(t.location_id) AS loct_qty
