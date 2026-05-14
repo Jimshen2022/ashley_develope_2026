@@ -1,7 +1,7 @@
 SELECT 
     -- 1. 基础信息格式化
     ROW_NUMBER() OVER (ORDER BY P.NGAY_PHIEU DESC)  AS N'STT',
-    LTRIM(RTRIM(CAST(P.SOTK AS VARCHAR(50))))       AS N'Số TK nhập',
+    LTRIM(RTRIM(REPLACE(CAST(P.SOTK AS VARCHAR(50)), '.0', ''))) AS N'Số TK nhập',
     CONVERT(VARCHAR(10), P.NGAY_DK, 103)            AS N'Ngày TK',
     P.SO_PHIEU                                      AS N'Số PNK',
     CONVERT(VARCHAR(10), P.NGAY_PHIEU, 103)         AS N'Ngày NK',
@@ -13,22 +13,22 @@ SELECT
     -- 2. 商品标识码生成
     ISNULL(NULLIF(LTRIM(RTRIM(H.DINH_DANH_HANG_HOA)), ''),
            RIGHT(CAST(YEAR(ISNULL(P.NGAY_DK, P.NGAY_PHIEU)) AS VARCHAR(4)), 2)
-           + ISNULL(CAST(P.SOTK AS VARCHAR(50)), '')
+           + LTRIM(RTRIM(REPLACE(CAST(P.SOTK AS VARCHAR(50)), '.0', '')))
            + '-'
            + RIGHT('00' + CAST(ISNULL(H.STTHANG, 1) AS VARCHAR(10)), 2)
     )                                               AS N'Định danh hàng hóa',
 
-    -- 3. 产地与单价 (APPLY 确保不翻倍)
+    -- 3. 元数据抓取 (产地、HS、单价) - 使用 APPLY 物理隔离，杜绝行爆炸
     M.MA_NUOC AS N'Xuất xứ',
     M.MA_HS AS N'Mã HS',
     H.SO_LUONG AS N'Lượng',
     M.DON_GIA AS N'Đơn giá',
     M.MA_DVT AS N'Đơn vị tính',
 
-    -- 4. 结存计算
+    -- 4. 实时库存核销 (核心修复：只有已报关的出库才扣减)
     ISNULL(X.LUONG_XUAT, 0)                         AS N'Lượng xuất',
-    ROUND(H.SO_LUONG - ISNULL(X.LUONG_XUAT, 0), 3)  AS N'SL Tồn',
-    ROUND((H.SO_LUONG - ISNULL(X.LUONG_XUAT, 0)) * M.DON_GIA, 2) AS N'Trị Giá Tồn',
+    (H.SO_LUONG - ISNULL(X.LUONG_XUAT, 0))          AS N'SL Tồn',
+    ((H.SO_LUONG - ISNULL(X.LUONG_XUAT, 0)) * M.DON_GIA) AS N'Trị Giá Tồn',
     
     P.MA_NT AS N'Mã NT',
     CONVERT(VARCHAR(10), P.NGAY_PHIEU, 103)         AS N'Ngày nhập',
@@ -39,7 +39,7 @@ SELECT
 FROM ECUS5_KNQ.dbo.DPHIEU P
 INNER JOIN ECUS5_KNQ.dbo.DPHIEU_HANG H ON P.DPHIEUID = H.DPHIEUID
 
--- 使用 OUTER APPLY 锁定合同主数据，彻底解决 2.9 万行的行膨胀问题
+-- 【主数据抓取】
 OUTER APPLY (
     SELECT TOP 1 
         COALESCE(NULLIF(H.MA_NUOC, ''), NULLIF(HD.MA_NUOC, ''), NULLIF(SP.MA_NUOC, ''), 'VN') AS MA_NUOC,
@@ -51,7 +51,7 @@ OUTER APPLY (
     LEFT JOIN ECUS5_KNQ.dbo.SSANPHAM SP ON H.MA_SP = SP.MA_SP AND SP.MA_KNQ = P.MA_KNQ
 ) M
 
--- 出库汇总 (精准匹配：单号 + 项次 + 料号)
+-- 【出库核销：解决 353 vs 208 GAP 的关键】
 OUTER APPLY (
     SELECT 
         SUM(ISNULL(HX.SO_LUONG, 0)) AS LUONG_XUAT,
@@ -61,22 +61,32 @@ OUTER APPLY (
     WHERE PX._XORN = 'X' 
       AND HX.MA_SP = H.MA_SP
       AND ISNULL(HX.IS_HUY, 0) = 0 
+      AND ISNULL(PX.HUY_TRANG_THAI, 0) = 0
+      -- 核心：只有已报关或已过账的出库才从库存中扣除
+      AND (PX.MESSAGEID IS NOT NULL OR PX.NGAY_DK IS NOT NULL)
       AND (
-          (HX.SOTK_N = P.SOTK AND HX.STTHANG_N = H.STTHANG AND P.SOTK <> '')
-          OR (HX.SO_PHIEU_N = P.SO_PHIEU AND HX.MA_SP = H.MA_SP AND P.SO_PHIEU <> '')
+          (HX.SOTK_N = P.SOTK AND HX.STTHANG_N = H.STTHANG AND P.SOTK IS NOT NULL)
+          OR (HX.SO_PHIEU_N = P.SO_PHIEU AND HX.MA_SP = H.MA_SP AND P.SO_PHIEU IS NOT NULL)
       )
 ) X
 
 WHERE 
-    P._XORN = 'N'                             -- 必须是入库单
-    AND P.MA_KNQ = 'VNNSL'                    -- 必须是 VNNSL 仓库
+    P._XORN = 'N'                             -- 仅入库
+    AND P.MA_KNQ = 'VNNSL'                    -- 锁定 VNNSL 仓库
     AND ISNULL(P.HUY_TRANG_THAI, 0) = 0       -- 排除单头作废
     AND ISNULL(H.IS_HUY, 0) = 0               -- 排除行项作废
     
-    -- 【第一性原理：针对 14,180 行对齐的核心过滤条件】
-    AND P.MESSAGEID IS NOT NULL               -- 1. 必须有海关流水号（排除本地草稿）
-    AND ISNULL(H.IS_KETTHUC_GETIN, 0) = 1     -- 2. 必须是已确认入场的货物（这是解决 1.5 万行差异的杀手锏）
-    AND LTRIM(RTRIM(CAST(P.SOTK AS VARCHAR(50)))) LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' -- 3. 必须是 12 位纯数字报关单
+    -- 【对齐 14242 行的终极条件】
+    -- 1. 强制 12 位纯数字报关单，排除 1.5 万行草稿噪声
+    AND LTRIM(RTRIM(REPLACE(CAST(P.SOTK AS VARCHAR(50)), '.0', ''))) LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+    
+    -- 2. 状态过滤：排除明确的草稿状态 (T/0/1)
+    AND ISNULL(P.TRANG_THAI, '') NOT IN ('T', '0', '1', 'H')
+    
+    -- 3. 生效条件：找回丢失的 366 行退货单
+    AND (P.MESSAGEID IS NOT NULL OR P.NGAY_DK IS NOT NULL OR P.SO_PHIEU LIKE '%RH%')
 
-    AND (H.SO_LUONG - ISNULL(X.LUONG_XUAT, 0)) > 0.001 -- 4. 库存必须大于 0
+    -- 4. 实时库存大于 0
+    AND (H.SO_LUONG - ISNULL(X.LUONG_XUAT, 0)) > 0.001
+
 ORDER BY P.NGAY_PHIEU DESC;
