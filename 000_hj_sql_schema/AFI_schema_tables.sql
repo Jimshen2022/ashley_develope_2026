@@ -24,6 +24,7 @@ Select * from t_tran_log where tran_type = '350' and control_number_2 like '%361
 select  * from t_location where location_id like 'RS%'
 
 
+
 -- by PO receiving
 select start_tran_date, item_number, control_number,control_number_2, sum(tran_qty) as qty  
 from t_tran_log 
@@ -51,6 +52,7 @@ select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  f
 
 
 -- sn trx
+select * from t_tran_log where lot_number IN ('688075870248') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('618268701679') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('666158354602') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('633124331289') order by item_number, lot_number, start_tran_date desc, start_tran_time desc

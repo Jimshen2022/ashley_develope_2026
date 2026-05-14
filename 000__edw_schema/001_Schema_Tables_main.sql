@@ -299,7 +299,7 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952704823' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010313' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 
---R407051
+--query by sn
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420009049' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010266' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010313' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
@@ -307,6 +307,39 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420068949' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '688075633760' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number = '666158352972' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number = '503950023383' and wh_id = '335' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number in ('667047837308',
+'653650410388',
+'666158034119',
+'666158034128',
+'680140298216',
+'623820380088',
+'692963001283',
+'613440039671',
+'688800523413',
+'668751095969',
+'610450513593',
+'542015030785',
+'609890079454',
+'561300120712',
+'688800610923',
+'688800610979',
+'637463042263',
+'637463042796',
+'503948691983',
+'503949566078',
+'644850021693',
+'644850021701',
+'644850021753',
+'644850021801',
+'644850021826',
+'644850021827',
+'627750011412',
+'627750014394',
+'606580122348',
+'503950023383',
+'503950857188',
+'552909940174') and wh_id = '335' order by lot_number, start_tran_date, start_tran_time
 
 -- Create temp table for item master data
 SELECT

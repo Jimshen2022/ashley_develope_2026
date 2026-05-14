@@ -3,13 +3,27 @@
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%customer%name%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
-SELECT TOP 100 *  FROM INFORMATION_SCHEMA.tables WHERE TABLE_NAME LIKE '%exception%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.tables WHERE TABLE_NAME LIKE '%active%'
 select top 10 * from t_stored_item 
 select top 10 * from t_item_master 
 select top 10 * from t_item_master where item_number = 'U6600014'
 select top 10 * from t_order_detail
 select top 10 * from t_order_detail_breakdown
 select top 10 * from t_tran_log order by lot_number, start_tran_date desc, start_tran_time desc
+
+-- sn master status change 
+select top 10 * from t_stored_item where item_number = 'U6600014'
+select top 10 * from t_serial_master where item_number = 'U6600014'
+ select * from t_serial_active where item_number = 'H743-70'
+ select * from t_serial_active where serial_number in ('688076032457','688076032459')
+ select top 10 * from t_serial_master where serial_number in ('688076032457','688076032459')
+
+
+ -- sn check
+ select * from t_tran_log where lot_number in ('618268972022','618268972023') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where lot_number in ('618268972025','618268972026','618268972027') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where item_number in ('L243354') and location_id = 'EX001AA1' order by lot_number, start_tran_date desc, start_tran_time desc
+
 
 -- 347 abnormal transactions by item
 SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, sum(case when t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
