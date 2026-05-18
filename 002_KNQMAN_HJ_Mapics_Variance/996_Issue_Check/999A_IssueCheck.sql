@@ -20,17 +20,34 @@ select top 10 * from t_serial_master where item_number = 'U6600014'
 
 
  -- sn check
+ select * from t_tran_log where lot_number in ('503953310029') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where lot_number in ('661420010313') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where lot_number in ('503952904749') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('618268972022','618268972023') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('618268972025','618268972026','618268972027') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where item_number in ('L243354') and location_id = 'EX001AA1' order by lot_number, start_tran_date desc, start_tran_time desc
 
 
 -- 347 abnormal transactions by item
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number, t1.tran_type, sum(case when t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('347')
+    AND t1.item_number IN ('D947-81')
+    AND t1.control_number_2 like '%39537%'
+    AND t1.start_tran_date >= '2026-01-01'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number,t1.tran_type
+order by t1.item_number, t1.start_tran_date
+
+select * from t_tran_log where control_number_2 like '%36618%' and item_number = 'RP ORDER' order by lot_number, start_tran_date desc, start_tran_time desc
+
+
+-- 151， 951 abnormal transactions by item
 SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, sum(case when t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
-	AND t1.tran_type like '3%' or tran_type like '8%'
-    AND t1.item_number IN ('R57522')
+	AND t1.tran_type in ('151','951')
+    AND t1.control_number IN ('P2VL776')
     AND t1.start_tran_date >= '2026-05-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type
 order by t1.item_number, t1.start_tran_date
@@ -55,7 +72,7 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.l
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('161','165','851','855')
-    AND t1.item_number IN ('B756-58')
+    AND t1.item_number IN ('6590679')
     AND t1.start_tran_date >= '2026-05-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
 order by t1.item_number, t1.start_tran_date

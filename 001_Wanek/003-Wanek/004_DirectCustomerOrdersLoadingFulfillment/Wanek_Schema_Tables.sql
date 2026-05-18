@@ -18,7 +18,7 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%transfer%'
 */
 -- t_transfer_whse
 select * from t_transfer_whse 
-select * FROM t_stored_item where 
+select * FROM t_stored_item 
 
 
 -- 350 fill
@@ -499,6 +499,9 @@ where l.location_id like 'A3010[CEGJLN]%[1]%'
 group by l.location_id, l.type, si.item_number
 
 
+-- LOCATION
+
+select * from t_location 
 
 --battery table
 select * from t_battery

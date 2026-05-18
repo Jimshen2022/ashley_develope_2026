@@ -1,0 +1,49 @@
+select orm.wh_id,orm.order_number,
+ord.line_number,
+ord.item_number,
+itm.pick_put_id,
+orm.status,
+ord.qty,ord.qty_shipped,
+(ord.qty - ord.qty_shipped ) as diff_qty,
+(select sum(sto1.actual_qty) from t_stored_item(nolock) sto1 where sto1.wh_id=ord.wh_id and sto1.item_number=ord.item_number 
+															and sto1.type=ord.order_number 
+															and sto1.location_id in 
+															(select location_id from t_location(nolock) where type='S')) as staged_qty,
+(select sum(sto2.actual_qty) from t_stored_item(nolock) sto2 where sto2.wh_id=ord.wh_id and sto2.item_number=ord.item_number 
+															and sto2.type=ord.order_number 
+															and sto2.location_id in 
+															(select location_id from t_location(nolock) where type='D')) as loaded_qty,
+orm.load_id
+,round(isnull(itm.nested_volume,itm.unit_volume),2) as unit_cube
+,round((isnull(itm.nested_volume,itm.unit_volume)*(ord.qty - ord.qty_shipped )),2) as cube
+,(select sum(actual_qty)  from t_stored_item sto (nolock) where sto.wh_id = ord.wh_id
+						and sto.item_number=ord.item_number
+						and sto.status='A'
+						and sto.type='STORAGE'
+						and sto.location_id in (select location_id from t_location (nolock) where type in ('A','M','I','X','P'))
+						group by sto.wh_id,sto.item_number) as storage
+--2021/12/06 Grace Liu add
+,(select allocation_qty - allocated_qty 
+	from t_soft_allocate_hotload (nolock) allo
+	where allo.wh_id=orm.wh_id
+	and allo.item_number=ord.item_number
+	and allo.load_id=orm.load_id) as open_allocation
+--2021/12/06 Grace end
+from t_order (nolock) orm 
+join t_order_detail (nolock) ord
+on orm.order_number = ord.order_number
+and orm.wh_id = ord.wh_id
+join t_lookup (nolock) lok
+on orm.type_id = lok.lookup_id
+and orm.wh_id = lok.wh_id
+and lok.locale_id='1033'
+join t_item_master itm(nolock)
+on ord.wh_id = itm.wh_id
+and ord.item_number=itm.item_number
+where orm.wh_id = '~wh_id~' 
+and orm.load_id = '~load_id~'
+and lok.source='t_order'
+and lok.text ='HotLoad Orders'
+and orm.status not in('X','S','C')  
+and orm.order_number='~Order Number~'
+order by ord.order_number,ord.item_number

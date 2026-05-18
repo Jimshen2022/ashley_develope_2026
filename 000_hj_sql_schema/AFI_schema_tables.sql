@@ -14,8 +14,28 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%putaway%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Dmg%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%import%'
 */
+
+select top 10 * from t_import_ where control_number_2 like '%P2V1W63%' order by start_tran_date desc, start_tran_time desc
+select top 10 * from t_import_WAORDER where control_number_2 like '%P2V1W63%' order by start_tran_date desc, start_tran_time desc
+
+-- item master
+select top 10 * from t_item_master where item_number IN ('A3000207',
+'D922-01',
+'D922-45B',
+'D922-45T',
+'D922-60',
+'D984-124',
+'D984-32',
+'T854-3',
+'T974-1',
+'T974-4')
+select top 10 * from t_item_uom where item_number = '6700616'
+select top 10 * from t_import_ITEM where transaction_string like '%6700616%'
+select top 10 * from t_import_ITMBOM
+SELECT TOP 10 unit_volume, * FROM t_order_detail_breakdown where item_number = '6700616'
+
 
 -- 350 fill
 Select * from t_tran_log where tran_type = '350' and control_number_2 like '%36129%'
@@ -90,7 +110,7 @@ select * from t_tran_log where item_number = 'P108-835'  and control_number_2 = 
 
 
 
-
+-- HU MASTER/DETAIL
 
 select * from t_hu_master(nolock) where hu_id LIKE '%00000039388093%'
 select * from t_hu_detail(nolock)  where hu_id LIKE '%00000039388093%'
@@ -99,13 +119,6 @@ select * from t_hu_master(nolock) where location_id = 'RS032AA1' and item_number
 select * from t_hu_detail(nolock) where item_number = 'P108-835' 
 select * from t_item_master(nolock) where item_number = 'P108-835' 
 select * from t_item_master(nolock) where item_number = 'P108-835' 
-
-
-
-
-
-
-
 
 
 
@@ -505,12 +518,6 @@ select * from t_battery
 select * from t_la_schedule where active = 'Y'
 select * from t_schedule 
 
--- item master
-select top 10 * from t_item_master where item_number = '6700616'
-select top 10 * from t_item_uom where item_number = '6700616'
-select top 10 * from t_import_ITEM where transaction_string like '%6700616%'
-select top 10 * from t_import_ITMBOM
-SELECT TOP 10 unit_volume, * FROM t_order_detail_breakdown where item_number = '6700616'
 
 -- trx
 SELECT * FROM t_tran_log where item_number = '1080229' AND start_tran_date > '2026-03-17'  order by start_tran_date desc, start_tran_time desc

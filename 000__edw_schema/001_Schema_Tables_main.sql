@@ -202,12 +202,13 @@ select * from dw_developer.tabledictionary where tpktablename LIKE '%equipment%c
 select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccounting_Enh%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%PowerBI_Finance%'  order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpktablename LIKE '%SLQNTY%'  order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%WAORDER%'  order by tpkRowCount DESC
 
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%EMP%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Ecommerce Invoicing%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%SLQNTY%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%equipment%log%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%WAORDER%'
 
 
 
@@ -246,6 +247,13 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+
+
+select top 10 * from Distribution_Warehouse_Wholesale.t_import_WAORDER
+select count(*) from Distribution_Warehouse_Wholesale.t_import_WAORDER
+
+select * from Distribution_Warehouse_Wholesale.t_import_WAORDER where transaction_string like 'D0%-00:%' 
+select top 10 * from Distribution_Warehouse_Wholesale.t_import_WAORDER order by imported desc 
 
 select top 10 * from Manufacturing_ProductionPlanning_MIL.SLQNTY_Snapshot_MIL order by SnapshotDate desc
 
