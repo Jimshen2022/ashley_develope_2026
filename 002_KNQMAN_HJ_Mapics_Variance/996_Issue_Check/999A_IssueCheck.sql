@@ -16,11 +16,15 @@ select top 10 * from t_stored_item where item_number = 'U6600014'
 select top 10 * from t_serial_master where item_number = 'U6600014'
  select * from t_serial_active where item_number = 'H743-70'
  select * from t_serial_active where serial_number in ('688076032457','688076032459')
+ select * from t_serial_active where serial_number in ('666158324114'）
  select top 10 * from t_serial_master where serial_number in ('688076032457','688076032459')
 
 
+
+
  -- sn check
- select * from t_tran_log where lot_number in ('503953310029') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where item_number in ('A2000686') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where lot_number in ('609890109184') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('661420010313') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('503952904749') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('618268972022','618268972023') order by lot_number, start_tran_date desc, start_tran_time desc
@@ -28,18 +32,68 @@ select top 10 * from t_serial_master where item_number = 'U6600014'
  select * from t_tran_log where item_number in ('L243354') and location_id = 'EX001AA1' order by lot_number, start_tran_date desc, start_tran_time desc
 
 
+
+
+
+ 
+-- 340 Back order check
+
+
+select top 10 * from t_tran_log as t1 WHERE t1.wh_id = '335' 	AND t1.tran_type in ('340')
+select top 10 * from t_tran_log as t1 WHERE t1.wh_id = '335' 	AND t1.tran_type in ('347')
+select * from t_reason where type = 'BACKORDER'
+SELECT t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number, t1.tran_type, sum(case when t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
+from t_tran_log as t1
+WHERE t1.wh_id = '335'
+	AND t1.tran_type in ('350')
+   -- AND t1.item_number IN ('D947-81')
+    AND t1.control_number_2 like '%38131%'
+    AND t1.start_tran_date >= '2026-05-01'
+GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number,t1.tran_type
+order by t1.item_number, t1.start_tran_date
+
+
 -- 347 abnormal transactions by item
 SELECT t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number, t1.tran_type, sum(case when t1.tran_type = '951' then -t1.tran_qty else t1.tran_qty end) as tran_qty
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('347')
-    AND t1.item_number IN ('D947-81')
-    AND t1.control_number_2 like '%39537%'
-    AND t1.start_tran_date >= '2026-01-01'
+   AND t1.item_number IN ('B742-96')
+    --AND t1.control_number_2 like '%39537%'
+    AND t1.start_tran_date >= '2026-5-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number,t1.tran_type
 order by t1.item_number, t1.start_tran_date
 
 select * from t_tran_log where control_number_2 like '%36618%' and item_number = 'RP ORDER' order by lot_number, start_tran_date desc, start_tran_time desc
+
+
+
+-- no 152 trx check, get the last transaction for each lot, and filter by tran_type and location_id_2
+WITH last_tran AS (
+    SELECT *,
+           ROW_NUMBER() OVER (
+               PARTITION BY lot_number
+               ORDER BY start_tran_date DESC, 
+                        CONVERT(TIME, start_tran_time) DESC  -- 只取時間部分排序
+           ) AS rn
+    FROM t_tran_log
+    WHERE wh_id = '335'
+      AND start_tran_date >= '2026-04-19'
+)
+--SELECT item_number,
+--       control_number_2,
+--       tran_type,
+--       lot_number,
+--       location_id_2,
+--       start_tran_date,
+--       start_tran_time
+SELECT *
+FROM last_tran
+WHERE rn = 1
+  AND tran_type = '151'
+  AND (location_id_2 LIKE 'F%' OR location_id_2 LIKE 'V%')
+ORDER BY item_number, start_tran_date;
+
 
 
 -- 151， 951 abnormal transactions by item
@@ -47,8 +101,8 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, sum(
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('151','951')
-    AND t1.control_number IN ('P2VL776')
-    AND t1.start_tran_date >= '2026-05-01'
+    AND t1.control_number IN ('P2VJ976')
+    AND t1.start_tran_date >= '2026-03-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type
 order by t1.item_number, t1.start_tran_date
 
@@ -60,8 +114,8 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, sum(
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('151','951')
-    AND t1.item_number IN ('R57522')
-    AND t1.start_tran_date >= '2026-01-19'
+    AND t1.item_number IN ('R407202')
+    AND t1.start_tran_date >= '2026-04-19'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type
 order by t1.item_number, t1.start_tran_date
 
@@ -95,6 +149,7 @@ select * from t_tran_log where lot_number in ('683811716878') order by lot_numbe
 select * from t_tran_log where lot_number in ('688075633760') order by lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number in ('548800123580') order by lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number in ('548800122340') order by lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number in ('692963453510') order by lot_number, start_tran_date desc, start_tran_time desc
 
 
 -- trx

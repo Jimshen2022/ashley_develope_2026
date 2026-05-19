@@ -14,7 +14,7 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%putaway%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Dmg%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%import%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%reason%'
 */
 
 select top 10 * from t_import_ where control_number_2 like '%P2V1W63%' order by start_tran_date desc, start_tran_time desc
@@ -66,13 +66,13 @@ left join t_serial_master(nolock) as m on t.serial_number = m.serial_number
 where t.serial_no_status != m.serial_no_status and t.serial_no_status in ('R')
 
 
-select * from t_tran_log where control_number_2 = 'P2V6F28'
+select * from t_tran_log where control_number_2 = 'P2VJ976'
 select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  from t_tran_log where item_number = 'U2710513' and tran_type in ('151')  group by start_tran_date, control_number,control_number_2 order by start_tran_date,control_number,control_number_2
 select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  from t_tran_log where item_number = 'B100-14' and tran_type in ('347')  group by start_tran_date, control_number,control_number_2 order by start_tran_date,control_number,control_number_2
 
 
 -- sn trx
-select * from t_tran_log where lot_number IN ('688075870248') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('631314870429') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('618268701679') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('666158354602') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('633124331289') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
