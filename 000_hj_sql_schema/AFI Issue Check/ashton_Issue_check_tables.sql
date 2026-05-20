@@ -1,4 +1,4 @@
-﻿
+
 
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%CAPACITY%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
@@ -754,19 +754,9 @@ select  * from t_class_loca where location_id in ('A3020GC1','A3020GL','A3020GN1
 	Delete
 	t_class_loca
 WHERE location_id like 'A3018[G][ABCDEFGH]%1' and class_id = 'UPHMH'
-
-
-t_loc_pallet_capacity
 WHERE pallet_id = 16 AND PATINDEX('A3011[' + 'CEGJLNQSUXZ' + ']%', location_id) > 0
-
-
-
-delete
 where location_id like 'A3021%' and substring(location_id,6,1) in  ('C','E','G','J','L') and class_id in ('UPHH','UPHL','UPHOT','UPHXH','UPHCH')
-('335','UPHL','A3021LP3','005','400000'),
-('335','UPHOT','A3021LP3','001','400000'),
-('335','UPHL','A3021LP4','005','400000'),
-('335','UPHOT','A3021LP4','001','400000');
+
 
 
 -- container and po 
