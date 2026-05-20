@@ -45,7 +45,7 @@ SELECT
     tlk.transfer_whse_name,
 
     -- ✅ 新增：到货日期 arrive_date（来自 t_order 主表）
-    orm.arrive_date,
+    orm.arrive_date as ETD,
 
     ROUND(ISNULL(itm.nested_volume, itm.unit_volume), 2) AS unit_cube,
     ROUND((ISNULL(itm.nested_volume, itm.unit_volume) * (ord.qty - ord.qty_shipped)), 2) AS cube,

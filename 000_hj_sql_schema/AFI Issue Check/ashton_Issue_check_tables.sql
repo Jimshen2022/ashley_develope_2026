@@ -1,10 +1,9 @@
-
-
-SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%CAPACITY%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%serial%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
 
+select top 10 * from t_serial_active
 select top 10 * from t_stored_item 
 select top 10 * from t_item_master 
 select top 10 * from t_item_uom 
@@ -20,8 +19,30 @@ select top 10 * from t_order_detail
 select top 10 * from t_order_detail_breakdown
 select top 10 * from t_replenishment_allocation
 select top 10 * from t_work_q
+select top 10 * from t_active_serial
+select top 10 * from t_hu_master
+select top 10 * from t_hu_detail
+select top 10 * from t_battery
+--ASN
+SELECT TOP 10 *  FROM  t_asn
+SELECT TOP 10 *  FROM  t_asn_detail
+SELECT TOP 10  *  FROM  t_trailer  
+SELECT TOP 10 *  FROM  t_trailer_asn 
+SELECT TOP 10 *  FROM  t_ya_location 
+SELECT TOP 10 *  FROM  t_vendor 
 
 
+
+
+select top 100 * from t_hu_master where hu_id like '%39916747'
+select top 100 * from t_hu_detail where hu_id like '%39916747'
+
+-- sn
+select * from t_serial_active where location_id = 'FOOT51014'
+select top 10 * from t_stored_item 
+
+
+-- tranlog
 select top 10 * from t_tran_log order by lot_number, start_tran_date desc, start_tran_time desc
 
 
@@ -36,21 +57,22 @@ select top 10 * from t_loc_pallet_capacity where location_id = 'A3012EA1'
 select top 1000 * from t_work_q where item_number = 'A2000665'
 
 
-
-
 -- sn master status change 
-select top 10 * from t_stored_item where item_number = 'U6600014'
-select top 10 * from t_serial_master where item_number = 'U6600014'
- select * from t_serial_active where item_number = 'H743-70'
- select * from t_serial_active where serial_number in ('688076032457','688076032459')
- select * from t_serial_active where serial_number in ('666158324114'）
- select top 10 * from t_serial_master where serial_number in ('688076032457','688076032459')
+select * from t_serial_active where serial_number in ('666158390262')
+select * from t_serial_master where serial_number = '666158390262'
+select * from t_stored_item where item_number = 'U6600014'
+select * from t_serial_master where item_number = 'U6600014'
+select * from t_serial_active where item_number = 'H743-70'
+select * from t_serial_active where serial_number in ('666158390262')
+select * from t_serial_active where serial_number in ('666158324114')
+select * from t_serial_master where serial_number in ('688076032457','688076032459')
 
 
 
 
  -- sn check
  select * from t_tran_log where item_number in ('A2000686') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where lot_number in ('666158390262') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('605590374873') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('661420010313') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('503952904749') order by lot_number, start_tran_date desc, start_tran_time desc

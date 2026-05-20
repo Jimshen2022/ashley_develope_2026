@@ -1,4 +1,12 @@
-﻿
+﻿/*
+SELECT TOP 10 *  FROM  t_asn
+SELECT TOP 10 *  FROM  t_asn_detail
+SELECT TOP 10  *  FROM  t_trailer  
+SELECT TOP 10 *  FROM  t_trailer_asn 
+SELECT TOP 10 *  FROM  t_ya_location 
+*/
+
+
 -- asn and detail
 select 
     t.asn_number,
