@@ -3,6 +3,8 @@ SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_orde
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
 
+
+
 select top 10 * from t_serial_active
 select top 10 * from t_stored_item 
 select top 10 * from t_item_master 
@@ -32,6 +34,13 @@ SELECT TOP 10 *  FROM  t_ya_location
 SELECT TOP 10 *  FROM  t_vendor 
 
 
+-- sto
+
+select  * from t_stored_item where item_number = 'T789-2'
+select * from t_item_master where item_number = 'T789-2'
+select * from t_order_detail where item_number = 'T789-2'
+select * from t_order_detail_breakdown where item_number = 'T789-2'
+
 
 
 select top 100 * from t_hu_master where hu_id like '%39916747'
@@ -46,9 +55,15 @@ select top 10 * from t_stored_item
 select top 10 * from t_tran_log order by lot_number, start_tran_date desc, start_tran_time desc
 
 
+-- consolidation
+select * from t_fwd_pick where item_number ='L317044'
+select * from t_location where location_id ='A3011EV1'
+
 
 -- replenishment check for item
 select * from t_fwd_pick where capacity_qty >400
+
+select * from t_loc_pallet_capacity where capacity >4 and location_id like 'A30%' and pallet_id != 16 
 
 select top 10 * from t_item_master where item_number = 'A2000665'
 select top 10 * from t_item_uom where item_number = 'A2000665'
