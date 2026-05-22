@@ -1,5 +1,5 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%sto%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%vendor%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_import%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMNS LIKE '%CROSS%'
@@ -16,6 +16,13 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Dmg%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%reason%'
 */
+
+SELECT TOP 10 *  FROM  t_asn
+SELECT TOP 10 *  FROM  t_asn_detail
+SELECT TOP 10  *  FROM  t_trailer  
+SELECT TOP 10 *  FROM  t_trailer_asn 
+SELECT TOP 10 *  FROM  t_ya_location 
+SELECT TOP 10 *  FROM  t_vendor 
 
 select top 10 * from t_import_ where control_number_2 like '%P2V1W63%' order by start_tran_date desc, start_tran_time desc
 select top 10 * from t_import_WAORDER where control_number_2 like '%P2V1W63%' order by start_tran_date desc, start_tran_time desc

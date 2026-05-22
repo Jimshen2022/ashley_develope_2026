@@ -1,0 +1,92 @@
+function main(workbook: ExcelScript.Workbook) {
+  try {
+    console.log("开始刷新数据...");
+
+    // 1) 尝试刷新所有数据连接
+    workbook.refreshAllDataConnections();
+    console.log("数据连接刷新命令已发送");
+
+    // 2) 获取所有工作表并尝试刷新查询表
+    const worksheets = workbook.getWorksheets();
+    worksheets.forEach(ws => {
+      const wsName = ws.getName();
+      console.log(`处理工作表: ${wsName}`);
+
+      // 刷新数据透视表
+      const pivotTables = ws.getPivotTables();
+      if (pivotTables.length > 0) {
+        console.log(`发现 ${pivotTables.length} 个数据透视表`);
+        pivotTables.forEach((pt, index) => {
+          try {
+            pt.refresh();
+            console.log(`数据透视表 ${index + 1} 刷新完成`);
+          } catch (error) {
+            console.log(`数据透视表 ${index + 1} 刷新失败: ${error}`);
+          }
+        });
+      }
+
+      // 尝试刷新表格对象
+      const tables = ws.getTables();
+      if (tables.length > 0) {
+        console.log(`发现 ${tables.length} 个表格`);
+        tables.forEach((table, index) => {
+          try {
+            // 某些表格可能有刷新方法
+            const tableName = table.getName();
+            console.log(`处理表格: ${tableName}`);
+          } catch (error) {
+            console.log(`表格处理失败: ${error}`);
+          }
+        });
+      }
+    });
+
+    // 3) 强制重新计算
+    console.log("执行完整计算...");
+    workbook.getApplication().calculate(ExcelScript.CalculationType.fullRebuild);
+
+    // 4) 写入刷新状态到 Control 工作表
+    const controlWsName = "Control";
+    let controlWs = workbook.getWorksheet(controlWsName);
+
+    if (!controlWs) {
+      controlWs = workbook.addWorksheet(controlWsName);
+      console.log(`创建了新的工作表: ${controlWsName}`);
+    }
+
+    const timestamp = new Date();
+    const timestampStr = timestamp.toLocaleString('vi-VN', {
+      timeZone: 'Asia/Ho_Chi_Minh',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    controlWs.getRange("A1").setValue(`最后刷新时间: ${timestampStr}`);
+    controlWs.getRange("A2").setValue(`刷新状态: 已完成`);
+
+    console.log(`刷新完成，时间: ${timestampStr}`);
+
+  } catch (error) {
+    console.log("刷新过程中出现错误:", error.toString());
+
+    // 记录错误到 Control 工作表
+    const controlWsName = "Control";
+    let controlWs = workbook.getWorksheet(controlWsName);
+
+    if (!controlWs) {
+      controlWs = workbook.addWorksheet(controlWsName);
+    }
+
+    const timestamp = new Date().toLocaleString('vi-VN', {
+      timeZone: 'Asia/Ho_Chi_Minh'
+    });
+
+    controlWs.getRange("A1").setValue(`刷新失败时间: ${timestamp}`);
+    controlWs.getRange("A2").setValue(`错误信息: ${error.toString()}`);
+  }
+}

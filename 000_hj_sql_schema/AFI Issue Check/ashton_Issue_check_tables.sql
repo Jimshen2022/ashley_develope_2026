@@ -23,7 +23,7 @@ select top 10 * from t_active_serial
 select top 10 * from t_hu_master
 select top 10 * from t_hu_detail
 select top 10 * from t_battery
---ASN
+--ASN related tables
 SELECT TOP 10 *  FROM  t_asn
 SELECT TOP 10 *  FROM  t_asn_detail
 SELECT TOP 10  *  FROM  t_trailer  

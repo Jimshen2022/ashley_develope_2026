@@ -22,203 +22,20 @@ WITH RefreshRateMapping AS (
 )
 
 
-SELECT TOP 10 *  
-TABLE_SCHEMA,
-TABLE_NAME,
-COLUMN_NAME,
-DATA_TYPE,
-CHARACTER_MAXIMUM_LENGTH
-FROM INFORMATION_SCHEMA.COLUMNS
-WHERE COLUMN_NAME LIKE '$%'
-ORDER BY TABLE_NAME, ORDINAL_POSITION;
-
 
 SELECT top 10 * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema ='Distribution_Warehouse_Wholesale' and t.TABLE_NAME LIKE '%tran%'
-
 SELECT TOP 10* FROM MasterData_IT.PowerBIUsage AS t
-Select * from dw_developer.tabledictionary where tpkSchemaName = 'MasterData_IT'
-Select * from dw_developer.tabledictionary where tpkSchemaName like '%codis%'
 
-select * from dw_developer.tabledictionary where tpktablename like '%PowerBIUsage%'
-select * from dw_developer.tabledictionary where tpktablename like '%asn%'
-select * from dw_developer.tabledictionary where tpktablename = 't_asn'
-select * from dw_developer.tabledictionary where tpktablename = 'ASN_Detail'
-select * from dw_developer.tabledictionary where tpktablename = 'Trailer'
-select * from dw_developer.tabledictionary where tpktablename = 't_trailer_asn'
-select * from dw_developer.tabledictionary where tpktablename = 'YaLocation'
-select * from dw_developer.tabledictionary where tpktablename = 't_po_master'
-select top 10 * from dw_developer.tabledictionary where tpkSchemaName like '%t_serial%'
-select top 10 * from dw_developer.tabledictionary where tpkTableName like '%ATPDIT%'
-select  * from dw_developer.tabledictionary where tpkTableName like '%not%invoice%'
-select  * from dw_developer.tabledictionary where tpkTableName like '%t_stored%'          2025-05-19 19:26:01.000
-select  * from dw_developer.tabledictionary where tpkTableName like '%TripAvailableSTO%'    2025-05-19 18:18:51.613
-select  * from dw_developer.tabledictionary where tpkTableName like '%TripAvailableSTO%'    2025-05-19 18:18:51.613
-select  * from dw_developer.tabledictionary where tpkTableName like '%TripAvailableSTO%'    2025-05-19 18:18:51.613
-select * from dw_developer.tabledictionary where tpktablename like '%TripAvailableSTO%'
-select top 10 * from dw_developer.tabledictionary where tpktablename like '%ARPHEDR%'
 SELECT top 10 * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema ='PowerBI_Distribution' and t.TABLE_NAME LIKE '%ship%'
-
-select * from dw_developer.tabledictionary where tpktablename like '%DW120RF%' 
-
-select top 10 * from dw_developer.tabledictionary  where tpktablename like '%ShippedHistoryCubeData%'
-
-
-select * from dw_developer.tabledictionary where tpktablename like '%PC228RPF%'
-select * from dw_developer.tabledictionary where tpktablename LIKE 't[_]%'
-select * from dw_developer.tabledictionary where tpktablename like '%vnpr%'
-select top 10 * from dw_developer.tabledictionary where tpktablename like '%t_items_on_hold%'
-t_items_on_hold
-
-SELECT  * FROM ASHLEY_EDW.INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%shipto%'
-select * from dw_developer.tabledictionary where tpkCreated > '2025-05-01'
-select * from dw_developer.tabledictionary where tpktablename like '%transfer%'
-select * from dw_developer.tabledictionary where tpktablename like '%TransferOrderDetails_TrippedFrom%'
-select * from dw_developer.tabledictionary where tpktablename like '%TransferOrderDetails_TrippedTO%'
-select * from dw_developer.tabledictionary where tpktablename like '%TransferOrderDetails_UnTrippedTO%'
-select * from dw_developer.tabledictionary where tpktablename like '%t_stored_item%'
-
-select * from dw_developer.tabledictionary where tpktablename like '%tranlog%'
-select * from dw_developer.tabledictionary where tpktablename like '%t_item_master%'
-select * from dw_developer.tabledictionary where tpktablename like '%order%' order by tpkSchemaName
-select * from dw_developer.tabledictionary where tpktablename like '%t_import_WAORDER%'
-select * from dw_developer.tabledictionary where tpktablename like '%MENU%'
-select * from dw_developer.tabledictionary where tpktablename like '%DW010%'
-select * from dw_developer.tabledictionary where tpktablename like '%tranlog%'
-select * from dw_developer.tabledictionary where tpktablename like '%ATP%'
-select * from dw_developer.tabledictionary where tpktablename like '%ITBEXT%'
-select * from dw_developer.tabledictionary where tpktablename like '%EMMSTR%'   ----------- employ master
-select * from dw_developer.tabledictionary where tpktablename like '%PYREXPH%'  ----------- CICO
-select * from dw_developer.tabledictionary where tpkSchemaName like '%mil%'  order by tpkSchemaName
-select * from dw_developer.tabledictionary where tpkSchemaName like '%WNK%'  order by tpkSchemaName
-select * from dw_developer.tabledictionary where tpktablename like '%ItemMaster%'  order by tpkSchemaName
-select * from dw_developer.tabledictionary where tpktablename like '%ITMRVA%'
-select * from dw_developer.tabledictionary where tpktablename like '%%'tpkSchemaName
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%'
-select * from dw_developer.tabledictionary where tpktablename like '%IMHIST%'
-select * from dw_developer.tabledictionary where tpktablename like '%SLQNTY%'
-select * from dw_developer.tabledictionary where tpktablename like '%WHSMST%'
-select * from dw_developer.tabledictionary where tpktablename like '%LOCMST%' 
-select * from dw_developer.tabledictionary where tpktablename like '%DWHOLDITM1%'  --- hold items
-select * from dw_developer.tabledictionary where tpktablename like '%MBCDRESM%' 
-select * from dw_developer.tabledictionary where tpktablename like '%SIMLBP%' 
-select * from dw_developer.tabledictionary where tpktablename like '%REQMTS%'  ------- MIL Raw materials demand forecast
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%WNK%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%'
-select * from dw_developer.tabledictionary where  tpktablename like '%ITMRVAL0%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%' and tpktablename like '%MOMAST%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%' and tpktablename like '%PC216WSCH%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%' and tpktablename like '%PC228RPF%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%' and tpktablename like '%MOHMST%'
-select * from dw_developer.tabledictionary where tpktablename like '%TAGINV%' 
-select * from dw_developer.tabledictionary where tpktablename like '%ACTAUDT%'
-select * from dw_developer.tabledictionary where tpktablename like '%WVCNT%'
-select * from dw_developer.tabledictionary where tpktablename like '%CubeData%'
-select * from dw_developer.tabledictionary where tpktablename like '%POMAST%'
-select * from dw_developer.tabledictionary where tpktablename like '%Bookings%'
-select * from dw_developer.tabledictionary where tpkSchemaName like '%CODIS%' ORDER BY tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename like '%invoice%'
-select * from dw_developer.tabledictionary where tpkSchemaName like '%SalesHistory%'
-select * from dw_developer.tabledictionary where tpktablename like '%t_item_master%'
-select * from dw_developer.tabledictionary where tpktablename like '%whfilrq%'
-select * from dw_developer.tabledictionary where tpktablename like '%t_stored_item%'
-select * from dw_developer.tabledictionary where tpkSchemaName like '%Distribution_Warehouse_Wholesale%'  order by tpkTableName
-select * from dw_developer.tabledictionary where tpkSchemaName like '%Wholesale_Invoicing_AFI%'  order by tpkSchemaName
-Wholesale_Invoicing_AFI
-select * from dw_developer.tabledictionary order by tpkRowCount Desc
-ITMEXT
-select * from dw_developer.tabledictionary where tpktablename like '%ITMEXT%'
-select * from dw_developer.tabledictionary where tpktablename like '%ITMRVA%'
-select * from dw_developer.tabledictionary where tpktablename like '%t_employee%'
-select * from dw_developer.tabledictionary where tpktablename like '%COMAST%'
-select * from dw_developer.tabledictionary where tpktablename like '%CVR%'
-select * from dw_developer.tabledictionary where tpkSchemaName like '%ADS%'
-
-
-tpkSchemaName	tpkTableName	tpkObjectType	tpkPrimaryKey
-Wholesale_Invoicing_AFI	DW013EW1	Table	TRIPNO,DROPNO,ORDNO#,ITMSEQ,SERNBR,ITEMNO,CUSTNO,ADDDAT,ADDTIM,UCCNBR,CUSTID
-Wholesale_Invoicing_AFI	MBF9REP	External	FEGGNB,FEHZNB
-Wholesale_Invoicing_AFI	TSCMADJ	Table	CDHInvoiceNumber,CDHOrderNumber,CDHItemNumber,CDHItemSequence,CDHCommissionAdjustmentCode
-Wholesale_Invoicing_AFI	TSCAIN	Table	CAHInvoiceNumber,CAHOrderNumber,CAHSalesOrderNumber,CAHSequence
-Wholesale_Invoicing_AFI	TSITIN	Table	ITINVR,ITORNO,ITITNO,ITITSQ
-Wholesale_Invoicing_AFI	INVORD	Table	INDATE,INTIME,INDRP#,INORD#,INREF#
-Wholesale_Invoicing_AFI	TSDSCADJ	Table	DCHINVNBR,DCHORDNO,DCHDSCADJC,DCHITMSEQ,DCHITMNBR
-Wholesale_Invoicing_AFI	TSESTR	Table	TSEINV,TSEORDER,TSEISEQ,TSEITEM,TSESEQ
-Wholesale_Invoicing_AFI	TSSCIN	Table	SCINVR,SCORNO,SCSQNO
-Wholesale_Invoicing_AFI	TSTXIN	External	TXINVR,TXORNO
-Wholesale_Invoicing_AFI	TSININ	Table	ININVR,INORNO
-Wholesale_Invoicing_AFI	TSINXN	Table	XNINVR,XNORNO
-Wholesale_Invoicing_AFI	TSCIIN	Table	CIINVR,CIORNO,CIITNO,CIITSQ,CIICSQ
-Wholesale_Invoicing_AFI	TSITXN	Table	XTINVR,XTORNO,XTITNO,XTITSQ
-Wholesale_Invoicing_AFI	TSSSIN	Table	SSINVR,SSORNO
-Wholesale_Invoicing_AFI	TSITZN	Table	HPOINVNO,HPOORDNO,HPOITEMNO,HPOITEMSQ,HPOCUSNO,HPOSERIAL
-Wholesale_Invoicing_AFI	TSEXIN	Table	SHEInvoiceNumber,SHEOrderNumber,SHEItemequence,SHEFieldName
-Wholesale_Invoicing_AFI	TSCOIN	Table	COINVR,COORNO,COOCSQ
-Wholesale_Invoicing_AFI	TSSCXN	External	NULL
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%ADS%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%PowerBI%'
-select * from dw_developer.tabledictionary where tpkSchemaName =[PowerBI_ADS]
-Distribution_Warehouse_Wholesale
-DISTLIBL.TAGINVD
-AMFLIBL.REQMTS
-LLUSAF.PC216WSCH
-select * from dw_developer.tabledictionary where tpktablename LIKE '%employee%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%invoice%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%cdn%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%WNK%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%MIL%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%WNK%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%ITMEXT%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%ITMRVA%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%asn%' order by tpkRowCount DESC
-
-select * from dw_developer.tabledictionary where tpkSchemaName = 'Manufacturing_ProductionPlanning_MIL' order by tpkTableName
-select * from dw_developer.tabledictionary where tpkSchemaName= 'Manufacturing_ProductionPlanning_WNK' and tpktablename LIKE '%WVCNT%' order by tpkTableName 
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%PowerBI_Distribution%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%tranlog%' order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%CODIS%' AND tpkPrimaryKey like '%customer%' order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%serial%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%ATP%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%Manufacturing%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%EXTORIT%'
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%Manufacturing_Maximo%'
-
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%Distribution%' order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%vendor%' and tpkSchemaName like '%maximo%' order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE 'Manufacturing_Maximo%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE 'Maximo_DW%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE 'AFISales_Enh%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE 'Matrectrans%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%ITBEXT%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%item%master%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%ITBEXT%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%InvoiceDetail%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%ITEMBL%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%ATOFILEATOFILE%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%excep%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%HR%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%equipment%check%log%'  order by tpkRowCount DESC
-
-
-select * from dw_developer.tabledictionary where tpktablename LIKE '%CostAccounting_Enh%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%PowerBI_Finance%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%SLQNTY%'  order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpktablename LIKE '%WAORDER%'  order by tpkRowCount DESC
-
-
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%EMP%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Ecommerce Invoicing%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%SLQNTY%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%WAORDER%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
+select * from dw_developer.tabledictionary where tpktablename LIKE '%WNK%' order by tpkRowCount DESC
 
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%WNK%'
+select * from dw_developer.tabledictionary where tpkSchemaName like '%Manufacturing_ProductionPlanning_WNK%'  order by tpkTableName
 
-
-SELECT top 10  *  FROM Distribution_Wrk.InvoicedUnitsDetails
-
-
-
-
-
-
+Manufacturing_ProductionPlanning_MIL
 -- 方法1: 查询系统视图(推荐)
 SELECT 
     s.name AS SchemaName,
@@ -247,7 +64,41 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+-- wanek container loading
+select top 10 * from Manufacturing_ProductionPlanning_WNK.WVCNTHD order by WCHLASTMAINTENANCETIMESTAMP desc
+select top 10 * from Manufacturing_ProductionPlanning_WNK.WVCNTHDA
 
+select top 10 * from Manufacturing_ProductionPlanning_WNK.WVCNTID
+select top 10 * from Manufacturing_ProductionPlanning_WNK.WVCNTIDA
+
+select top 10 * from Manufacturing_ProductionPlanning_WNK.WVCNTSD
+select top 10 * from Manufacturing_ProductionPlanning_WNK.WVCNTSDA
+
+
+-- invoice
+select top 10 * from Manufacturing_ProductionPlanning_WNK.DW013EW1
+select top 10 * from Wholesale_Invoicing_AFI.DW013EW1
+select top 10 * from Wholesale_Invoicing_AFI.MBF9REP	
+select top 10 * from Wholesale_Invoicing_AFI.TSCMADJ	
+select top 10 * from Wholesale_Invoicing_AFI.TSCAIN	
+select top 10 * from Wholesale_Invoicing_AFI.TSITIN	
+select top 10 * from Wholesale_Invoicing_AFI.INVORD	
+select top 10 * from Wholesale_Invoicing_AFI.TSDSCADJ	
+select top 10 * from Wholesale_Invoicing_AFI.TSESTR	
+select top 10 * from Wholesale_Invoicing_AFI.TSSCIN	
+select top 10 * from Wholesale_Invoicing_AFI.TSTXIN	
+select top 10 * from Wholesale_Invoicing_AFI.TSININ	
+select top 10 * from Wholesale_Invoicing_AFI.TSINXN
+select top 10 * from Wholesale_Invoicing_AFI.TSCIIN	
+select top 10 * from Wholesale_Invoicing_AFI.TSITXN	
+select top 10 * from Wholesale_Invoicing_AFI.TSSSIN	
+select top 10 * from Wholesale_Invoicing_AFI.TSITZN	
+select top 10 * from Wholesale_Invoicing_AFI.TSEXIN	
+select top 10 * from Wholesale_Invoicing_AFI.TSCOIN	
+select top 10 * from Wholesale_Invoicing_AFI.TSSCXN	
+select top 10 * from DISTLIBL.TAGINVD
+select top 10 * from AMFLIBL.REQMTS
+select top 10 * from LLUSAF.PC216WSCH
 
 select top 10 * from Distribution_Warehouse_Wholesale.t_import_WAORDER
 select count(*) from Distribution_Warehouse_Wholesale.t_import_WAORDER
@@ -316,38 +167,7 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '688075633760' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number = '666158352972' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number = '503950023383' and wh_id = '335' order by lot_number, start_tran_date, start_tran_time
-Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number in ('667047837308',
-'653650410388',
-'666158034119',
-'666158034128',
-'680140298216',
-'623820380088',
-'692963001283',
-'613440039671',
-'688800523413',
-'668751095969',
-'610450513593',
-'542015030785',
-'609890079454',
-'561300120712',
-'688800610923',
-'688800610979',
-'637463042263',
-'637463042796',
-'503948691983',
-'503949566078',
-'644850021693',
-'644850021701',
-'644850021753',
-'644850021801',
-'644850021826',
-'644850021827',
-'627750011412',
-'627750014394',
-'606580122348',
-'503950023383',
-'503950857188',
-'552909940174') and wh_id = '335' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number in ('667047837308','653650410388') and wh_id = '335' order by lot_number, start_tran_date, start_tran_time
 
 -- Create temp table for item master data
 SELECT

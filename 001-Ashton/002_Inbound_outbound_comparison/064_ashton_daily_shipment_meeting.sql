@@ -108,7 +108,7 @@ trx AS (
             ELSE t1.start_tran_date
         END AS shift_date,
         CASE
-            WHEN CAST(t1.start_tran_time AS TIME) BETWEEN '07:00:00' AND '18:59:59' THEN 'D'
+            WHEN CAST(t1.start_tran_time AS TIME) BETWEEN '07:00:00' AND '19:30:00' THEN 'D'
             ELSE 'N'
         END AS shift,
         CASE

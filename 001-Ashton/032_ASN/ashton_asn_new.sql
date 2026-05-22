@@ -1,9 +1,23 @@
 ﻿/*
-SELECT TOP 10 *  FROM  t_asn
-SELECT TOP 10 *  FROM  t_asn_detail
-SELECT TOP 10  *  FROM  t_trailer  
-SELECT TOP 10 *  FROM  t_trailer_asn 
+SELECT TOP 10 *  FROM  t_asn where asn_id = '1725692'
+SELECT TOP 10 *  FROM  t_asn_detail where asn_id = '1725692'
+SELECT TOP 10  *  FROM  t_trailer   where trailer_id = '355197'
+SELECT TOP 10 *  FROM  t_trailer_asn  where asn_id = '1725692'
+
+
 SELECT TOP 10 *  FROM  t_ya_location 
+SELECT *  FROM  t_vendor WHERE vendor_name like '%WANEK%'
+
+vendor_id	vendor_code	vendor_name	inspection_flag	ownership_control	asn_required
+6135	900515	WANEK FURNITURE 1	NO	NO	NULL
+6548	600039	WANEK FURNITURE 3	NO	NO	NULL
+6580	900639	WANEK FURNITURE 2	NO	NO	NULL
+
+
+SELECT DISTINCT status  FROM  t_asn
+SELECT * FROM  t_asn
+SELECT *  FROM  t_asn where vendor_id in ('6135','6580','6548')
+SELECT  *  FROM  t_trailer 
 */
 
 

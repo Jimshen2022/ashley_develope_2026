@@ -22,4 +22,5 @@ FROM last_tran
 WHERE rn = 1
   AND tran_type = '151'
   AND (location_id_2 LIKE 'F%' OR location_id_2 LIKE 'V%')
+  AND location_id_2 = 'FOOT51014'
 ORDER BY item_number, start_tran_date;

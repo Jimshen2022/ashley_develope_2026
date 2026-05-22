@@ -1,6 +1,6 @@
 ﻿-- 设置参数值
-DECLARE @in_vchWhID      NVARCHAR(10) = '35',
-        @in_vch_Load_ID  NVARCHAR(30) = '%',
+DECLARE @in_vchWhID      NVARCHAR(10) = '35,33,31,34,36',
+        @in_vch_Load_ID  NVARCHAR(30) = '335',
         @in_equipment_id NVARCHAR(20) = ''
 
 -- 第一个临时表：活动容器信息
@@ -91,7 +91,7 @@ DECLARE @in_vchWhID      NVARCHAR(10) = '35',
     WHERE ldm.load_type = 'H'
           AND ldm.status <> 'S'
           AND trl.status <> 'HISTORY'
-          AND ldm.wh_id = @in_vchWhID        
+          AND ldm.wh_id in (SELECT value FROM STRING_SPLIT(@in_vchWhID, ','))   
           AND ldm.transfer_wh_id LIKE @in_vch_Load_ID
           AND ldm.equipment_id LIKE @in_equipment_id + '%'
 ),
