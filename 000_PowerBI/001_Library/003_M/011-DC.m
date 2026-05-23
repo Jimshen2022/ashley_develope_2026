@@ -1,0 +1,142 @@
+let
+    Source = Sql.Database("ashley-edw.database.windows.net", "ASHLEY_EDW", [Query="select t1.wh_id as Warehouse#(lf)#(tab), t1.serial_number as [Serial Number]#(lf)    , t1.item_number as [Item Number]#(lf)    , t1.po_number as [Master MO/PO]#(lf)    , t1.serial_no_status as [Active Status]#(lf)    , t1.master_status as [Master Status]#(lf)    , t1.location_id as [Location]#(lf)    , t1.received_date  as [Received Date]#(lf)    , t1.ship_date   as [Ship Date]#(lf)    , t2.unit_volume as Cube #(lf)from Distribution_Warehouse_Wholesale.t_serial_active t1#(lf)    left join Distribution_Warehouse_Wholesale.t_item_master t2 on t1.wh_id = t2.wh_id2#(lf)    and t1.item_number = t2.item_number#(lf)where t1.wh_id in ('35','33')#(lf)    and t1.master_status not in ('S') and t1.serial_no_status not in ('O') and t1.received_date >'2023-01-01'", CommandTimeout=#duration(0, 1, 0, 0)]),
+    #"Merged Queries" = Table.NestedJoin(Source, {"Item Number"}, WNK_ITEMS, {"Item"}, "WNK_ITEMS", JoinKind.LeftOuter),
+    #"Expanded WNK_ITEMS" = Table.ExpandTableColumn(#"Merged Queries", "WNK_ITEMS", {"Kind"}, {"Kind"}),
+    #"Replaced Value" = Table.ReplaceValue(#"Expanded WNK_ITEMS", null, "Others", Replacer.ReplaceValue, {"Kind"}),
+    #"Uppercased Text" = Table.TransformColumns(#"Replaced Value", {{"Kind", Text.Upper, type text}}),
+    #"Changed Type" = Table.TransformColumnTypes(#"Uppercased Text",{{"Received Date", type date}}),
+    #"Added Conditional Column" = Table.AddColumn(#"Changed Type", "Received_Date", 
+        each if [Received Date] = Date.From(DateTime.LocalNow()) then "Today_Received" 
+        else if [Received Date] = Date.From(DateTime.LocalNow() - #duration(1, 0, 0, 0)) then "Yesterday_Received" 
+        else "Before_Yesterday"),
+// Wanek Sites Identify
+    #"Added Conditional Column1" = Table.AddColumn(#"Added Conditional Column", "Site", 
+        each if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "A1") then "WN5" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S1") then "WN5" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "D1") then "WN5"
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "UL9") then "WN5" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "UL8") then "DC" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "UL6") then "DC" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "NG001WN5") then "WN5" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "M3") then "BLOCK13"
+        else if Text.StartsWith([Warehouse], "35") and List.Contains(["M3","M4","M5","M6"], Text.Start([Location], 2)) then "BLOCK13"        
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "C") and Text.EndsWith([Location],"WN3") then "DC"
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "C") and Text.EndsWith([Location],"WN2") then "DC"    
+
+        else if Text.StartsWith([Warehouse], "33")  then "WN2" 
+/*        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "DR") then "WN2" 
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "S1") then "WN2" 
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "UL9") then "WN2" 
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "NG") then "WN2"   
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "S2") then "WN2" 
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "D2") then "WN2" 
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "FOOT") then "WN2" 
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "V3042WN2") then "WN2"         
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "CB") and Text.EndsWith([Location],"WN2") then "WN2"
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "CS") and Text.EndsWith([Location],"WN2") then "WN2"   
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "CW") and Text.EndsWith([Location],"WN2") then "WN2"  
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "CA") and Text.EndsWith([Location],"WN2") then "WN2"  */
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CB") and Text.EndsWith([Location],"WN3") then "WN3"
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CS") and Text.EndsWith([Location],"WN3") then "WN3"   
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CW") and Text.EndsWith([Location],"WN3") then "WN3"  
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CA") and Text.EndsWith([Location],"WN3") then "WN3"   
+
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S6") then "DC" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S8") then "DC" 
+         else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "D8") then "DC"
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "UL6") then "DC"  
+
+//        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "B2") then "WN2"
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "B2") then "DC"
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CB") then "WN2" 
+        else if Text.StartsWith([Warehouse], "35") and Text.EndsWith([Location], "WN2") then "WN2" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S9") then "WN2"
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "D9") then "WN2"
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "UL6") then "WN2" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "ND")  and Text.EndsWith([Location], "WN2")  then "WN2"         
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S0") and (Text.StartsWith([Item Number],"124") or Text.StartsWith([Item Number],"196") or Text.StartsWith([Item Number],"403")) then "WN2"  
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "V3") then "WN3" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S0") then "WN3" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "D4") then "WN3" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S4") then "WN3" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "DK") then "WN3"
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "DR") then "WN3"            
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "QA") then "WN3"        
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "SA") then "WN3" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "NG") then "WN3"   
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CA") then "WN3"               
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CN") then "WN3" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "ND")  and Text.EndsWith([Location], "WN3")  then "WN3" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "FOOT") then "ON_FORK"  
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "FOOT") then "ON_FORK" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "VS") then "ON_FORK" 
+        else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "VJ") then "ON_FORK" 
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "VS") then "ON_FORK" 
+        else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "VJ") then "ON_FORK" 
+        else "Check"),
+
+    #"Added Conditional Column2" = Table.AddColumn(#"Added Conditional Column1", "Loc Description", 
+    each if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S0") then "WN3 Big Stage"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S4") then "WN3 Small Stage"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S1") then "WN5 Small Stage" 
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S4") then "WN3 Small Stage" 
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S8") then "Block13 Small Stage" 
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "S9") then "Block2 Small Stage" 
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "A1") then "WN5 Racking"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "M3") then "Block13 Racking"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "B2") then "Block2 Racking"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location],"V30") then "Pilot Run" 
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "UL610BW1") then "Block2 Unloading Stage"  
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "UL610MT2") then "Block13 Unloading Stage"   
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "UL910AS1") then "WN5 Unloading Stage"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "DR") then "WN3 For Direct Customer" 
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "DK") then "WN3 For Direct Customer" 
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "D9") then "Block2 Door"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "D4") then "WN3 Door"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "D8") then "Block13 Door" 
+
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CB") and Text.EndsWith([Location],"WN2") then "TEMP MOVE WN2 TO BLCOK20"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CS") and Text.EndsWith([Location],"WN2") then "TEMP MOVE WN2 TO WN5"   
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CW") and Text.EndsWith([Location],"WN2") then "TEMP MOVE WN2 TO BLOCK13" 
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CA") and Text.EndsWith([Location],"WN2") then "TEMP MOVE WN2 TO WN3" 
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CU") and Text.EndsWith([Location],"WN2") then "WTEMP MOVE WN2 TO BLOCK2"  
+    
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CB") and Text.EndsWith([Location],"WN3") then "TEMP MOVE WN3 TO BLCOK20"
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CS") and Text.EndsWith([Location],"WN3") then "TEMP MOVE WN3 TO WN5"   
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CW") and Text.EndsWith([Location],"WN3") then "TEMP MOVE WN3 TO BLOCK13"  
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CA") and Text.EndsWith([Location],"WN3") then "TEMP MOVE WN3 TO WN2"   
+    else if Text.StartsWith([Warehouse], "35") and Text.StartsWith([Location], "CU") and Text.EndsWith([Location],"WN3") then "TEMP MOVE WN3 TO BLOCK2"  
+
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "ND") then "No Demand" 
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "DR") then "For Direct Customer" 
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "DK") then "For Direct Customer" 
+    else if Text.StartsWith([Warehouse], "33") and [Location] = "NG001IA1" then "Inv. Adjustment" 
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "S1") then "Big Stage" 
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "NG") then "Damaged"   
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "S2") then "Small Stage" 
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "D2") then "Door"   
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "SA") then "Showroom"                
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "QA") then "OBQ"        
+
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "CB") and Text.EndsWith([Location],"WN2") then "TEMP MOVE WN2 TO BLCOK20"
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "CS") and Text.EndsWith([Location],"WN2") then "TEMP MOVE WN2 TO WN5"   
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "CW") and Text.EndsWith([Location],"WN2") then "WTEMP MOVE WN2 TO BLOCK13"  
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "CA") and Text.EndsWith([Location],"WN2") then "TEMP MOVE WN2 TO WN3"
+    else if Text.StartsWith([Warehouse], "33") and Text.StartsWith([Location], "CU") and Text.EndsWith([Location],"WN2") then "WTEMP MOVE WN2 TO BLOCK2"  
+
+    else if Text.StartsWith([Location], "FOOT") then "ON_FORK" 
+    else if Text.StartsWith([Location], "VS") then "ON_FORK" 
+    else if Text.StartsWith([Location], "VJ") then "ON_FORK" 
+    else if [Location] = "CN001AA1" then "Damage Transfer Container" 
+    else if [Location] = "NG001IA1" then "Inv. Adjustment" 
+    else if Text.StartsWith([Location],"NG") then "Damaged" 
+    else if Text.StartsWith([Location], "ND") then "No Demand"      
+    else if Text.StartsWith([Location],"QA") then "OBQ" 
+
+/*    else if [Location] = "V3041PL1" then "Pilot Run" 
+    else if [Location] = "V3042WN2" then "Pilot Run"  */   
+    else if [Location] = "AS001WN2" then "Show Room" 
+    else if [Location] = "SA4061UP1" then "Show Room" 
+    else "Check")
+in
+    #"Added Conditional Column2"

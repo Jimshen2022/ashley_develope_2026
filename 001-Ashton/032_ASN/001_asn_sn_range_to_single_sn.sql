@@ -1,12 +1,12 @@
---select top 100 * from t_tran_log where tran_type in ('151','951') order by start_tran_date desc, start_tran_time desc
-
+-- select top 100 * from t_tran_log WITH (NOLOCK) where tran_type in ('151','951') order by start_tran_date desc, start_tran_time desc
 
 WITH
 -- ① Tally Table
 tally AS (
     SELECT TOP 100000
         ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS n
-    FROM sys.all_columns a CROSS JOIN sys.all_columns b
+    FROM sys.all_columns a WITH (NOLOCK) 
+    CROSS JOIN sys.all_columns b WITH (NOLOCK)
 ),
 
 -- ② 展开 SN：每个 serial_number 单独一行
@@ -26,12 +26,13 @@ sn_expanded AS (
         d.sn_coo,
         d.transfer_number,
         CAST(d.serial_number_start AS BIGINT) + t.n AS serial_number
-    FROM t_asn_detail d
+    FROM t_asn_detail d WITH (NOLOCK)
     JOIN tally t
         ON t.n <= CAST(d.serial_number_end AS BIGINT)
                 - CAST(d.serial_number_start AS BIGINT)
     WHERE d.asn_id IN (
-        SELECT asn_id FROM t_asn where expected_arrival >= DATEADD(DAY, -15, CAST(GETDATE() AS DATE))
+        SELECT asn_id FROM t_asn WITH (NOLOCK) 
+        WHERE expected_arrival >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE))
         --WHERE vendor_id IN ('6135', '6580', '6548')
     )
 ),
@@ -41,16 +42,16 @@ latest_trailer AS (
     SELECT
         ta.asn_id,
         ta.trailer_id
-    FROM t_trailer_asn ta
+    FROM t_trailer_asn ta WITH (NOLOCK)
     INNER JOIN (
         SELECT
             ta2.asn_id,
             MAX(tr.entered_yard) AS max_entered_yard
-        FROM t_trailer_asn ta2
-        INNER JOIN t_trailer tr ON ta2.trailer_id = tr.trailer_id
+        FROM t_trailer_asn ta2 WITH (NOLOCK)
+        INNER JOIN t_trailer tr WITH (NOLOCK) ON ta2.trailer_id = tr.trailer_id
         GROUP BY ta2.asn_id
     ) mx ON ta.asn_id = mx.asn_id
-    INNER JOIN t_trailer tr ON ta.trailer_id = tr.trailer_id
+    INNER JOIN t_trailer tr WITH (NOLOCK) ON ta.trailer_id = tr.trailer_id
                             AND tr.entered_yard = mx.max_entered_yard
 )
 
@@ -82,7 +83,7 @@ SELECT
     sn.carb_compliance_level,
     sn.sn_coo,
     sn.transfer_number,
-    sn.serial_number,
+    cast(sn.serial_number as varchar(50)) AS serial_number,
 
     -- t_trailer 所有列
     tr.trailer_id,
@@ -133,24 +134,20 @@ SELECT
             CAST(tr.entered_yard AS DATE)
     END AS shift_date
 
-FROM t_asn AS a
-
+FROM t_asn AS a WITH (NOLOCK)
 JOIN sn_expanded AS sn
     ON a.asn_id = sn.asn_id
-
 LEFT JOIN latest_trailer AS lt
     ON a.asn_id = lt.asn_id
-LEFT JOIN t_trailer AS tr
+LEFT JOIN t_trailer AS tr WITH (NOLOCK)
     ON lt.trailer_id = tr.trailer_id
-LEFT JOIN t_ya_location AS loc
+LEFT JOIN t_ya_location AS loc WITH (NOLOCK)
     ON tr.location_id = loc.location_id
-LEFT JOIN t_vendor AS v
+LEFT JOIN t_vendor AS v WITH (NOLOCK)
     ON a.vendor_id = v.vendor_id
-
 WHERE
     a.status IN ('NEW', 'CHECKED IN', 'CLOSED')
    -- AND a.vendor_id IN ('6135', '6580', '6548')
-
 ORDER BY
     a.asn_id,
     sn.customer_po_number,

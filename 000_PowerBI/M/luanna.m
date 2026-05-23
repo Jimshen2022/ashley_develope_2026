@@ -1,0 +1,26 @@
+let
+    Source = Excel.CurrentWorkbook(){[Name="Ontrip"]}[Content],
+    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Item Number", type text}, {"Order Number", type text}, {"Planned Quantity", Int64.Type}, {"Picked Quantity", Int64.Type}, {"Staged Quantity", Int64.Type}, {"Loaded Quantity", Int64.Type}, {"Pick Status", type text}, {"Order Status", type text}, {"Dispatch Date", type datetime}, {"Load Date", type date}}),
+    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Pick Status", "Order Status", "Dispatch Date", "Load Date"}),
+    #"Added Custom" = Table.AddColumn(#"Removed Columns", "Demand remain", each [Planned Quantity] - (if [Picked Quantity] > [Staged Quantity] or [Picked Quantity] > [Loaded Quantity] then [Picked Quantity] else [Staged Quantity])),
+    #"Filtered Rows" = Table.SelectRows(#"Added Custom", each ([Demand remain] <> 0)),
+    #"Changed Type1" = Table.TransformColumnTypes(#"Filtered Rows",{{"Demand remain", Int64.Type}}),
+    #"Merged Queries" = Table.NestedJoin(#"Changed Type1", {"Order Number"}, CO, {"Order Number"}, "CO", JoinKind.LeftOuter),
+    #"Expanded CO" = Table.ExpandTableColumn(#"Merged Queries", "CO", {"Wh Id", "Transfer Warehouse", "ETD", "Special shipping instructions"}, {"Wh Id", "Transfer Warehouse", "ETD", "Special shipping instructions"}),
+    #"Merged Queries1" = Table.NestedJoin(#"Expanded CO", {"Order Number"}, CS_booking, {"System CO"}, "CS_booking", JoinKind.LeftOuter),
+    #"Expanded CS_booking" = Table.ExpandTableColumn(#"Merged Queries1", "CS_booking", {"Ashley_PO", "Cargo Ready Date", "Booking#", "Pick Up", "New load", "Load location", "Booking Status"}, {"Ashley_PO", "Cargo Ready Date", "Booking#", "Pick Up", "New load", "Load location", "Booking Status"}),
+    #"Merged Queries2" = Table.NestedJoin(#"Expanded CS_booking", {"Ashley_PO"}, WH_arrival_cont, {"Trip#/Order#"}, "WH_arrival_cont", JoinKind.LeftOuter),
+    #"Expanded WH_arrival_cont" = Table.ExpandTableColumn(#"Merged Queries2", "WH_arrival_cont", {"CONT"}, {"CONT"}),
+    #"Merged Queries4" = Table.NestedJoin(#"Expanded WH_arrival_cont", {"Booking#"}, LOG_booking, {"BOOKING"}, "LOG_booking", JoinKind.LeftOuter),
+    #"Expanded LOG_booking" = Table.ExpandTableColumn(#"Merged Queries4", "LOG_booking", {"CLOSE TIME  CY", "CLOSE TIME  SI"}, {"CLOSE TIME  CY", "CLOSE TIME  SI"}),
+    #"Reordered Columns" = Table.ReorderColumns(#"Expanded LOG_booking",{"Pick Up", "CLOSE TIME  SI", "Cargo Ready Date", "Load location", "Ashley_PO", "CONT", "Item Number", "Transfer Warehouse", "Demand remain", "Planned Quantity", "Picked Quantity", "Staged Quantity", "Loaded Quantity", "Order Number", "Wh Id", "ETD", "Special shipping instructions", "Booking#", "New load", "Booking Status", "CLOSE TIME  CY"}),
+    #"Removed Columns2" = Table.RemoveColumns(#"Reordered Columns",{"Planned Quantity", "Picked Quantity", "Staged Quantity", "Loaded Quantity"}),
+    #"Merged Queries5" = Table.NestedJoin(#"Removed Columns2", {"Item Number"}, InhouseSN, {"Item Number"}, "InhouseSN", JoinKind.LeftOuter),
+    #"Expanded InhouseSN1" = Table.ExpandTableColumn(#"Merged Queries5", "InhouseSN", {"BLOCK 13", "BLOCK 13 Temp", "WN3 DIRECT RECEIVING", "WN2 DIRECT RECEIVING", "Check"}, {"BLOCK 13", "BLOCK 13 Temp", "WN3 DIRECT RECEIVING", "WN2 DIRECT RECEIVING", "Check"}),
+    #"Replaced Value" = Table.ReplaceValue(#"Expanded InhouseSN1",null,0,Replacer.ReplaceValue,{"BLOCK 13"}),
+    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value",null,0,Replacer.ReplaceValue,{"BLOCK 13 Temp"}),
+    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1",null,0,Replacer.ReplaceValue,{"WN3 DIRECT RECEIVING"}),
+    #"Replaced Value3" = Table.ReplaceValue(#"Replaced Value2",null,0,Replacer.ReplaceValue,{"WN2 DIRECT RECEIVING"}),
+    #"Replaced Value4" = Table.ReplaceValue(#"Replaced Value3",null,0,Replacer.ReplaceValue,{"Check"})
+in
+   #"Replaced Value4"
