@@ -83,7 +83,7 @@ select * from t_serial_active where serial_number in ('666158324114')
 select * from t_serial_master where serial_number in ('688076032457','688076032459')
 
 
-
+ select top 10 * from t_tran_log  order by lot_number, start_tran_date desc, start_tran_time desc
 
  -- sn check
  select * from t_tran_log where item_number in ('A2000686') order by lot_number, start_tran_date desc, start_tran_time desc
@@ -92,10 +92,10 @@ select * from t_serial_master where serial_number in ('688076032457','6880760324
  select * from t_tran_log where lot_number in ('661420010313') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('503952904749') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('618268972022','618268972023') order by lot_number, start_tran_date desc, start_tran_time desc
- select * from t_tran_log where lot_number in ('618268972025','618268972026','618268972027') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where item_number in ('L243354') and location_id = 'EX001AA1' order by lot_number, start_tran_date desc, start_tran_time desc
 
 
+  select * from t_tran_log where lot_number in ('672617679245','672617679250','672617679487','672617679488') order by lot_number, start_tran_date desc, start_tran_time desc
 
 
 
