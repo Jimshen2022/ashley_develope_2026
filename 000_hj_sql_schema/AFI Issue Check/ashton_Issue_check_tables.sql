@@ -56,8 +56,8 @@ select top 10 * from t_tran_log order by lot_number, start_tran_date desc, start
 
 
 -- consolidation
-select * from t_fwd_pick where item_number ='L317044'
-select * from t_location where location_id ='A3011EV1'
+select * from t_fwd_pick where item_number ='D824-50T'
+select * from t_location where location_id ='A3012FU1'
 
 
 -- replenishment check for item
@@ -92,10 +92,11 @@ select * from t_serial_master where serial_number in ('688076032457','6880760324
  select * from t_tran_log where lot_number in ('661420010313') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('503952904749') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('618268972022','618268972023') order by lot_number, start_tran_date desc, start_tran_time desc
- select * from t_tran_log where item_number in ('L243354') and location_id = 'EX001AA1' order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where item_number in ('L243354') and location_id = 'EX001AA1' order by lot_number, end_tran_date desc, end_tran_time desc
 
 
   select * from t_tran_log where lot_number in ('672617679245','672617679250','672617679487','672617679488') order by lot_number, start_tran_date desc, start_tran_time desc
+  select * from t_tran_log where lot_number in ('630570017309') order by lot_number, end_tran_date desc, end_tran_time desc
 
 
 

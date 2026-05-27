@@ -1,3 +1,7 @@
+
+select top 10 * from Manufacturing_Maximo.matrectrans 
+
+
 WITH unit_cost AS (
     SELECT 
         t0.itemnum, 
@@ -31,5 +35,5 @@ FROM Manufacturing_Maximo.MatUseTrans as t1
 LEFT JOIN Manufacturing_Maximo.item AS t0 on t0.itemsetid = 'VNMSET' AND t1.itemnum = t0.itemnum
 LEFT JOIN commodity as c on c.commodity = t0.commoditygroup
 LEFT JOIN uc on uc.itemnum = t1.itemnum
-WHERE t1.siteid = 'VNM.ASPM' 
+WHERE t1.siteid = 'VNM.ASPM' and t1.itemnum = '1004-3094' 
 ORDER BY t1.transdate DESC
