@@ -71,7 +71,7 @@ agg AS (
         SUM(t.OnHandQty) AS OnHandQty   
     FROM Inventory_Enh_History.ItemBalance AS t
     WHERE t.Warehouse = '335'
-      AND t.DateWeekEnding >= '2025-01-01'
+      AND t.DateWeekEnding >= '2026-01-01'
     GROUP BY t.Warehouse, t.ItemNumber, t.DateWeekEnding
 ),
 pt as (

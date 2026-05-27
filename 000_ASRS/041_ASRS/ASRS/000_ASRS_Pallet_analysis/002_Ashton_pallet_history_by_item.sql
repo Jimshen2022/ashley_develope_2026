@@ -10,7 +10,8 @@ WITH pallt AS (
         t.std_hand_qty,
         t.pallet_id,
         t.unit_volume,
-        t.pick_put_id
+        t.pick_put_id,
+        t.unit_weight
     FROM Distribution_Warehouse_Wholesale.t_item_master AS t 
     WHERE t.wh_id = '335' AND t.pick_put_id = 'PALLT'
 ),
@@ -29,7 +30,7 @@ ranked AS (
 itm AS (
     SELECT
         wh_id, item_number, commodity_code, [description],
-        class_id, std_hand_qty, pallet_id, unit_volume, pick_put_id
+        class_id, std_hand_qty, pallet_id, unit_volume, pick_put_id,unit_weight
     FROM ranked
     WHERE rn = 1
 ),
@@ -41,7 +42,7 @@ agg AS (
         SUM(t.OnHandQty) AS OnHandQty
     FROM Inventory_Enh_History.ItemBalance AS t
     WHERE t.Warehouse = '335'
-      AND t.DateWeekEnding >= '2025-01-01'
+      AND t.DateWeekEnding >= '2026-01-01'
     GROUP BY t.Warehouse, t.ItemNumber, t.DateWeekEnding
 )
 SELECT 
@@ -60,11 +61,14 @@ SELECT
     else 'Check' End as pallet_type,
     i.unit_volume,
     i.pick_put_id,
+    i.unit_weight*0.453592 as [unit_weight(kg)],
+    1.0* i.std_hand_qty * NULLIF(i.unit_weight, 0)*0.453592 AS [pallet_weight(kg)],
     a.[date],
     a.OnHandQty,
     -- 向上取整的托盘数（std_hand_qty 为 0/NULL 时返回 NULL）
     1.0 * a.OnHandQty / NULLIF(i.std_hand_qty, 0) AS pallets,
-    1.0* a.OnHandQty * NULLIF(i.unit_volume, 0) AS cubes
+    1.0* a.OnHandQty * NULLIF(i.unit_volume, 0) AS cubes,
+    1.0* a.OnHandQty * NULLIF(i.unit_weight, 0)*0.453592 AS [onhand_weight(kg)],
     -- 平均每托件数：当 total_qty=0 时给 0；否则用“总件数 ÷ 向上取整的托盘数”
 
 FROM agg AS a

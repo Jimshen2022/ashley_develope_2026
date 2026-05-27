@@ -149,6 +149,7 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 
 -- 350 fill check
 Select * from Distribution_Warehouse_Wholesale.tranlog where tran_type = '350' and control_number_2 like '%39904%'
+Select top 10 * FROM Distribution_Warehouse_Wholesale.t_item_master where wh_id = '335' and inventory_type = 'FG' AND unit_weight >0
 
 start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 
