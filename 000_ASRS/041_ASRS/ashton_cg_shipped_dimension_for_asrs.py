@@ -18,7 +18,7 @@ df['Dim3'] = df[['L_mm', 'W_mm', 'H_mm']].min(axis=1)
 df['Dim2'] = df[['L_mm', 'W_mm', 'H_mm']].sum(axis=1) - df['Dim1'] - df['Dim3']
 
 
-# Apply the 80/20 rule to categorize carton sizes for ASRS
+# Apply the 80/20 rule to categorize carton sizes for 000_ASRS
 def classify_dim(row):
     d1, d2, d3 = row['Dim1'], row['Dim2'], row['Dim3']
 
@@ -26,11 +26,11 @@ def classify_dim(row):
     if pd.isna(d1):
         return "Unknown"
 
-    # Category 1: Standard ASRS size covering ~80% of items
+    # Category 1: Standard 000_ASRS size covering ~80% of items
     if d1 <= 2200 and d2 <= 1200 and d3 <= 600:
         return "Standard (80%) <= 2200*1200*600 (mm)"
 
-    # Category 2: Large ASRS size covering ~16% of items
+    # Category 2: Large 000_ASRS size covering ~16% of items
     elif d1 <= 2400 and d2 <= 1400 and d3 <= 800:
         return "Large (16%) <= 2400*1400*800 (mm)"
 

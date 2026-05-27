@@ -68,7 +68,7 @@ LEFT JOIN MRPRCT M
 
 # 输出文件配置 / Output File Configuration
 OUTPUT_DIR = r'C:\Users\jishen\Downloads'
-CURRENT_DIR = r'/ASRS/041_ASRS/Unkits'
+CURRENT_DIR = r'../../041_ASRS/Unkits'
 
 # Pandas 显示设置 / Pandas Display Settings
 pd.set_option('display.max_columns', None)  # 显示所有列
