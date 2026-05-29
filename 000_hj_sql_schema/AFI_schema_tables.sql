@@ -85,7 +85,9 @@ select * from t_tran_log where lot_number IN ('666158354602') order by item_numb
 select * from t_tran_log where lot_number IN ('633124331289') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('666158453067','666158453082') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
-select * from t_tran_log where item_number = 'B756-58' and tran_type in ('165','855') and control_number = 'P2V3X03'
+select * from t_tran_log where item_number = 'EB1867-157' and tran_type in ('151')  order by  lot_number, start_tran_date desc, start_tran_time desc
+
+and tran_type in ('165','855') and control_number = 'P2V3X03'
 select * from t_tran_log where item_number = 'B756-58' and tran_type in ('151') and control_number_2 = 'P2V3X03' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
 -- container shipped check

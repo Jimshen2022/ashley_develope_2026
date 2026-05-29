@@ -1,5 +1,6 @@
 # this file is tested and works well by Jim,Shen on Mar.08.2025
 # Updated: fix SQL trailing comma bug, rename output CSV, add summary export
+# Updated: add pallet_weight_bucket column to detail & summary
 import pandas as pd
 import os
 from sqlalchemy import create_engine
@@ -78,13 +79,13 @@ agg AS (
       AND t.DateWeekEnding >= '2026-01-01'
     GROUP BY t.Warehouse, t.ItemNumber, t.DateWeekEnding
 )
-SELECT 
+SELECT
     a.wh_id,
     a.item_number,
     i.class_id,
     i.std_hand_qty,
     i.pallet_id,
-    CASE 
+    CASE
         WHEN i.pallet_id = 1  THEN '5x5'
         WHEN i.pallet_id = 3  THEN '5x7'
         WHEN i.pallet_id = 4  THEN '3.5x5'
@@ -101,18 +102,28 @@ SELECT
     a.OnHandQty,
     1.0 * a.OnHandQty / NULLIF(i.std_hand_qty, 0)              AS pallets,
     1.0 * a.OnHandQty * NULLIF(i.unit_volume, 0)                AS cubes,
-    1.0 * a.OnHandQty * NULLIF(i.unit_weight, 0) * 0.453592     AS [onhand_weight(kg)]
+    1.0 * a.OnHandQty * NULLIF(i.unit_weight, 0) * 0.453592     AS [onhand_weight(kg)],
+    CASE
+        WHEN 1.0 * i.std_hand_qty * NULLIF(i.unit_weight, 0) * 0.453592 <  500  THEN '0~500kg'
+        WHEN 1.0 * i.std_hand_qty * NULLIF(i.unit_weight, 0) * 0.453592 <  1000 THEN '500~1000kg'
+        WHEN 1.0 * i.std_hand_qty * NULLIF(i.unit_weight, 0) * 0.453592 <  1500 THEN '1000~1500kg'
+        WHEN 1.0 * i.std_hand_qty * NULLIF(i.unit_weight, 0) * 0.453592 >= 1500 THEN 'Over 1500kg'
+        ELSE NULL
+    END AS pallet_weight_bucket
 FROM agg AS a
-LEFT JOIN itm AS i 
+LEFT JOIN itm AS i
     ON i.item_number = a.item_number
-WHERE i.pick_put_id IN ('PALLT') 
+WHERE i.pick_put_id IN ('PALLT')
     AND a.OnHandQty > 0
 ORDER BY a.[date], a.item_number;
 
 """
 
 # ============================================================
-# SQL 查询2：汇总数据（summary）—— 按 date + wh_id + pallet_type + class_id 聚合
+# SQL 查询2：汇总数据（summary）—— 按 pallet_type + pallet_weight_bucket + date 聚合
+# 输出列：pallet_type, pallet_weight_bucket, date, OnHandQty, cubes, pallets,
+#         avg_piece_per_pallet, unique_sku_count,
+#         avg_cubes_per_pallet, avg_weight(kg)_per_pallet
 # ============================================================
 query_summary = """
 
@@ -165,9 +176,7 @@ detail AS (
     SELECT 
         a.wh_id,
         a.item_number,
-        i.class_id,
         i.std_hand_qty,
-        i.pallet_id,
         CASE 
             WHEN i.pallet_id = 1  THEN '5x5'
             WHEN i.pallet_id = 3  THEN '5x7'
@@ -177,8 +186,14 @@ detail AS (
             WHEN i.pallet_id = 18 THEN '5x8'
             ELSE 'Check'
         END AS pallet_type,
+        CASE
+            WHEN 1.0 * i.std_hand_qty * NULLIF(i.unit_weight, 0) * 0.453592 <  500  THEN '0~500kg'
+            WHEN 1.0 * i.std_hand_qty * NULLIF(i.unit_weight, 0) * 0.453592 <  1000 THEN '500~1000kg'
+            WHEN 1.0 * i.std_hand_qty * NULLIF(i.unit_weight, 0) * 0.453592 <  1500 THEN '1000~1500kg'
+            WHEN 1.0 * i.std_hand_qty * NULLIF(i.unit_weight, 0) * 0.453592 >= 1500 THEN 'Over 1500kg'
+            ELSE NULL
+        END AS pallet_weight_bucket,
         i.unit_volume,
-        i.pick_put_id,
         i.unit_weight * 0.453592                                    AS unit_weight_kg,
         1.0 * i.std_hand_qty * NULLIF(i.unit_weight, 0) * 0.453592 AS pallet_weight_kg,
         a.[date],
@@ -193,25 +208,23 @@ detail AS (
         AND a.OnHandQty > 0
 )
 SELECT
-    wh_id,
-    [date],
     pallet_type,
-    class_id,
-    COUNT(DISTINCT item_number)     AS item_count,
-    SUM(OnHandQty)                  AS total_OnHandQty,
-    SUM(pallets)                    AS total_pallets,
-    SUM(cubes)                      AS total_cubes,
-    SUM(onhand_weight_kg)           AS [total_onhand_weight(kg)]
+    [date],
+    SUM(OnHandQty)                                              AS OnHandQty,
+    SUM(cubes)                                                  AS cubes,
+    SUM(pallets)                                                AS pallets,
+    1.0 * SUM(OnHandQty) / NULLIF(SUM(pallets), 0)             AS avg_piece_per_pallet,
+    COUNT(DISTINCT item_number)                                 AS unique_sku_count,
+    1.0 * SUM(cubes)   / NULLIF(SUM(pallets), 0)               AS avg_cubes_per_pallet,
+    1.0 * SUM(cubes)   / NULLIF(SUM(OnHandQty), 0)             AS avg_cubes_per_piece,
+    1.0 * SUM(onhand_weight_kg) / NULLIF(SUM(pallets), 0)      AS [avg_weight(kg)_per_pallet]
 FROM detail
 GROUP BY
-    wh_id,
-    [date],
     pallet_type,
-    class_id
+    [date]
 ORDER BY
-    [date],
     pallet_type,
-    class_id;
+    [date];
 
 """
 

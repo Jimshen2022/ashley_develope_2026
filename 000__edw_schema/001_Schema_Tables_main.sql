@@ -64,6 +64,19 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+
+-- ashton Tihi setup
+
+SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2.UNITSDEEP,a2.SCOOPQTY,a2.SKIDSIZE
+                      FROM MasterData_ItemMaster_AFI.ITBEXT as a2 where a2.HOUSE = '1'
+
+select top 10 * FROM MasterData_ItemMaster_AFI.ITBEXT AS a2 WHERE a2.HOUSE IN ('1') AND a2.ITNBR = 'B857-63'
+
+select * from Distribution_Warehouse_Wholesale.t_item_master  where wh_id = '5' and item_number = 'B857-63'
+select * from Distribution_Warehouse_Wholesale.t_item_uom  where wh_id = '5' and item_number = 'B857-63'
+
+
+
 -- wanek container loading
 select top 10 * from Manufacturing_ProductionPlanning_WNK.WVCNTHD order by WCHLASTMAINTENANCETIMESTAMP desc
 select top 10 * from Manufacturing_ProductionPlanning_WNK.WVCNTHDA
@@ -306,7 +319,7 @@ LEFT JOIN (SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UN
     ON t3.ITNBR = t4.ITNBR
 WHERE t3.ITNBR = 'EB3392-245'
 
-
+-- Tihi setup
 select a1.STID, a1.ITNBR, a1.ITCLS, a1.B2Z95S, a1.ITDSC from MasterData_ItemMaster_MIL.ITMRVA as a1 where a1.STID = '51' AND a1.ITNBR = 'EB3392-245'
 SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2.UNITSDEEP,a2.SCOOPQTY,a2.SKIDSIZE FROM MasterData_ItemMaster_MIL.ITBEXT as a2 where a2.HOUSE = '51' AND a2.ITNBR = 'EB3392-245'
 SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2.UNITSDEEP,a2.SCOOPQTY,a2.SKIDSIZE
@@ -808,12 +821,6 @@ select  * from Distribution_Warehouse_Wholesale.LoadMaster where wh_id = '335' a
 select top 10 * from Wholesale_ProductSourcing_AFI.BookingActions where BacTripNumBer ='63832'
 
 select * from Distribution_Warehouse_Wholesale.t_serial_active where wh_id = '1' and item_number = 'P750-776' and serial_no_status = 'H'      
-
-SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2.UNITSDEEP,a2.SCOOPQTY,a2.SKIDSIZE 
-select top 10 * FROM MasterData_ItemMaster_AFI.ITBEXT AS a2 
-WHERE a2.HOUSE IN ('335') AND a2.ITNBR = 'A1000540' 
-
-
 
 select top 10 * from Distribution_Warehouse_Wholesale.YaTranLog 
 
