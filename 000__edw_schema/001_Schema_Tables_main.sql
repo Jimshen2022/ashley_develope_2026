@@ -65,6 +65,66 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
+-- Invoice
+select top 10 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335'
+select top 10 * from Wholesale_SalesHistory_AFI.InvoiceDetail
+
+
+select * 
+from Wholesale_SalesHistory_AFI.InvoiceDetail as t
+where 1 = 1 
+    and t.CustomerNumber IN (
+'8888000',
+'8888300',
+'8888600',
+'9946600',
+'9955000',
+'9955100',
+'9956600',
+'9966100',
+'9974000',
+'9977400',
+'9981000',
+'9983800',
+'9985500',
+'9989200'
+)
+and t.ShiptoNumber IN (
+'130',
+'164',
+'213',
+'291',
+'306',
+'329',
+'400',
+'458',
+'476',
+'570',
+'600',
+'656',
+'669',
+'738',
+'740',
+'796',
+'904',
+'926',
+'933',
+'C72',
+'D63',
+'E38',
+'G71',
+'J58',
+'J86',
+'K05',
+'M37',
+'M57'
+)
+    and t.InvoiceDate > '2026-01-01'
+    and t.Warehouse = '335'
+
+
+
+
 -- ashton Tihi setup
 
 SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2.UNITSDEEP,a2.SCOOPQTY,a2.SKIDSIZE
@@ -74,6 +134,7 @@ select top 10 * FROM MasterData_ItemMaster_AFI.ITBEXT AS a2 WHERE a2.HOUSE IN ('
 
 select * from Distribution_Warehouse_Wholesale.t_item_master  where wh_id = '5' and item_number = 'B857-63'
 select * from Distribution_Warehouse_Wholesale.t_item_uom  where wh_id = '5' and item_number = 'B857-63'
+select  * from Distribution_Warehouse_Wholesale.t_location  where wh_id = '1' and TypeDescription= 'I'
 
 
 
@@ -117,6 +178,7 @@ select top 10 * from Distribution_Warehouse_Wholesale.t_import_WAORDER
 select count(*) from Distribution_Warehouse_Wholesale.t_import_WAORDER
 
 select * from Distribution_Warehouse_Wholesale.t_import_WAORDER where transaction_string like 'D0%-00:%' 
+select * from Distribution_Warehouse_Wholesale.t_import_WAORDER where transaction_string like 'D0%-00:%'  and transaction_string like '%14173%'
 select top 10 * from Distribution_Warehouse_Wholesale.t_import_WAORDER order by imported desc 
 
 select top 10 * from Manufacturing_ProductionPlanning_MIL.SLQNTY_Snapshot_MIL order by SnapshotDate desc
@@ -150,7 +212,7 @@ SELECT
           AND T1.ITNBR = '9210417SUN'
 
 
-          -- sn check
+-- sn check
 Select TOP 10 * from Distribution_Warehouse_Wholesale.tranlog
 Select * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%'  order by lot_number, exception_date
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and employee_id = '50165' and start_tran_date > '2021-01-01' order by start_tran_date desc, start_tran_time desc
@@ -647,13 +709,7 @@ select top 1000 * from Wholesale_ProductSourcing_AFI.SupplyChain_LogilityPlanned
 select top 10 * from Wholesale_CODIS.ATOFILE
 select * from Wholesale_CODIS.ATOFILE where hous = '335' 
 
--- Invoice
 
-
-
-
-select top 10 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335' and shcTripNumber = ''
-select top 10 * from Wholesale_SalesHistory_AFI.InvoiceDetail
 
 
 select top 1000 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335' and shcTripNumber = '97827'

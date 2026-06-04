@@ -26,8 +26,8 @@
    >>>  在此处修改查询参数  <<<
    ============================================================ */
 DECLARE @in_vchWhID             NVARCHAR(10)  = '335'          -- 仓库ID
-DECLARE @in_vchDispatchStartDate DATETIME     = '2026-06-01'    -- 调度开始日期
-DECLARE @in_vchDispatchEndDate   DATETIME     = '2026-07-04'    -- 调度结束日期
+DECLARE @in_vchDispatchStartDate DATETIME     = '1900-01-01'    -- 调度开始日期
+DECLARE @in_vchDispatchEndDate   DATETIME     = '9999-12-31'    -- 调度结束日期
 DECLARE @in_vchType             NVARCHAR(20)  = 'ALL'           -- 类型: 'ALL' 或其他值(仅显示缺货项)
 DECLARE @in_vchFWP              NVARCHAR(2)   = 'N'             -- 是否使用FWP大楼过滤: 'Y' 或 'N'
 DECLARE @in_Report              VARCHAR(1)    = 'D'             -- 报表类型: 'D'=明细, 'S'=汇总
@@ -627,32 +627,11 @@ BEGIN
                 + CONVERT(CHAR(8), dispatch_time, 108)  AS dispatch_date,
             item_number,
             trip_number,
+            CAST(LEFT(trip_number, CHARINDEX('-', trip_number) - 1) AS INT) AS trip_nbr,
             ldm_status,
             trip_needed,
             trip_picked,
-            available_sto,
-            available_staged,
-            Stage_Qty,
-            NOMFG_qty                                   AS No_Received_Qty,
-            yard_qty,
-            new_asn_qty,
-            CASE
-                WHEN CONVERT(CHAR(10), earliest_date, 111) = '1900/01/01' THEN ''
-                ELSE CONVERT(CHAR(10), earliest_date, 111)
-            END                                          AS earliest_date,
-            CASE
-                WHEN available_sto - (trip_needed - trip_picked) < 0
-                THEN available_sto - (trip_needed - trip_picked)
-                ELSE 0
-            END                                          AS negative_qty,
-            negative_tot,
-            Mfg_schQty                                   AS MFG_Schedule_Qty,
-            overflow_qty                                 AS Overflow_Qty,
-            offsite_qty,
-            carrier,
-            In_transit,
-            prod_qty,
-            location_id
+            available_sto
         FROM #temp_demand
     END
     ELSE  /* 汇总报表 */

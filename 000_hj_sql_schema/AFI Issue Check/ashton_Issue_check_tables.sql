@@ -72,6 +72,10 @@ select top 10 * from t_loc_pallet_capacity where location_id = 'A3012EA1'
 select top 1000 * from t_work_q where item_number = 'A2000665'
 
 
+
+-- item location on hand 
+select * from t_stored_item where item_number like '86140%' and location_id not like 'RP%' order by location_id
+
 -- sn master status change 
 select * from t_serial_active where serial_number in ('666158390262')
 select * from t_serial_master where serial_number = '666158390262'
@@ -86,6 +90,7 @@ select * from t_serial_master where serial_number in ('688076032457','6880760324
  select top 10 * from t_tran_log  order by lot_number, start_tran_date desc, start_tran_time desc
 
  -- sn check
+ select top 1000 * from t_tran_log  order by start_tran_date desc, start_tran_time desc
  select * from t_tran_log where item_number in ('A2000686') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('666158390262') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('605590374873') order by lot_number, start_tran_date desc, start_tran_time desc
@@ -97,6 +102,9 @@ select * from t_serial_master where serial_number in ('688076032457','6880760324
 
   select * from t_tran_log where lot_number in ('672617679245','672617679250','672617679487','672617679488') order by lot_number, start_tran_date desc, start_tran_time desc
   select * from t_tran_log where lot_number in ('630570017309') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('503952252218') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('503953040405') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('503953220709') order by lot_number, end_tran_date desc, end_tran_time desc
 
 
 
@@ -166,8 +174,8 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, sum(
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('151','951')
-    AND t1.control_number IN ('P2VJ976')
-    AND t1.start_tran_date >= '2026-03-01'
+    AND t1.control_number IN ('P2VSH22')
+    AND t1.start_tran_date >= '2026-01-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type
 order by t1.item_number, t1.start_tran_date
 

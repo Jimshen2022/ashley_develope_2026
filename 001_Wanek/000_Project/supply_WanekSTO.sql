@@ -25,7 +25,7 @@ JOIN t_location loc WITH (NOLOCK)
 JOIN t_item_master itm WITH (NOLOCK)
     ON sto.item_number = itm.item_number
     AND sto.wh_id = itm.wh_id
-WHERE sto.wh_id = '35'
+WHERE sto.wh_id in ('31','33','34','35','36')
     AND sto.location_id LIKE '%'
     AND sto.item_number LIKE '%'
     AND sto.status LIKE '%'
@@ -38,6 +38,7 @@ WHERE sto.wh_id = '35'
     AND ISNULL(loc.building, '') LIKE '%'
     AND itm.pick_put_id LIKE '%'
     AND itm.commodity_code Like 'Z%' and itm.commodity_code NOT Like '%K'
+    AND sto.type = 'STORAGE'
 ORDER BY 
     sto.item_number,
     sto.location_id;

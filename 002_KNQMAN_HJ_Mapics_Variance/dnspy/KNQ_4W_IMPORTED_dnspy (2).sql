@@ -6,7 +6,7 @@ SET NOCOUNT ON;
 
 DECLARE @MaKNQ NVARCHAR(50) = 'VNNSL';          --【变量：保税仓代码】
 DECLARE @StartDate DATETIME = '2026-04-19';     --【变量：入库开始日期】
-DECLARE @EndDate DATETIME = '2026-05-18';       --【变量：入库结束日期】
+DECLARE @EndDate DATETIME = '2026-05-31';       --【变量：入库结束日期】
 
 -- --------------------------------------------------------------------
 -- STEP 1: 提取所有【集装箱重箱（Type = 1）】的正式生效入库流水
@@ -160,7 +160,7 @@ SELECT
     TEN_KH,               -- [客户] 货主客户名称 (Tên khách hàng)
     GHI_CHU               -- [其他] 虚拟过户及补充备注 (Ghi chú)
 FROM #NHAP2 
-WHERE MA_SP = 'U2710413'
+WHERE MA_SP = 'U2710513'
 ORDER BY NGAY_PHIEU DESC, SO_PHIEU DESC, STTHANG ASC;
 
 -- 清理临时表缓存

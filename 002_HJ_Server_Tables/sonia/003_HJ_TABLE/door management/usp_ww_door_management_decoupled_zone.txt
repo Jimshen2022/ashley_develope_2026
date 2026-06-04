@@ -1,0 +1,384 @@
+
+/*
+$\Wholesale HighJump WMS\DatabaseProjects\Alpha\AAD\Stored Procedures\PRB1280081 - Trip is unpickable and status is lost when performing shipping with 0 fill\usp_ww_door_management_decoupled_zone.sql
+*/
+
+/****************************************    
+ *    Company   : Ashley Furniture Industries            
+ *    System      : HighJump         
+ *    Name    : usp_ww_door_management_decoupled_zone    
+ *    Description       : This proc is being called by AD 1780    
+===================================================================    
+    
+Date            Modified By         Description     
+====================================================================    
+Date            Modified By         Description                                                                                                       VERSION
+1-Jun-2017     Bharathi B          Initial Creation.Converted the embedded sql on the page to a proc.      
+                                    No changes being made to the original script.    
+17-Jan-2020		Lily Wei		335948 LQ - #5 - Add Columns to De-coupled Page    
+13-Oct-2020		Gillian P       PRB469815 TUNING usp_ww_door_management_decoupled_zone add NOLOCK    
+20 -Nov-2020	Ahamed Bazeer	PRB487731 Door Management- Decoupled page failed with conversion error because  
+21-Jul-2021		Yasser			632677-Total cubes loaded on door management decoupled        
+14-Apr-2022		Yasser			632677-Total cubes loaded on door management decoupled        
+05-MAY-2022		Dharani			848106 Bug - Changes in Door Management - De-Coupled Report Page for MDC RDC Trips.
+05-MAY-2022     Dharani         850596 Bug -  Released wave with Zero retail quantity should not be displayed in the Door Management Report Page 
+08/01/2022      Dharani         882636-EOL - Visibility of EOL allocated serials in the ww pages
+16-MAY-2022     Charan          806509-WW - Operational Visibility - Required phase 1 
+23-APR-2024     PVenkat         HC1154560 - WFA - Users are still displayed as Loaders on Decoupled Door Management Page when they are out picking  
+04-FEB-2025     VASANTH         1.0 - PRB1280081 - Trip is unpickable and status is lost when performing shipping with 0 fill
+13-MAR-2025     PVENKAT         V1.1 - PRB1304938 - Decoupled Door Management Page is slow - Performance Improvement.
+8-OCT-2025      PVENKAT         V1.2 - WW-86-Add Scoop picks to Decouple Door Managment Page
+10-OCT-2025     SHAKTI          V1.3 - WW-86-Add Scoop picks to Decouple Door Managment Page(added cube calculation and modified inten for graph view)
+****************************************************************************    
+Sample:    
+=======    
+declare @in_zone VARCHAR(20)    
+set @in_zone  = 'B4ALL'    
+EXECUTE usp_ww_door_management_decoupled_zone @in_zone    
+    
+***************************************/    
+CREATE PROC [dbo].[usp_ww_door_management_decoupled_zone]     
+  @in_zone VARCHAR(20)    
+--with recompile    
+AS    
+    SET NOCOUNT ON    
+    
+    SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;    
+    
+    IF Object_id('tempdb..#tmp_color_bars') IS NOT NULL    
+      DROP TABLE #tmp_color_bars    
+    
+    IF OBJECT_ID('tempdb..#summary') IS NOT NULL    
+      DROP TABLE #summary    
+    
+    IF OBJECT_ID('tempdb..#t_zone_loca') IS NOT NULL    
+      DROP TABLE #t_zone_loca    
+    
+    DECLARE @vch_zone VARCHAR(20)    
+    
+    SET @vch_zone = @in_zone    
+    
+ SELECT * INTO #t_zone_loca FROM dbo.t_zone_loca (NOLOCK) WHERE zone = @vch_zone    
+    
+    SELECT     
+  (CASE WHEN ISNULL(lms.active_flag, 0) = 0 THEN 'Suspend' ELSE 'Release' END ) AS suspend_or_release,    
+           lms.unique_id AS suspend_id,    
+           pkd.load_id,    
+           (SELECT MAX(RIGHT(order_number, 2)) FROM   dbo.t_order (NOLOCK) WHERE  load_id = ldm.load_id) AS nbr_of_orders,     -- V1.1
+           --(SELECT MAX(RIGHT(order_number, 2)) FROM   dbo.t_order (NOLOCK) WHERE  LEFT(load_id, 8) = LEFT(ldm.load_id, 8))    AS nbr_of_orders,    
+           pkd.wh_id,    
+           ldm.door_loc,    
+           ldm.dispatch_date + dispatch_time AS dispatch_time,    
+           grp.display_group,    
+           pkd.pick_area,    
+           CEILING(MAX(ISNULL(loc.capacity_volume, 0)) / 1728) AS capacity_volume,    
+           SUM(( CASE WHEN pkd.status IN ( 'RELEASED', 'PICKED', 'STAGED', 'LOADED' ) THEN pkd.loaded_quantity ELSE 0 END )) AS loaded_pieces,    
+           FLOOR(SUM(( CASE WHEN pkd.status IN ( 'RELEASED', 'PICKED', 'STAGED', 'LOADED' )     
+       THEN CONVERT(FLOAT, pkd.loaded_quantity) * ISNULL(itu.factored_cube, 0) / 1728 ELSE 0 END ))) AS loaded_cube,    
+           SUM(( CASE WHEN pkd.status IN ( 'RELEASED' ) AND pkd.user_assigned IS NULL THEN pkd.planned_quantity - pkd.picked_quantity ELSE 0 END )) AS unpicked_pieces,    
+           FLOOR(SUM(( CASE WHEN pkd.status IN ('RELEASED') AND pkd.user_assigned IS NULL     
+       THEN CONVERT(FLOAT, pkd.planned_quantity - pkd.picked_quantity) * ISNULL(itu.factored_cube, 0) / 1728 ELSE 0 END ))) AS unpicked_cube,    
+           SUM(( CASE WHEN pkd.user_assigned IS NOT NULL OR pkd.status='PICKED-CD' THEN pkd.planned_quantity - pkd.staged_quantity ELSE 0 END ))  AS allocated_pieces,    
+           FLOOR(SUM(( CASE    
+                         WHEN pkd.user_assigned IS NOT NULL THEN CONVERT(FLOAT, pkd.planned_quantity - pkd.staged_quantity) * ISNULL(itu.factored_cube, 0) / 1728    
+                         ELSE 0    
+                       END )))                                 AS allocated_cube,    
+           SUM(( CASE    
+                   WHEN pkd.status IN ( 'RELEASED', 'PICKED', 'STAGED', 'LOADED' ) THEN pkd.staged_quantity - pkd.loaded_quantity    
+     ELSE 0    
+                 END ))                                        AS staged_pieces,    
+           FLOOR(SUM(( CASE    
+                         WHEN pkd.status IN ( 'RELEASED', 'PICKED', 'STAGED', 'LOADED' ) THEN CONVERT(FLOAT, pkd.staged_quantity - pkd.loaded_quantity) * ISNULL(itu.factored_cube, 0) / 1728    
+                         ELSE 0    
+                       END )))                                 AS staged_cube,    
+           (CASE WHEN MAX(emp.loaders) = 1 THEN MAX(emp.loader_name) ELSE LTRIM(STR(MAX(emp.loaders))) + ' Loaders' END ) AS loader_name,    
+           LEFT(ldm.trip_create_date, 11)                      AS start_date,    
+           LEFT(GETDATE(), 11)                                 AS end_date,    
+           '%'                                                 AS pct,    
+           (SELECT COUNT(DISTINCT isnull(pkd.user_assigned,xdc.employee_id)) 
+				FROM  dbo.t_pick_detail pkd (NOLOCK) 
+				LEFT JOIN
+				dbo.t_eol_allocate_to_xdock_opportunity xdc(nolock)
+				on pkd.pick_id=xdc.pick_id
+				WHERE ldm.load_id =  pkd.load_id and (pkd.user_assigned is not null or xdc.pick_id is not null)) AS users_assigned,
+           ISNULL(pkd.staging_location, ldm.stage_loc)         AS staging_location,    
+           ldm.trip_type_id                                    AS trip_type,
+		   (SELECT ISNULL (CAST(ROUND(SUM(orb.unit_volume), 0)AS FLOAT), 0) 
+			FROM   dbo.t_order_detail_breakdown orb(NOLOCK) JOIN dbo.t_order orm(NOLOCK)
+			ON orb.wh_id = orm.wh_id
+			AND orb.order_number = orm.order_number
+			WHERE  orb.ship_status IN ( 'LOADED' ) AND ldm.load_id = orm.load_id 
+			) AS unit_volume
+  
+    INTO   #tmp_color_bars    
+    FROM   dbo.t_load_master ldm (NOLOCK)    
+           INNER JOIN #t_zone_loca zlc2 (NOLOCK)    
+                   ON ldm.wh_id = zlc2.wh_id    
+                   AND ldm.stage_loc = zlc2.location_id    
+           INNER JOIN dbo.t_pick_detail pkd (NOLOCK)    
+                   ON ldm.load_id = pkd.load_id    
+                   AND ldm.wh_id = pkd.wh_id    
+           INNER JOIN dbo.t_work_q wkq (NOLOCK)    
+                   ON pkd.work_q_id = wkq.work_q_id    
+                   AND pkd.wh_id = wkq.wh_id    
+           LEFT OUTER JOIN dbo.t_location loc (NOLOCK)    
+                    ON pkd.staging_location = loc.location_id    
+                    AND pkd.wh_id = loc.wh_id    
+           INNER JOIN dbo.v_item_uom_factored_cube itu (NOLOCK)    
+                   ON pkd.wh_id = itu.wh_id    
+       AND pkd.item_number = itu.item_number    
+                   AND pkd.uom = itu.uom    
+           INNER JOIN dbo.t_zone_loca zlc (NOLOCK)    
+                   ON pkd.pick_location = zlc.location_id    
+                   AND pkd.wh_id = zlc.wh_id    
+           INNER JOIN dbo.t_pick_area_zone_cube_pick_rate grp (NOLOCK)    
+                   ON pkd.pick_area = grp.pick_area    
+                   AND zlc.zone = grp.zone    
+                   AND pkd.wh_id = grp.wh_id    
+           LEFT OUTER JOIN dbo.t_load_master_suspended lms (NOLOCK)    
+                   ON ldm.load_id = lms.load_id    
+                   AND ldm.wh_id = lms.wh_id    
+                   AND lms.active_flag = 1    
+           LEFT OUTER JOIN (SELECT l.load_id,    
+                                   l.wh_id,    
+                                   COUNT(DISTINCT e.[name]) AS loaders,    
+                                   MAX(e.[name])            AS loader_name,
+								   MAX(w.work_q_id) work_q_id	
+                            FROM   dbo.t_load_master l (NOLOCK)    
+                                   INNER JOIN dbo.t_employee e (NOLOCK)    
+                                           ON l.stage_loc = e.current_location    
+                                              AND l.wh_id = e.wh_id
+								   JOIN t_work_q(nolock) w  ON l.load_id=w.pick_ref_number AND w.work_status<>'C' AND w.work_type='10'
+								   JOIN t_work_q_assignment(nolock) a ON  a.user_assigned=e.id AND a.work_q_id=w.work_q_id 
+                            WHERE  l.status IN ( 'R' )    
+                                   AND l.work_type IS NULL    
+                                   AND NULLIF(l.door_loc, 'D000') IS NOT NULL    
+                            GROUP  BY l.load_id,l.wh_id    
+       ) emp    
+                ON ldm.load_id = emp.load_id    
+                AND ldm.wh_id = emp.wh_id    
+    WHERE (ldm.status IN ( 'R' ) OR ( ldm.status ='W'and pkd.work_type IN ('42','43','44') and ldm.shipment_status NOT IN ( 'Needlist' ,'Both')))  -- 1.0       
+           AND ldm.work_type IS NULL    
+           AND wkq.work_status NOT IN ( 'P' )    
+           AND zlc2.zone = @vch_zone    
+    GROUP  BY pkd.load_id,    
+              pkd.wh_id,    
+              ldm.door_loc,    
+              ldm.dispatch_date,    
+              ldm.dispatch_time,    
+     grp.display_group,    
+              pkd.pick_area,    
+              lms.active_flag,                  lms.unique_id,    
+              ldm.load_id,    
+              ldm.trip_create_date,    
+              pkd.staging_location,    
+              ldm.stage_loc,    
+              ldm.trip_type_id ,
+			  unit_volume    
+    
+    SELECT suspend_or_release,    
+           suspend_id,    
+           t1.wh_id,    
+           t1.load_id,    
+           nbr_of_orders,    
+           MAX(door_loc) AS door_loc,             CASE    
+             WHEN t.load_id IS NOT NULL THEN '<b><i>'    
+                                             + LEFT(DATENAME(dw, MIN(dispatch_time)), 3)    
+                                             + ' '    
+                                             + REPLACE(REPLACE(LTRIM(RIGHT(CONVERT(NVARCHAR(30), MIN(dispatch_time)), 7)), 'AM', ' AM'), 'PM', ' PM')    
+                                             + '</i></b>'    
+             ELSE LEFT(DATENAME(dw, MIN(dispatch_time)), 3)    
+                  + ' '    
+                  + REPLACE(REPLACE(LTRIM(RIGHT(CONVERT(NVARCHAR(30), MIN(dispatch_time)), 7)), 'AM', ' AM'), 'PM', ' PM')    
+           END                             AS dispatch_time,    
+           SUM(loaded_pieces)              AS loaded_pieces,    
+           SUM(loaded_cube)                AS loaded_cube,    
+           SUM(CASE    
+                 WHEN display_group = 'Upper' THEN ISNULL(unpicked_pieces, 0)    
+                 ELSE 0    
+               END)                        AS unpicked_upper_pieces,    
+           SUM(CASE   -- V1.2 
+                 WHEN display_group = 'Scoop' THEN ISNULL(unpicked_pieces, 0)  -- V1.2  
+                 ELSE 0   -- V1.2 
+               END)                        AS unpicked_scoop_pieces, -- V1.2   
+           SUM(CASE    
+                 WHEN display_group = 'Upper' THEN ISNULL(unpicked_cube, 0)    
+                 ELSE 0    
+               END)                        AS unpicked_upper_cube,    
+           SUM(CASE    
+                 WHEN display_group = 'Ground' THEN ISNULL(unpicked_pieces, 0)    
+                 ELSE 0    
+               END)                        AS unpicked_ground_pieces,    
+           SUM(CASE    
+                 WHEN display_group = 'Ground' THEN ISNULL(unpicked_cube, 0)    
+                 ELSE 0    
+               END)                        AS unpicked_ground_cube,
+           SUM(CASE    -- V1.2
+                 WHEN display_group = 'Scoop' THEN ISNULL(unpicked_cube, 0)  -- V1.2  
+                 ELSE 0 -- V1.2   
+               END)                        AS unpicked_scoop_cube, -- V1.2   
+           SUM(allocated_pieces)           AS allocated_pieces,    
+           SUM(allocated_cube)             AS allocated_cube,    
+           SUM(CASE    
+                 WHEN pick_area = 'UPHOLSTERY' THEN ISNULL(staged_pieces, 0)    
+                 ELSE 0    
+               END)                        AS staged_upholstery_pieces,    
+           SUM(CASE    
+                 WHEN pick_area = 'UPHOLSTERY' THEN ISNULL(staged_cube, 0)    
+                 ELSE 0    
+               END)                        AS staged_upholstery_cube,    
+           SUM(CASE    
+                 WHEN pick_area = 'UPHOLSTERY' THEN 0    
+                 ELSE staged_pieces    
+               END)                        AS staged_casegood_pieces,    
+           SUM(CASE    
+                 WHEN pick_area = 'UPHOLSTERY' THEN 0    
+                 ELSE staged_cube    
+               END)                        AS staged_casegood_cube,    
+           NULLIF(MAX(capacity_volume), 0) AS capacity_volume,    
+           MAX(loader_name)                AS loader_name,    
+           MIN(dispatch_time)              AS sort_by_dispatch_time,    
+           start_date,    
+           end_date,    
+           pct,    
+           users_assigned,    
+           staging_location,    
+           trip_type,  
+		   unit_volume,  
+           CAST(0 AS INT)                  AS previous_qty , ---lily    
+           CAST(0 AS INT)                  AS future_qty ,---lily    
+           CAST(0 AS INT)                  AS total ---lily    
+    INTO   #summary    
+    FROM   #tmp_color_bars t1    
+           LEFT JOIN (SELECT DISTINCT c.load_id    
+                      FROM   #tmp_color_bars c    
+                             LEFT JOIN dbo.t_work_q wkq (NOLOCK)    
+                                  ON c.load_id = wkq.pick_ref_number    
+                             JOIN dbo.t_work_types wks (NOLOCK)    
+          ON wkq.work_type = wks.work_type    
+                      WHERE  c.load_id IS NOT NULL    
+      AND wkq.priority > wks.default_priority    
+     ) t    
+    ON t1.load_id = t.load_id    
+    GROUP  BY suspend_or_release,    
+              suspend_id,    
+              t1.wh_id,    
+              t1.load_id,    
+              nbr_of_orders,    
+              pct,    
+              start_date,    
+              end_date,    
+              users_assigned,    
+              staging_location,    
+              trip_type,    
+              t.load_id ,
+			  unit_volume   
+     
+ --Update Previous Qty and Future Qty    
+    EXEC dbo.usp_get_loading_drop_qty    
+    
+    DECLARE @total INT    
+    
+    UPDATE #summary SET total = CASE    
+                      WHEN ISNULL(loaded_cube, 0) 
+					       + ISNULL(unpicked_scoop_cube, 0) --V1.3 (Added cube cond)
+                           + ISNULL(unpicked_upper_cube, 0)    
+                           + ISNULL(unpicked_ground_cube, 0)    
+                           + ISNULL(allocated_cube, 0)    
+                           + ISNULL(staged_upholstery_cube, 0)    
+                           + ISNULL(staged_casegood_cube, 0) = 0 THEN 1    
+                      ELSE ISNULL(loaded_cube, 0)  
+					       + ISNULL(unpicked_scoop_cube, 0) --V1.3 (Added cube cond)
+                           + ISNULL(unpicked_upper_cube, 0)    
+                           + ISNULL(unpicked_ground_cube, 0)    
+                           + ISNULL(allocated_cube, 0)    
+                           + ISNULL(staged_upholstery_cube, 0)    
+                           + ISNULL(staged_casegood_cube, 0)    
+                    END    
+    
+    SELECT ( CASE WHEN suspend_or_release = 'Release' THEN '{{BGCOLOR=PINK}}' ELSE NULL END )         AS color,    
+           CASE WHEN mdc.wave_id IS NOT NULL THEN '' ELSE suspend_or_release  END AS suspend_or_release,  
+		   ISNULL(ldmb.batch_id,'') AS batch_id,    
+           suspend_id,    
+           sumr.wh_id,    
+           door_loc,    
+           sumr.load_id,    
+           CASE WHEN mdc.wave_id IS NOT NULL THEN '' ELSE nbr_of_orders END AS nbr_of_orders,      
+           CASE WHEN mdc.wave_id IS NOT NULL THEN '' ELSE CAST ( previous_qty AS VARCHAR(25)) END AS previous_qty,      
+           CASE WHEN mdc.wave_id IS NOT NULL THEN '' ELSE CAST(future_qty AS VARCHAR(25)) END AS future_qty ,      
+           '<!--'    
+           + CONVERT(NVARCHAR(30), sort_by_dispatch_time, 120)    
+           + '-->' + dispatch_time                                                                                AS dispatch_time,    
+           '<table style="margin-top:5px;margin-bottom:5px">'    
+           + '<col width="'    
+           + CAST(CEILING((ISNULL(loaded_cube, 0) / total)*100)+30 AS VARCHAR(30))    
+           + '*"/>' +  
+		CASE WHEN unpicked_scoop_cube > 0       THEN '<col width="'+ CAST(CEILING((ISNULL(unpicked_scoop_cube, 0) / total)*100)+30 AS VARCHAR(30))+ '*"/>' ELSE ''END + --V1.3(Added cube cond)
+		CASE WHEN unpicked_upper_cube > 0		THEN '<col width="'+ CAST(CEILING((ISNULL(unpicked_upper_cube, 0) / total)*100)+30 AS VARCHAR(30))+ '*"/>' ELSE ''END +     
+		CASE WHEN unpicked_ground_cube > 0		THEN '<col width="'+ CAST(CEILING((ISNULL(unpicked_ground_cube, 0) / total)*100)+30 AS VARCHAR(30))+ '*"/>' ELSE ''END +     
+		CASE WHEN allocated_cube > 0			THEN '<col width="'+ CAST(CEILING((ISNULL(allocated_cube, 0) / total)*100)+30 AS VARCHAR(30))+ '*"/>' ELSE ''END +     
+		CASE WHEN staged_upholstery_cube > 0	THEN '<col width="'+ CAST(CEILING((ISNULL(staged_upholstery_cube, 0) / total)*100)+30 AS VARCHAR(30))+ '*"/>' ELSE ''END     
+     + CASE WHEN staged_casegood_cube > 0		THEN '<col width="'+ CAST(CEILING((ISNULL(staged_casegood_cube, 0) / total)*100)+30 AS VARCHAR(30))+ '*"/>'--<tr>' --V1.3(Removed TR)    
+     ELSE ''END + '<tr>' + CASE WHEN suspend_or_release = 'Release' THEN '<td style="background-color:PINK;"border:none;padding:0px;margin:0px;color:black;text-align:center">' ELSE   --V1.3(Added TR after else and removed " before border after pink;end,E
+xising bug) 
+           '<td style="border:none;padding:0px;"height:20px";margin:0px;color:black;text-align:center">' END   --V1.3 removed colon from "height:20px"(existing bug) 
+           + LTRIM(STR(ISNULL(loaded_cube, '')))  
+           + '</td>' + CASE WHEN unpicked_scoop_pieces >0 THEN '<td style="background-color:purple;border:none;padding:0px;margin:0px;color:white;text-align:center">'+ -- V1.2   
+     ISNULL(LTRIM(STR(NULLIF(unpicked_scoop_pieces, ''))), '')+ '</td>' ELSE '' END + -- V1.2    
+            + CASE WHEN unpicked_upper_pieces >0 THEN '<td style="background-color:red;border:none;padding:0px;margin:0px;color:white;text-align:center">'+  --V1.3(Removed extra + '</td>' in start of line existing bug) 
+     ISNULL(LTRIM(STR(NULLIF(unpicked_upper_pieces, ''))), '')+ '</td>' ELSE '' END +     
+           CASE WHEN unpicked_ground_pieces >0 THEN '<td style="background-color:blue;border:none;padding:0px;margin:0px;color:white;text-align:center">'+    
+     ISNULL(LTRIM(STR(NULLIF(unpicked_ground_pieces, ''))), '')+ '</td>' ELSE '' END +     
+           CASE WHEN allocated_pieces >0 THEN '<td style="background-color:orange;border:none;padding:0px;margin:0px;color:white;text-align:center">'+    
+     ISNULL(LTRIM(STR(NULLIF(allocated_pieces, ''))), '')+ '</td>' ELSE '' END +     
+           CASE WHEN staged_upholstery_pieces >0 THEN '<td style="background-color:gray;border:none;padding:0px;margin:0px;color:white;text-align:center">'+    
+     ISNULL(LTRIM(STR(NULLIF(staged_upholstery_pieces, ''))), '')+'</td>' ELSE '' END +     
+           CASE WHEN staged_casegood_pieces >0 THEN '<td style="background-color:green;border:none;padding:0px;margin:0px;color:white;text-align:center">'+    
+     ISNULL(LTRIM(STR(NULLIF(staged_casegood_pieces, ''))), '') +'</td>' ELSE '' END --removed </td> and   added it above line (because adding td here gives incorrect html when casegood piece<0 then creates orphan tag </td> V1.3  
+           + '</tr></table>'                                                                               AS graph,    
+           CAST(LTRIM(STR(( ( staged_upholstery_cube + staged_casegood_cube + allocated_cube ) / capacity_volume ) * 100, 8, 0)) AS INT) AS staging_pct_full,    
+           loader_name,    
+           sort_by_dispatch_time,    
+           unpicked_upper_cube,    
+           unpicked_ground_cube,    
+           allocated_cube, 
+		   unit_volume,   
+           staged_upholstery_cube,    
+           staged_casegood_cube,    
+           capacity_volume,    
+           start_date,    
+           end_date,    
+           pct,    
+           users_assigned,    
+           CASE    
+             WHEN LEN(LTRIM(STR(( ( staged_upholstery_cube    
+                                    + staged_casegood_cube + allocated_cube ) / capacity_volume ) * 100, 8, 0))) > 3 THEN '<b>' + staging_location    
+             ELSE staging_location    
+           END                                                                                                    AS staging_location,    
+           trip_type  
+		    
+    FROM   #summary sumr
+	    LEFT JOIN(SELECT SUM(wod.released_quantity) as released_quantity,
+					 SUM(wod.held_for_bo) as held_for_bo,
+					 SUM(wod.bo_quantity) as bo_quantity,
+					 SUM(wod.staged_quantity)  as staged_quantity,	
+					 mwm.wave_id,
+					 mwm.wh_id 
+	from dbo.t_mdcrdc_wave_master mwm (NOLOCK)
+	inner join t_mdcrdc_wave_order_detail wod(nolock)
+	on wod.mdcrdc_wave_master_id=mwm.mdcrdc_wave_master_id
+	and wod.wh_id=mwm.wh_id
+	group by mwm.wave_id,mwm.wh_id
+	)mdc
+    ON mdc.wave_id=sumr.load_id
+    AND mdc.wh_id=sumr.wh_id 
+	LEFT JOIN t_load_master_batch ldmb(NOLOCK)
+	ON sumr.load_id = ldmb.load_id
+	where isnull(released_quantity,1)>0 or isnull(held_for_bo,1)>0 or isnull(bo_quantity,1)>0 or isnull(staged_quantity,1)>0
+    ORDER  BY ldmb.batch_id,sort_by_dispatch_time    
+    
+    SET NOCOUNT OFF    
+    
+    RETURN    
+    
+
