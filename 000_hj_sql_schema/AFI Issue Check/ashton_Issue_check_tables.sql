@@ -2,6 +2,7 @@ SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%seria
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%hu%'
 
 
 
@@ -32,11 +33,53 @@ SELECT TOP 10  *  FROM  t_trailer
 SELECT TOP 10 *  FROM  t_trailer_asn 
 SELECT TOP 10 *  FROM  t_ya_location 
 SELECT TOP 10 *  FROM  t_vendor 
+SELECT TOP 10 *  FROM  t_loc_pallet_capacity 
+SELECT TOP 10 *  FROM  t_item_uom 
+SELECT TOP 10 *  FROM  t_fwd_pick
+SELECT TOP 10 *  FROM  t_new_fwd_pick
+SELECT TOP 10 *  FROM  t_serial_master
+SELECT TOP 10 *  FROM  t_serial_active
+ select top 10 * from t_hu_master where hu_id like '%39485305'
+select top 10 * from t_hu_detail where hu_id like '%39485305'
+SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
+
+
+
+-- item consolidation, putaway pallet capacity
+select  * from t_stored_item where item_number = 'A3000202'
+select  * from t_serial_active where item_number = 'A3000202' order by location_id, serial_number
+SELECT *  FROM  t_serial_master where item_number = 'A3000202'
+select  * from t_stored_item where location_id  in ('A3015FW5','A3015KU2')
+SELECT  *  FROM  t_loc_pallet_capacity where location_id in ('A3015FW5','A3015KU2')
+SELECT  *  FROM  t_location where location_id in ('A3015FW5')
+SELECT  *  FROM  t_location where location_id in ('A3015FW5')
+SELECT  *  FROM  t_class_loca where location_id in ('A3015FW5')
+SELECT  *  FROM  t_item_uom where item_number = 'A3000202'
+SELECT TOP 10 *  FROM  t_fwd_pick where item_number = 'A3000202' 
+SELECT  *  FROM  t_tran_log where item_number = 'A3000202' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
+SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
+select top 10 * from t_hu_master where hu_id like '%39485305'
+select top 10 * from t_hu_detail where hu_id like '%39485305'
+select top 10 * from t_hu_master where location_id in ('A3015FW5')
+select top 10 * from t_hu_detail where location_id in ('A3015FW5')
+
+-- Grace check sql
+SELECT *
+FROM t_hu_master hum (NOLOCK)
+JOIN t_hu_detail hud (NOLOCK)
+    ON hum.wh_id = hud.wh_id
+   AND hum.hu_id = hud.hu_id
+JOIN t_item_master itm (NOLOCK)
+    ON hud.wh_id = itm.wh_id
+   AND hud.item_number = itm.item_number
+WHERE hum.location_id = 'A3015FW5'
+  AND hum.wh_id = '335'
+  AND itm.pallet_id = 3
+--AND hum.type = 'IV'
 
 
 -- sto
-
-select  * from t_stored_item where item_number = 'T789-2'
+select  * from t_stored_item where item_number = 'A3000202'
 select * from t_item_master where item_number = 'T789-2'
 select * from t_order_detail where item_number = 'T789-2'
 select * from t_order_detail_breakdown where item_number = 'T789-2'
@@ -85,6 +128,8 @@ select * from t_serial_active where item_number = 'H743-70'
 select * from t_serial_active where serial_number in ('666158390262')
 select * from t_serial_active where serial_number in ('666158324114')
 select * from t_serial_master where serial_number in ('688076032457','688076032459')
+select * from t_tran_log where lot_number in ('503953598356') order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where employee_id = '1001787' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
 
 
  select top 10 * from t_tran_log  order by lot_number, start_tran_date desc, start_tran_time desc
@@ -104,7 +149,8 @@ select * from t_serial_master where serial_number in ('688076032457','6880760324
   select * from t_tran_log where lot_number in ('630570017309') order by lot_number, end_tran_date desc, end_tran_time desc
   select * from t_tran_log where lot_number in ('503952252218') order by lot_number, end_tran_date desc, end_tran_time desc
   select * from t_tran_log where lot_number in ('503953040405') order by lot_number, end_tran_date desc, end_tran_time desc
-  select * from t_tran_log where lot_number in ('503953220709') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('503953598356') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('670110189207') order by lot_number, end_tran_date desc, end_tran_time desc
 
 
 
@@ -187,8 +233,8 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, sum(
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('151','951')
-    AND t1.item_number IN ('W100-12')
-    AND t1.start_tran_date >= '2026-04-19'
+    AND t1.item_number IN ('B974-97S')
+    AND t1.start_tran_date >= '2026-06-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type
 order by t1.item_number, t1.start_tran_date
 

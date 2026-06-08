@@ -17,6 +17,71 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%restrict%'
 */
 
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%serial%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%instr%'
+
+
+
+select top 10 * from t_serial_active
+select top 10 * from t_stored_item 
+select top 10 * from t_item_master 
+select top 10 * from t_item_uom 
+select top 10 * from t_fwd_pick where item_number = 'U6600014'
+select top 10 * from t_item_master where item_number = 'U6600014'
+select top 10 * from t_order_detail
+select top 10 * from t_order_detail_breakdown
+select top 10 * from t_replenishment_task_queue
+select top 10 * from t_location
+select top 10 * from t_slot_rank
+select top 10 * from t_exception_tran_log
+select top 10 * from t_order_detail
+select top 10 * from t_order_detail_breakdown
+select top 10 * from t_replenishment_allocation
+select top 10 * from t_work_q
+select top 10 * from t_active_serial
+select top 10 * from t_hu_master
+select top 10 * from t_hu_detail
+select top 10 * from t_battery
+
+--ASN related tables
+SELECT TOP 10 *  FROM  t_asn
+SELECT TOP 10 *  FROM  t_asn_detail
+SELECT TOP 10  *  FROM  t_trailer  
+SELECT TOP 10 *  FROM  t_trailer_asn 
+SELECT TOP 10 *  FROM  t_ya_location 
+SELECT TOP 10 *  FROM  t_vendor 
+SELECT TOP 10 *  FROM  t_loc_pallet_capacity 
+SELECT TOP 10 *  FROM  t_item_uom 
+SELECT TOP 10 *  FROM  t_fwd_pick
+SELECT TOP 10 *  FROM  t_new_fwd_pick
+SELECT TOP 10 *  FROM  t_serial_master
+SELECT TOP 10 *  FROM  t_serial_active
+ select top 10 * from t_hu_master where hu_id like '%39485305'
+select top 10 * from t_hu_detail where hu_id like '%39485305'
+SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
+
+
+
+-- item consolidation, putaway pallet capacity
+select  * from t_stored_item where item_number = 'A3000202'
+select  * from t_serial_active where item_number = 'A3000202' order by location_id, serial_number
+SELECT *  FROM  t_serial_master where item_number = 'A3000202'
+select  * from t_stored_item where location_id  in ('A3015FW5','A3015KU2')
+SELECT  *  FROM  t_loc_pallet_capacity where location_id in ('A3015FW5','A3015KU2')
+SELECT  *  FROM  t_location where location_id in ('A3015FW5')
+SELECT  *  FROM  t_location where location_id in ('A3015FW5')
+SELECT  *  FROM  t_class_loca where location_id in ('A3015FW5')
+SELECT  *  FROM  t_item_uom where item_number = 'A3000202'
+SELECT TOP 10 *  FROM  t_fwd_pick where item_number = 'A3000202' 
+SELECT  *  FROM  t_tran_log where item_number = 'A3000202' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
+SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
+select top 10 * from t_hu_master where hu_id like '%39485305'
+select top 10 * from t_hu_detail where hu_id like '%39485305'
+select top 10 * from t_hu_master where location_id in ('A3015FW5')
+select top 10 * from t_hu_detail where location_id in ('A3015FW5')
 SELECT TOP 10 *  FROM  t_asn
 SELECT TOP 10 *  FROM  t_asn_detail
 SELECT TOP 10  *  FROM  t_trailer  
@@ -36,13 +101,26 @@ select top 10 * from t_import_WAORDER where control_number_2 like '%P2V1W63%' or
 select top 10 * from t_order
 select top 10 * from t_order_detail
 select top 10 * from t_order_c_number 
+select top 10 * from t_order_detail_breakdown
+select top 10 * from t_tran_log where tran_type = '347' order by start_tran_date desc, start_tran_time desc 
 select * from t_order_c_number where order_number like '%46809%' 
 select top 10 * from t_order_c_number where c_number ='D810352'
-select top 10 * from t_order_detail_breakdown
+
 select top 10 * from t_order_comment
 
+-- HJ SA Shipped but still not cut off AS400
+
+SELECT t.*,  cast(right(o.c_number,6) as int) as c_number
+from t_tran_log as t 
+join t_order_detail_breakdown as o on cast(left(t.control_number_2,7) as int) = cast(left(o.order_number,7) as int) and t.item_number = o.item_number
+where t.tran_type = '347' 
+-- 往后滚动2周   
+    and t.start_tran_date >= DATEADD(DAY, -14, CAST(GETDATE() AS DATE))
 
 
+
+
+-- check character length limit for c_number field in t_order_c_number, which is used for order consolidation and will be printed on the label, to confirm if it can fit the whole c_number or we need to do some truncation
 SELECT 
     COLUMN_NAME,
     DATA_TYPE,
