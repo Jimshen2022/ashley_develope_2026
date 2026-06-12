@@ -28,9 +28,9 @@ SELECT TOP 10* FROM MasterData_IT.PowerBIUsage AS t
 
 SELECT top 10 * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema ='PowerBI_Distribution' and t.TABLE_NAME LIKE '%ship%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%EMP%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%SLQNTY%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%employee%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%WNK%' order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%attribute%' order by tpkRowCount DESC
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%WNK%'
 select * from dw_developer.tabledictionary where tpkSchemaName like '%Manufacturing_ProductionPlanning_WNK%'  order by tpkTableName
@@ -64,6 +64,8 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+
+select top 10 * from PowerBI_Distribution.DimCustomers
 
 -- Invoice
 select top 10 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335'
@@ -213,7 +215,7 @@ SELECT
 
 
 -- sn check
-Select TOP 10 * from Distribution_Warehouse_Wholesale.tranlog
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '51' and tran_type = '361' and start_tran_date > '2026-01-01' and item_number like 'M%' order by start_tran_date
 Select * from Distribution_Warehouse_Wholesale.ExceptionLog where wh_id = '335' and tran_type like '855%'  order by lot_number, exception_date
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and employee_id = '50165' and start_tran_date > '2021-01-01' order by start_tran_date desc, start_tran_time desc
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and tran_type = '855' and start_tran_date >= '2026-01-01' order by lot_number, start_tran_date, start_tran_time
@@ -805,6 +807,7 @@ select top 10 * from Distribution_Warehouse_Wholesale.Vendor where VendorCode in
 
 ---ASN tables
 select top 10 * from Distribution_Warehouse_Wholesale.t_asn where Wh_id = '335'
+select top 10 * from Distribution_Warehouse_Wholesale.t_asn_details where Wh_id = '335'
 select distinct status from Distribution_Warehouse_Wholesale.t_asn where Wh_id = '335'
 
 -- Trailer

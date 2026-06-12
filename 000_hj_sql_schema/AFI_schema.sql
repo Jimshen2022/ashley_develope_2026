@@ -12,19 +12,21 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%' 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%putaway%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%drops%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%post_eco%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%restrict%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%eco%'
 */
+
 
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%serial%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
-SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%instr%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%equip%'
 
 
 
+select top 10 * from t_delivery_country_commodity_code_coo_mapping
 select top 10 * from t_serial_active
 select top 10 * from t_stored_item 
 select top 10 * from t_item_master 
@@ -92,6 +94,97 @@ SELECT TOP 10 *  FROM  t_location
 SELECT TOP 10 *  FROM  t_load_master where status != 'S'
 
 
+-- new eqeuipment
+SELECT TOP 10 *  FROM  t_location where location_id like 'VR%'
+SELECT TOP 10 *  FROM  t_equipment_class_loca where location_id like 'VR%'
+SELECT TOP 10 *  FROM  t_equipment_class
+
+SELECT
+    wh_id,
+    'VR232',
+    description,
+    short_location_id,
+    status,
+    zone,
+    picking_flow,
+    capacity_uom,
+    capacity_qty,
+    stored_qty,
+    type,
+    fifo_date,
+    cycle_count_class,
+    last_count_date,
+    last_physical_date,
+    user_count,
+    capacity_volume,
+    time_between_maintenance,
+    last_maintained,
+    length,
+    width,
+    height,
+    replenishment_location_id,
+    pick_area,
+    allow_bulk_pick,
+    slot_rank,
+    slot_status,
+    c1,
+    c2,
+    c3,
+    f1,
+    building,
+    dependent_location,
+    dependent_length,
+    cycle_count_flag,
+    x_coordinate,
+    y_coordinate,
+    z_coordinate,
+    item_hu_indicator,
+    random_cc,
+    location_aisle,
+    location_section,
+    location_tier,
+    location_side,
+    putaway_flow,
+    location_barcode,
+    external_location_id,
+    allow_unallocated_sto,
+    overflow_location,
+    stage_loc,
+    tunnel_location,
+    exposed_aisle,
+    xdock_putaway_loc,
+    box_location
+FROM t_location
+WHERE wh_id = '335'
+  AND location_id = 'VR200'
+
+
+-- PIV check
+
+SELECT TOP 10 *  FROM  t_equipment_attributes 
+SELECT TOP 10 *  FROM  t_equipment_check_log where location_id like 'VR%'
+
+-- BY employee trx
+SELECT  tran_type, description, employee_id, 
+SUM(tran_qty) as tran_qty 
+FROM  t_tran_log where employee_id = '50425' and start_tran_date >= '2026-06-01' 
+GROUP BY tran_type, description, employee_id
+ORDER BY SUM(tran_qty) DESC
+
+
+SELECT 
+    tran_type,
+    description,
+    employee_id,
+    CAST(start_tran_date AS DATE) AS tran_date,
+    SUM(tran_qty) AS tran_qty
+FROM t_tran_log
+WHERE employee_id = '50425'
+    AND start_tran_date >= '2026-06-01'
+GROUP BY tran_type, description, employee_id, CAST(start_tran_date AS DATE)
+ORDER BY SUM(tran_qty) DESC
+
+
 SELECT *  FROM  t_load_master(nolock)  where status != 'S'
 
 select top 10 * from t_import_ where control_number_2 like '%P2V1W63%' order by start_tran_date desc, start_tran_time desc
@@ -101,7 +194,14 @@ select top 10 * from t_import_WAORDER where control_number_2 like '%P2V1W63%' or
 select top 10 * from t_order
 select top 10 * from t_order_detail
 select top 10 * from t_order_c_number 
-select top 10 * from t_order_detail_breakdown
+select top 10 * from t_order_detail_breakdown where order_number like '%46809%' 
+select * from t_order_detail_breakdown where order_number like '%46809%' 
+select * from t_order_detail_breakdown where order_number like '%56431%' 
+select * from t_order_detail_breakdown where item_number like 'RP ORDER%' AND c_number like '%647750%'
+select * from t_order_detail_breakdown where c_number like '%607500%' and order_number like '%50312%' and item_number like '2820125%'
+select * from t_order_detail_breakdown where c_number like '%607500%'  and item_number like '2820125%'
+select * from t_tran_log where tran_type = '347' AND control_number_2 like '%50312%'   and item_number like '2820125%' order by start_tran_date desc, start_tran_time desc 
+
 select top 10 * from t_tran_log where tran_type = '347' order by start_tran_date desc, start_tran_time desc 
 select * from t_order_c_number where order_number like '%46809%' 
 select top 10 * from t_order_c_number where c_number ='D810352'
@@ -110,12 +210,36 @@ select top 10 * from t_order_comment
 
 -- HJ SA Shipped but still not cut off AS400
 
-SELECT t.*,  cast(right(o.c_number,6) as int) as c_number
-from t_tran_log as t 
-join t_order_detail_breakdown as o on cast(left(t.control_number_2,7) as int) = cast(left(o.order_number,7) as int) and t.item_number = o.item_number
-where t.tran_type = '347' 
--- 往后滚动2周   
-    and t.start_tran_date >= DATEADD(DAY, -14, CAST(GETDATE() AS DATE))
+SELECT 
+    o.item_number,
+    CAST(LEFT(o.order_number, 7) AS INT) AS trip_nbr,
+    CASE 
+        WHEN o.item_number = 'RP ORDER' THEN 
+            CAST(RIGHT(o.c_number, 7) AS VARCHAR(7)) 
+        ELSE
+            CAST(RIGHT(o.c_number, 6) AS VARCHAR(6)) 
+        END AS c_number,
+    SUM(o.qty_shipped) AS qty 
+FROM t_order_detail_breakdown AS o 
+WHERE 
+    CAST(LEFT(o.order_number, 7) AS INT) IN (
+        SELECT CAST(LEFT(l.control_number_2, 7) AS INT)
+        FROM t_tran_log AS l 
+        WHERE l.tran_type = '347' 
+          AND l.start_tran_date >= DATEADD(DAY, -14, CAST(GETDATE() AS DATE))
+        GROUP BY CAST(LEFT(l.control_number_2, 7) AS INT)
+    )
+GROUP BY 
+    o.item_number, 
+    CAST(LEFT(o.order_number, 7) AS INT), 
+        CASE 
+        WHEN o.item_number = 'RP ORDER' THEN 
+            CAST(RIGHT(o.c_number, 7) AS VARCHAR(7)) 
+        ELSE
+            CAST(RIGHT(o.c_number, 6) AS VARCHAR(6)) 
+        END
+
+
 
 
 

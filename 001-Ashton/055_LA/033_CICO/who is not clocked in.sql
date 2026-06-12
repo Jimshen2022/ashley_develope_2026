@@ -1,5 +1,4 @@
-﻿-- who is clocked in report
-select e.emp_number, e.name as employee_name, s.name as supervisor_name, t.*,
+﻿select e.emp_number, e.name as employee_name, s.name as supervisor_name, t.*,
 	ea.la_send_data, ea.la_cico_required
 from t_la_employee_clock_in_out as t
 left join t_employee as e on t.employee_id = e.employee_id
