@@ -43,6 +43,9 @@ SELECT TOP 10 *  FROM  t_serial_active
 select top 10 * from t_hu_detail where hu_id like '%39485305'
 SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
 
+-- trip infor
+select 
+
 
 
 -- item consolidation, putaway pallet capacity
@@ -411,12 +414,12 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2, t1.tran_type, t1.l
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('161','165','851','855')
-    AND t1.item_number IN ('W100-12')
+    AND t1.item_number IN ('R407300')
     AND t1.start_tran_date >= '2026-05-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.tran_type, t1.lot_number
 order by t1.item_number, t1.start_tran_date
 
- select * from t_tran_log where lot_number in ('655550046008') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where lot_number in ('833500814427') order by lot_number, start_tran_date desc, start_tran_time desc
 
 
 -- by sn
@@ -475,6 +478,8 @@ group by start_tran_date,start_tran_time, tran_type, description, item_number, l
 
 
 
+
+
 -- by sn
 SELECT tran_type,description,start_tran_date,start_tran_time,employee_id,control_number,control_number_2,wh_id,location_id,hu_id,item_number,lot_number,tran_qty,location_id_2,employee_id_2,
 sn_coo,process,equipment_zone
@@ -502,8 +507,8 @@ order by t1.item_number, t1.start_tran_date
 SELECT t1.start_tran_date,t1.start_tran_time, t1.item_number,t1.control_number_2, sum(t1.tran_qty) as tran_qty
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
-	AND t1.tran_type in ('151','347')
- 	AND t1.control_number_2 in ('P2R7Q66','P2R8L70')
+	AND t1.tran_type in ('151')
+ 	AND t1.control_number_2 in ('P2W4V07')
    -- AND t1.item_number IN ('B814-58')
     AND t1.start_tran_date >= '2025-11-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2, t1.start_tran_time

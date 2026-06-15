@@ -392,7 +392,7 @@ SELECT a2.ITNBR,a2.PICKPUT,a2.TIHIUNLD,a2.ITMCLSID,a2.UNITSWIDE,a2.UNITLAYERS,a2
 -- sn check by sites
 
 select * from Distribution_Warehouse_Wholesale.t_serial_active where item_number = 'D954-50' AND po_number in  ('P2S3T23','P2S3T14','P2S3T20','P2TC102','P2TGQ80')
-
+select * from Distribution_Warehouse_Wholesale.Tranlog where wh_id = '335' and lot_number = '833500822569' 
 
 
 select top 10 * from AtScale_Inventory.DimPurchasingWeeklyPlanSummaryDetails

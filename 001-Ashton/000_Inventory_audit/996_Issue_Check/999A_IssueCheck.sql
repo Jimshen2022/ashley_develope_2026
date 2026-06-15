@@ -56,6 +56,8 @@ select top 10 * from t_serial_master where item_number = 'U6600014'
  select * from t_tran_log where lot_number in ('503952904749') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('618268972022','618268972023') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where lot_number in ('618268972025','618268972026','618268972027') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where lot_number in ('687071086683') order by lot_number, start_tran_date desc, start_tran_time desc
+ select * from t_tran_log where lot_number in ('687071086781') order by lot_number, start_tran_date desc, start_tran_time desc
  select * from t_tran_log where item_number in ('L243354') and location_id = 'EX001AA1' order by lot_number, start_tran_date desc, start_tran_time desc
 
 

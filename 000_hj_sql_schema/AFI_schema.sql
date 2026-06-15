@@ -68,7 +68,7 @@ SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '
 
 
 -- item consolidation, putaway pallet capacity
-select  * from t_stored_item where item_number = 'A3000202'
+select  * from t_stored_item where item_number like '87870%'
 select  * from t_serial_active where item_number = 'A3000202' order by location_id, serial_number
 SELECT *  FROM  t_serial_master where item_number = 'A3000202'
 select  * from t_stored_item where location_id  in ('A3015FW5','A3015KU2')
@@ -80,6 +80,7 @@ SELECT  *  FROM  t_item_uom where item_number = 'A3000202'
 SELECT TOP 10 *  FROM  t_fwd_pick where item_number = 'A3000202' 
 SELECT  *  FROM  t_tran_log where item_number = 'A3000202' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
 SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
+SELECT  top 10 *  FROM  t_tran_log  order by start_tran_date desc, start_tran_time desc
 select top 10 * from t_hu_master where hu_id like '%39485305'
 select top 10 * from t_hu_detail where hu_id like '%39485305'
 select top 10 * from t_hu_master where location_id in ('A3015FW5')
@@ -91,7 +92,7 @@ SELECT TOP 10 *  FROM  t_trailer_asn
 SELECT TOP 10 *  FROM  t_ya_location 
 SELECT TOP 10 *  FROM  t_vendor 
 SELECT TOP 10 *  FROM  t_location 
-SELECT TOP 10 *  FROM  t_load_master where status != 'S'
+SELECT TOP 10 *  FROM  t_load_master where status != 'S' and load_id like '%58133%'
 
 
 -- new eqeuipment
@@ -194,8 +195,8 @@ select top 10 * from t_import_WAORDER where control_number_2 like '%P2V1W63%' or
 select top 10 * from t_order
 select top 10 * from t_order_detail
 select top 10 * from t_order_c_number 
-select top 10 * from t_order_detail_breakdown where order_number like '%46809%' 
-select * from t_order_detail_breakdown where order_number like '%46809%' 
+select top 10 * from t_order_detail_breakdown where order_number like '%58133%' 
+select * from t_order_detail_breakdown where order_number like '%58133%' 
 select * from t_order_detail_breakdown where order_number like '%56431%' 
 select * from t_order_detail_breakdown where item_number like 'RP ORDER%' AND c_number like '%647750%'
 select * from t_order_detail_breakdown where c_number like '%607500%' and order_number like '%50312%' and item_number like '2820125%'
