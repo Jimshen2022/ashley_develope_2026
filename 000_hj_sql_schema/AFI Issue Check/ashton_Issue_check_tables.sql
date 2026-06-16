@@ -282,6 +282,23 @@ select top 10 * from t_loc_pallet_capacity where location_id = 'A3012EA1'
 select top 1000 * from t_work_q where item_number = 'A2000665'
 
 
+-- item in whse
+select * from t_stored_item WHERE item_number in ('T236-13','T247-13','T251-13') 
+select * from t_serial_active WHERE item_number in ('T236-13','T247-13','T251-13') 
+
+select * from t_stored_item WHERE item_number in ('T236-13','T247-13','T251-13')
+select * from t_serial_active WHERE item_number in ('T236-13','T247-13','T251-13') 
+
+-- by item and location
+select * from t_stored_item WHERE item_number in ('T236-13','T247-13','T251-13') order by item_number, location_id
+select item_number, location_id, po_number, count(serial_number) as on_hand_sn_qty
+from t_serial_active
+where wh_id = '335' and item_number in ('T236-13','T247-13','T251-13')
+    and (serial_no_status != 'S' and serial_no_status != 'O')
+GROUP BY item_number, location_id, po_number
+order by item_number, po_number, location_id
+
+
 
 -- item location on hand 
 select * from t_stored_item where item_number like '86140%' and location_id not like 'RP%' order by location_id
@@ -319,7 +336,7 @@ select * from t_tran_log where employee_id = '1001787' and start_tran_date >= '2
   select * from t_tran_log where lot_number in ('503953598356') order by lot_number, end_tran_date desc, end_tran_time desc
   select * from t_tran_log where lot_number in ('670110189207') order by lot_number, end_tran_date desc, end_tran_time desc
   select * from t_tran_log where lot_number in ('623820604873') order by lot_number, end_tran_date desc, end_tran_time desc
-  select * from t_tran_log where lot_number in ('605590417643') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('666158437449') order by lot_number, end_tran_date desc, end_tran_time desc
 
 
 
