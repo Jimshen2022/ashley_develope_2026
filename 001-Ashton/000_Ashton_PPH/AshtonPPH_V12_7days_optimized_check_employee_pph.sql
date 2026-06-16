@@ -57,7 +57,7 @@ INTO #tmp_loc
 FROM Distribution_Warehouse_Wholesale.t_location AS t1
 WHERE t1.wh_id IN (SELECT wh_id FROM #wh_ids);
 
-CREATE INDEX ix_tmp_loc ON #tmp_loc (wh_id, location_id);
+--CREATE INDEX ix_tmp_loc ON #tmp_loc (wh_id, location_id);
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 WITH itm AS (

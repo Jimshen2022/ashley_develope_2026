@@ -86,7 +86,38 @@ select top 10 * from dw_developer.tabledictionary where tpktablename like '%Work
 select top 10 * from dw_developer.tabledictionary where tpkSchemaName like '%Manufacturing_Maximo%'
 select top 10 * from dw_developer.tabledictionary where tpktablename like '%invbalances%'
 select top 10 * from dw_developer.tabledictionary where tpktablename like '%PR%'
+select top 10 * from dw_developer.tabledictionary where tpkcolumnname like '%leadtime%'
 Manufacturing_Maximo
+
+-- 方法1: 查询系统视图(推荐)
+SELECT 
+    s.name AS SchemaName,
+    t.name AS TableName,
+    c.name AS ColumnName,
+    ty.name AS DataType,
+    c.max_length AS MaxLength
+FROM sys.columns c
+INNER JOIN sys.tables t ON c.object_id = t.object_id
+INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
+INNER JOIN sys.types ty ON c.user_type_id = ty.user_type_id
+WHERE c.name like '%plate%'  -- 替换为你要查找的字段名
+ORDER BY s.name, t.name;
+
+
+-- 方法2: 使用 INFORMATION_SCHEMA
+
+SELECT 
+    TABLE_SCHEMA,
+    TABLE_NAME,
+    COLUMN_NAME,
+    DATA_TYPE,
+    CHARACTER_MAXIMUM_LENGTH
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE COLUMN_NAME like '%lead%'  -- 替换为你要查找的字段名
+ORDER BY TABLE_SCHEMA, TABLE_NAME;
+
+
+
 ***//
 
 
@@ -125,8 +156,11 @@ select TOP 10 *	FROM PowerBI_ADSMaximo.Matusetrans
 select TOP 10 *	FROM PowerBI_ADSMaximo.SERVRECTRANS
 
 
+select TOP 10 *	FROM Manufacturing_Maximo.inventory as t where t.Siteid = 'VNM.ASPM' and itemnum in ('1000-5783','1000-5795','1000-5784','1000-5786','1000-5785')
+
+
 select TOP 10 *	FROM Manufacturing_Maximo.Invtrans as t where t.Siteid = 'VNM.ASPM'
-	--select TOP 10 * from Manufacturing_Maximo.item t where t.itemsetid = 'VNMSET'
+select TOP 10 * from Manufacturing_Maximo.item t where t.itemsetid = 'VNMSET'
 
 select TOP 10 *	FROM Manufacturing_Maximo.invbalances AS t1
 select TOP 10 *	FROM Manufacturing_Maximo.item AS t0 

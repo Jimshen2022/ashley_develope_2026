@@ -62,5 +62,5 @@ from Manufacturing_Maximo.vnpr  as t
 join Manufacturing_Maximo.vnprline as t1 on t.vnprid = t1.vnprid
 left join po on t1.ponum = po.ponum
 left join vendor on po.vendor = vendor.[Vendor ID]
-where t.siteid = 'VNM.ASPM' and t.status != 'CAN' and t.requesteddate >= '2025-01-01'
+where t.siteid = 'VNM.ASPM' and t.status != 'CAN' and t.requesteddate >= '2026-01-01'
 order by t.apprdate, t.reqnum, t1.vnprlinenum 
