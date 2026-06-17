@@ -28,9 +28,10 @@ SELECT TOP 10* FROM MasterData_IT.PowerBIUsage AS t
 
 SELECT top 10 * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema ='PowerBI_Distribution' and t.TABLE_NAME LIKE '%ship%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%EMP%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%employee%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%attribute%' order by tpkRowCount DESC
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_Maximo%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_Maximo%'
+select * from dw_developer.tabledictionary where tpktablename LIKE '%aximo%' order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%aximo%' order by tpkRowCount DESC
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%INVENTORY%'
 select * from dw_developer.tabledictionary where tpkSchemaName like '%Manufacturing_ProductionPlanning_WNK%'  order by tpkTableName
@@ -64,6 +65,31 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+
+SELECT 
+    s.name AS SchemaName,
+    t.name AS TableName,
+    c.name AS ColumnName,
+    ty.name AS DataType,
+    c.max_length AS MaxBytes,
+    c.precision AS Precision,
+    c.scale AS Scale,
+    c.is_nullable AS IsNullable
+FROM 
+    sys.tables t
+INNER JOIN 
+    sys.schemas s ON t.schema_id = s.schema_id
+INNER JOIN 
+    sys.columns c ON t.object_id = c.object_id
+LEFT JOIN 
+    sys.types ty ON c.user_type_id = ty.user_type_id
+WHERE 
+    s.name IN ('Manufacturing_Maximo', 'Maximo_DW')
+ORDER BY 
+    s.name, 
+    t.name, 
+    c.column_id;
+
 
 select top 10 * from PowerBI_Distribution.DimCustomers
 
@@ -715,10 +741,35 @@ select * from Wholesale_CODIS.ATOFILE where hous = '335'
 
 
 -- invoiced data
+SELECT 
+    shcWarehouse, 
+    COUNT(*) AS records,
+    SUM(COUNT(*)) OVER () AS total_records
+FROM CostAccounting_Enh.ShippedHistoryCubeData
+WHERE shcInvoiceDate >= '20260101'
+GROUP BY shcWarehouse
+ORDER BY shcWarehouse;
+
+
+-- invoiced data
+SELECT 
+    shcWarehouse, 
+    COUNT(*) AS records,
+    SUM(COUNT(*)) OVER () AS total_records
+FROM CostAccounting_Enh.ShippedHistoryCubeData
+WHERE 1=1
+    --and shcInvoiceDate >= '20260101' 
+    and shcWarehouse = '335'
+GROUP BY shcWarehouse
+ORDER BY shcWarehouse;
+
+
+
 select top 1000 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335' and shcTripNumber = '97827'
-select count(*)  from CostAccounting_Enh.ShippedHistoryCubeData  where  shcInvoicedDate >= '2026-01-01'
+select shcWarehouse, count(*) as records  from CostAccounting_Enh.ShippedHistoryCubeData  where  shcInvoiceDate >= '2026-01-01' group by shcWarehouse
+
 select  count(*)  from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335' and shcTripNumber = '97827'
-select top 1000 * from Wholesale_SalesHistory_AFI.InvoiceDetail where   Warehouse = '335' and TripNumber = '97827' order by InvoiceDate desc
+
 
 
 select  * from Wholesale_SalesHistory_AFI.InvoiceDetail where  OrderNumber = 'D739656'  and Warehouse = '335'

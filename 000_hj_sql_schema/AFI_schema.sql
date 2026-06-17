@@ -94,6 +94,47 @@ SELECT TOP 10 *  FROM  t_vendor
 SELECT TOP 10 *  FROM  t_location 
 SELECT TOP 10 *  FROM  t_load_master where status != 'S' and load_id like '%58133%'
 
+-- sn check
+SELECT TOP 10 *  FROM  t_serial_master
+SELECT TOP 10 *  FROM  t_serial_active 
+
+SELECT TOP 10 *  FROM  t_serial_master  where serial_number = '544038086' 
+SELECT TOP 10 *  FROM  t_serial_active where serial_number = '544038086' 
+
+SELECT  *  FROM  t_serial_master  where serial_no_status is null and item_number = 'RP ORDER' and wh_id = '335'
+SELECT  *  FROM  t_serial_active  where serial_no_status is null and item_number = 'RP ORDER' and wh_id = '335'
+
+SELECT distinct serial_no_status  FROM  t_serial_master serial_no_status = 'S'
+
+NULL
+ 
+H
+L
+R
+S
+SELECT distinct serial_no_status   FROM  t_serial_active
+NULL
+H
+L
+O
+R
+S
+
+-- sn inwarehouse 
+select * 
+from t_serial_active as sna
+left join t_serial_master as snm on sna.serial_number = snm.serial_number and sna.wh_id = snm.wh_id
+where sna.wh_id = '335' and (sna.serial_no_status != 'O' and sna.serial_number is not null and sna.serial_no_status != 'S')
+
+
+-- sn in warehouse
+select sna.serial_no_status, count(sna.serial_number) as qty 
+from t_serial_active as sna
+left join t_serial_master as snm on sna.serial_number = snm.serial_number and sna.wh_id = snm.wh_id
+where sna.wh_id = '335' and (sna.serial_no_status != 'O' and sna.serial_number is not null and sna.serial_no_status != 'S')
+group by sna.serial_no_status
+
+
 
 -- new eqeuipment
 SELECT TOP 10 *  FROM  t_location where location_id like 'VR%'

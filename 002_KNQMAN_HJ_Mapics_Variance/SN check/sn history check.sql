@@ -31,9 +31,18 @@ Select wh_id, tran_type, description,start_tran_date, cast(start_tran_time as ti
 	control_number as wa_order, control_number_2 as reference, item_number, lot_number, tran_qty, location_id as from_location_id, location_id_2 as to_location_id, routing_code as pick_run_id
 from Distribution_Warehouse_Wholesale.tranlog 
 where wh_id = '335' 
-	and lot_number in ('666001038788','666001038790','666001038337','601820053104')
+	and lot_number in ('666001038787','666001038788','666001038790','666001038337','601820053104','601820053088')
 	and start_tran_date >= '2024-01-01' 
 	order by lot_number, start_tran_date, start_tran_time
+
+-- 2026/06/16
+Select wh_id, tran_type, description,start_tran_date, cast(start_tran_time as time) as start_tran_time, employee_id,
+	control_number as wa_order, control_number_2 as reference, item_number, lot_number, tran_qty, location_id as from_location_id, location_id_2 as to_location_id, routing_code as pick_run_id
+from Distribution_Warehouse_Wholesale.tranlog 
+where
+	 lot_number in ('503953156470')
+	and start_tran_date >= '2024-01-01' 
+	order by wh_id,lot_number, start_tran_date, start_tran_time
 
 
 -- in warehouse
