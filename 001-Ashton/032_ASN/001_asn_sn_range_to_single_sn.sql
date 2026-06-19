@@ -146,8 +146,7 @@ LEFT JOIN t_ya_location AS loc WITH (NOLOCK)
 LEFT JOIN t_vendor AS v WITH (NOLOCK)
     ON a.vendor_id = v.vendor_id
 WHERE
-    a.status IN ('NEW', 'CHECKED IN', 'CLOSED')
-   -- AND a.vendor_id IN ('6135', '6580', '6548')
+    a.status IN ('NEW', 'CHECKED IN', 'CLOSED') 
 ORDER BY
     a.asn_id,
     sn.customer_po_number,

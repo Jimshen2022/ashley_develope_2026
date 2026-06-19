@@ -8,6 +8,7 @@ import urllib
 import os
 import time
 from datetime import datetime
+import csv
 
 # 记录开始时间
 start_time = time.time()
@@ -258,13 +259,13 @@ csv_summary_path = os.path.join(output_dir, f"001_ashton_history_inv_by_pallets_
 # 导出到 CSV
 # ============================================================
 try:
-    df_detail.to_csv(csv_detail_path, index=False)
+    df_detail.to_csv(csv_detail_path, index=False,encoding='utf-8-sig', quoting=csv.QUOTE_ALL)
     print(f"明细数据已导出：{csv_detail_path}")
 except Exception as e:
     print("导出明细 CSV 失败！", e)
 
 try:
-    df_summary.to_csv(csv_summary_path, index=False)
+    df_summary.to_csv(csv_summary_path, index=False, encoding='utf-8-sig', quoting=csv.QUOTE_ALL)
     print(f"汇总数据已导出：{csv_summary_path}")
 except Exception as e:
     print("导出汇总 CSV 失败！", e)

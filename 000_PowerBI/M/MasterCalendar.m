@@ -1,4 +1,20 @@
-﻿
+﻿DDATE = 
+FILTER(
+    ADDCOLUMNS(
+        CALENDAR(DATE(2024, 01, 1), DATE(2026, 12, 31)),
+        "Year", YEAR([Date]),
+        "Month", MONTH([Date]),
+        "Day", DAY([Date]),
+        "Weekday", WEEKDAY([Date], 1),
+        "Week Number", WEEKNUM([Date], 1),
+        "Quarter", YEAR([Date]) & "Q" & QUARTER([Date]),
+        "YearMonth", YEAR([Date]) * 100 + MONTH([Date]),
+        "YearWeek", YEAR([Date]) * 100 + WEEKNUM([Date], 1),
+        "Saturday of Week", [Date] + (7 - WEEKDAY([Date], 1)),
+        "Last Day of Month", EOMONTH([Date], 0)
+    ),
+    [Date] <= TODAY()
+)
 
 let
   //StartDate = Date.From(DateTime.LocalNow()) - #duration(90, 0, 0, 0),  // 90 days before today

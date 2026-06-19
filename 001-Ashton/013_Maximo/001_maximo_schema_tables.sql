@@ -77,7 +77,6 @@ Manufacturing_Maximo.Warrantyline
 Manufacturing_Maximo.WorkOrder
 Manufacturing_Maximo.WPitem
 Manufacturing_Maximo.WPlabor
-
 Manufacturing_Maximo.vnprline
 Manufacturing_Maximo.vnpr
 
@@ -122,6 +121,7 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 
 
+select TOP 10 *	FROM Manufacturing_Maximo.invbalances AS t WHERE t.siteid = 'VNM.ASPM'
 select TOP 10 *	FROM Manufacturing_Maximo.vnprline AS t WHERE t.siteid = 'VNM.ASPM'
 select TOP 10 *	FROM Manufacturing_Maximo.vnpr AS t WHERE t.siteid = 'VNM.ASPM'
 

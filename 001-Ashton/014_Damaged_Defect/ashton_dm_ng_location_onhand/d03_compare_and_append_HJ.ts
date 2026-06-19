@@ -15,6 +15,15 @@ function main(workbook: ExcelScript.Workbook) {
         return;
     }
 
+    // =========================================================
+    // 🛡️ 【新增防错】：强制清除主表(Damaged_Defect)的所有筛选状态
+    // 确保所有隐藏行全部展开，防止回填数据错位或追加数据报错
+    let damagedFilter = damagedTable.getAutoFilter();
+    if (damagedFilter) {
+        damagedFilter.clearCriteria();
+    }
+    // =========================================================
+
     // --- 强制刷新文本格式解决科学计数法 ---
     let d_snCol = damagedTable.getColumnByName("Serial Number");
     if (d_snCol) {
@@ -82,12 +91,11 @@ function main(workbook: ExcelScript.Workbook) {
     let rowsToAppend: (string | number | boolean)[][] = [];
     let d_ColCount = damagedTable.getColumns().length;
 
-    // 6. 追加新记录（增加库位过滤逻辑）
+    // 追加新记录（包含 DM001AA1 拦截逻辑）
     for (let i = 0; i < n_Data.length; i++) {
         let sn = String(n_Data[i][n_snIdx]).trim();
-        let loc = String(n_Data[i][n_locIdx]).trim(); // 获取当前行的库位
+        let loc = String(n_Data[i][n_locIdx]).trim();
 
-        // 【核心改动】：如果 SN 不在旧表中，且库位不等于 "DM001AA1"，才执行追加
         if (sn && !d_snSet.has(sn) && loc !== "DM001AA1") {
             let newRow: (string | number | boolean)[] = new Array(d_ColCount).fill("");
 
