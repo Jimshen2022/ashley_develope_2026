@@ -2,35 +2,17 @@
 ashley-edw.database.windows.net
 ASHLEY_EDW
 
-select * from dw_developer.tabledictionary where tpkCreated > '2025-05-01'
--- 临时刷新频率映射表（建议你先用 # 临时表测试）
-WITH RefreshRateMapping AS (
-    SELECT 1 AS tpkRefreshRate, '每 8 小时' AS FrequencyDescription UNION ALL
-    SELECT 2, '每 4 小时' UNION ALL
-    SELECT 3, '每 3 小时' UNION ALL
-    SELECT 4, '每 2 小时' UNION ALL
-    SELECT 6, '每小时' UNION ALL
-    SELECT 8, '每 30 分钟' UNION ALL
-    SELECT 12, '每 20 分钟' UNION ALL
-    SELECT 24, '每 15 分钟' UNION ALL
-
-    SELECT 26, '每天 1 次（成本核算）' UNION ALL
-    SELECT 48, '每天 2 次（早晚）' UNION ALL
-    SELECT 72, '每 20 分钟 (特殊调度)' UNION ALL
-    SELECT 96, '每 15 分钟 (快速刷新)' UNION ALL
-    SELECT 9999, '未知 / 手动触发'
-)
-
-
-
+SELECT  * from MasterData_IT_WNK.AS400SysTablesandColumns
 SELECT top 10 * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema ='Distribution_Warehouse_Wholesale' and t.TABLE_NAME LIKE '%tran%'
 SELECT TOP 10* FROM MasterData_IT.PowerBIUsage AS t
 
-SELECT top 10 * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema ='PowerBI_Distribution' and t.TABLE_NAME LIKE '%ship%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%EMP%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_Maximo%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_Maximo%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%aximo%' order by tpkRowCount DESC
+SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema ='Manufacturing_ProductionPlanning_WNK' 
+SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema like '%MasterData_IT_WNK%'
+SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema like '%MBCDRESM %'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%CDAITX%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
+select * from dw_developer.tabledictionary where tpktablename LIKE '%WNK%' order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%aximo%' order by tpkRowCount DESC
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%INVENTORY%'
@@ -97,6 +79,8 @@ select top 10 * from PowerBI_Distribution.DimCustomers
 select top 10 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335'
 select top 10 * from Wholesale_SalesHistory_AFI.InvoiceDetail
 
+
+select top 10 * from MasterData_IT_WNK.MBCDRESM
 
 select * 
 from Wholesale_SalesHistory_AFI.InvoiceDetail as t
@@ -249,6 +233,7 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952820543' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '635930176074' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '688075336774' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and start_tran_date >= '2026-01-01' and tran_type = '500' order by lot_number, start_tran_date, start_tran_time
 
 -- 350 fill check
 Select * from Distribution_Warehouse_Wholesale.tranlog where tran_type = '350' and control_number_2 like '%39904%'

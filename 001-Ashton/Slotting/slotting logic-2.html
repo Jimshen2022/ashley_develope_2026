@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HJ WMS Slotting Report Logic</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #f9fbf9;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #2e7d32;
+            border-bottom: 2px solid #e8f5e9;
+            padding-bottom: 10px;
+            font-size: 24pt;
+        }
+        h2 {
+            color: #1565c0;
+            border-left: 5px solid #1565c0;
+            padding-left: 15px;
+            margin-top: 30px;
+            font-size: 18pt;
+        }
+        h3 {
+            color: #0277bd;
+            font-size: 14pt;
+            margin-top: 20px;
+        }
+        .note {
+            background-color: #fff9c4;
+            padding: 15px;
+            border-left: 5px solid #fbc02d;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+        .rule-block {
+            background-color: #f1f8e9;
+            border: 1px solid #c5e1a5;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .rule-block h4 {
+            margin-top: 0;
+            color: #33691e;
+        }
+        .kpi-list {
+            list-style-type: decimal;
+        }
+        strong {
+            color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1># HJ WMS Slotting Report Logic</h1>
+        <div class="note">
+            <strong>Note:</strong> HJ already has replenishment logic. This report <strong>does not replace replenishment</strong>; it is only responsible for "Location Strategy Adjustment Recommendations (re-slotting)."
+        </div>
+
+        <h2>## 1. Main Objectives (Redefined)</h2>
+        <p>The primary purpose of this report is not replenishment, but rather:</p>
+        <ul>
+            <li>1. Analyze the distribution of <strong>"Fast Items"</strong> in the storage areas (A/B/C zones).</li>
+            <li>2. Move the Forward Picking (FWP) Location of <strong>Fast Items</strong> from Zones C/B to <strong>Zone A (Priority)</strong>.</li>
+            <li>3. Move the FWP Location of <strong>Normal Items</strong> from <strong>Zone A</strong> to Zones B/C.</li>
+            <li>4. For <strong>Slow Moving Items</strong> with no demand, recommend canceling their ground FWP locations and moving them to Zone C or upper shelf levels.</li>
+        </ul>
+
+        <hr>
+
+        <h2>## 2. Boundaries with HJ WMS (Critical)</h2>
+        <p>Current HJ WMS Logic:</p>
+        <ul>
+            <li>Each item is bound to 1 FWP location.</li>
+            <li>FWP locations are always on the ground level.</li>
+            <li>When the FWP location inventory is <code>< setup qty</code>, the system automatically generates a replenishment WKQS task, sent to Reach Truck employees via handheld scanners.</li>
+        </ul>
+        <p>Therefore, the responsibility of this report is:</p>
+        <ul>
+            <li><strong>Only output "Move Recommendations" (re-slotting)</strong>;</li>
+            <li>Do not interfere with HJ's replenishment trigger and execution mechanism;</li>
+            <li>The output results can be converted by IT into "Master Data Adjustment Tasks."</li>
+        </ul>
+
+        <hr>
+
+        <h2>## 3. Stratification & Zoning Strategy</h2>
+        <h3>### 3.1 SKU Demand Stratification (Recommended)</h3>
+        <ul>
+            <li><strong>Fast Item:</strong> High-frequency demand (e.g., high Open CO/Trip frequency).</li>
+            <li><strong>Normal Item:</strong> Medium demand.</li>
+            <li><strong>Slow Moving:</strong> No demand (demand is 0 in the last 14 days).</li>
+        </ul>
+
+        <h3>### 3.2 Zoning Policy (Area Policy)</h3>
+        <ol>
+            <li><strong>Fast Item</strong>
+                <ul>
+                    <li>Goal: Place in Zone A ground FWP as much as possible.</li>
+                    <li>Currently in Zone B/C ground FWP: Mark for "Move to Zone A".</li>
+                    <li>If no positions are available in Zone A, enter the waiting queue.</li>
+                </ul>
+            </li>
+            <li><strong>Normal Item</strong>
+                <ul>
+                    <li>Goal: Evacuate from Zone A, move to Zone B/C ground FWP.</li>
+                    <li>Release Zone A space for Fast Items.</li>
+                </ul>
+            </li>
+            <li><strong>Slow Moving Item</strong>
+                <ul>
+                    <li>Goal: Cancel its ground FWP location.</li>
+                    <li>Move to Zone C or upper-level storage, no longer occupying ground-level FWP space.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <hr>
+
+        <h2>## 4. Rule Engine</h2>
+        <div class="rule-block">
+            <h4>### Rule-F1 (Fast Move Up)</h4>
+            <code>IF 'item_type = FAST' AND 'current_fwp_area IN ('C', 'B')'</code><br>
+            <code>THEN 'action = MOVE_FWP_TO_A'</code>
+        </div>
+
+        <div class="rule-block">
+            <h4>### Rule-N1 (Normal Move Down)</h4>
+            <code>IF 'item_type = NORMAL' AND 'current_fwp_area = 'A''</code><br>
+            <code>THEN 'action = MOVE_FWP_TO_B' OR 'action = MOVE_FWP_TO_C'</code>
+        </div>
+
+        <div class="rule-block">
+            <h4>### Rule-S1 (Slow Moving - Cancel FWP)</h4>
+            <code>IF 'item_type IN ('NO_DEMAND')'</code><br>
+            <code>THEN 'action = REMOVE_FWP_AND_MOVE_UPPER'</code>
+        </div>
+
+        <div class="rule-block">
+            <h4>### Rule-C1 (Capacity/Availability Check)</h4>
+            <code>IF target area has no available ground FWP location for slotting</code><br>
+            <code>THEN 'action_status = PENDING_CAPACITY'</code>
+        </div>
+
+        <hr>
+
+        <h2>## 5. Output Result Structure for IT / WMS</h2>
+        <p>Three suggested output result sets:</p>
+        <ol>
+            <li><strong><code>slotting_fast_to_a_task</code></strong>
+                <ul>
+                    <li>item_id, current_fwp_loc, current_area, target_area='A', suggested_target_loc, reason='FAST_ITEM_PRIORITY'</li>
+                </ul>
+            </li>
+            <li><strong><code>slotting_normal_to_b_task</code> or <code>slotting_normal_to_c_task</code></strong>
+                <ul>
+                    <li>item_id, current_fwp_loc, current_area='A', target_area in ('B', 'C'), suggested_target_loc, reason='RELEASE_A_FOR_FAST'</li>
+                </ul>
+            </li>
+            <li><strong><code>slotting_slow_remove_fwp_task</code></strong>
+                <ul>
+                    <li>item_id, current_fwp_loc, action='REMOVE_FWP', suggested_upper_loc, reason='NO_DEMAND'</li>
+                </ul>
+            </li>
+        </ol>
+
+        <hr>
+
+        <h2>## 6. Key KPIs (for Acceptance)</h2>
+        <ul class="kpi-list">
+            <li><strong>Coverage Rate of Fast Items in Zone A</strong> (Goal: Increase);</li>
+            <li><strong>Occupancy Ratio of Zone A by Normal Items</strong> (Goal: Decrease);</li>
+            <li><strong>Ground FWP Ratio for Slow Moving Items</strong> (Goal: Decrease);</li>
+        </ul>
+    </div>
+</body>
+</html>

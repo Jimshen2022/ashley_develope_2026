@@ -1,8 +1,8 @@
 ﻿/*
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%vendor%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 't_import%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%control%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%profile%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMNS LIKE '%CROSS%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%type%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -26,6 +26,11 @@ SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%equip%
 
 
 
+select  * from t_lookup where source like '%t_location%' and locale_id = '1033' and wh_id = '335'
+select  * from t_lookup where source like '%t_location%' and locale_id = '1033' and wh_id = '335'
+select top 10 * from t_control where control_type like '%PRIM_DEMAND_DAYS%'
+select top 10 * from t_control where control_type like '%SEC_DEMAND_DAYS%'
+select top 10 * from t_control where control_type like '%SEC_LOC_TYP%'
 select top 10 * from t_delivery_country_commodity_code_coo_mapping
 select top 10 * from t_serial_active
 select top 10 * from t_stored_item 
@@ -340,6 +345,11 @@ select * from t_tran_log where lot_number IN ('645521626057') order by item_numb
 select distinct serial_no_status from t_serial_master where serial_number = '688075633760'
 
 -- sn status check
+select top 10 * from t_serial_active where serial_number = '667048056058'
+select top 10 * from t_serial_master where serial_number = '667048056058'
+select top 10 * from t_serial_master where serial_number = '667048056853'
+
+
 select t.*, m.serial_no_status
 from t_serial_active(nolock) as t 
 left join t_serial_master(nolock) as m on t.serial_number = m.serial_number
@@ -352,7 +362,7 @@ select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  f
 
 
 -- sn trx
-select * from t_tran_log where lot_number IN ('631314870429') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('688800602404') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('618268701679') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('666158354602') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('633124331289') order by item_number, lot_number, start_tran_date desc, start_tran_time desc

@@ -1,0 +1,9 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3
+,,,
+,Values,,
+Item_Type,SKUs,OnHand,%
+Top20%,31,18180,0.10015811539669335
+FastItem,931,88701,0.48867574223333865
+NormalItem,1532,69005,0.38016560797298266
+SlowMoving,194,5627,0.03100053439698534
+Grand Total,2688,181513,1

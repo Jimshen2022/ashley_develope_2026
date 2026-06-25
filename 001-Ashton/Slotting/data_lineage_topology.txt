@@ -1,0 +1,201 @@
+========== Slotting 业务域 - 数字血缘拓扑报告 ==========
+
+【一】核心血缘链路 (Lineage Links)
+说明：以下字段出现在多个业务表中，是跨表关联（JOIN）的核心主键。
+
+[1] 跨域节点: 'Item' (核心度: 4)
+    🔗 串联实体: CG_ABC, Change, FWP, UPH_ABC
+
+[2] 跨域节点: 'Open_CO_Qty' (核心度: 3)
+    🔗 串联实体: CG_ABC, OpenTrips, UPH_ABC
+
+[3] 跨域节点: 'Acc(%)' (核心度: 3)
+    🔗 串联实体: CG_ABC, ItemData, UPH_ABC
+
+[4] 跨域节点: 'Warehouse' (核心度: 3)
+    🔗 串联实体: Change, FWP, STO
+
+[5] 跨域节点: 'Disabled' (核心度: 3)
+    🔗 串联实体: Disabled_Loc, FWP, ItemData
+
+[6] 跨域节点: 'ITNBR' (核心度: 3)
+    🔗 串联实体: ItemData, Item_Query, OpenTrips
+
+[7] 跨域节点: 'ITCLS' (核心度: 3)
+    🔗 串联实体: ItemData, Item_Query, OpenTrips
+
+[8] 跨域节点: 'ITDSC' (核心度: 3)
+    🔗 串联实体: ItemData, Item_Query, OpenTrips
+
+[9] 跨域节点: 'PICKPUT' (核心度: 3)
+    🔗 串联实体: ItemData, Item_Query, OpenTrips
+
+[10] 跨域节点: 'ITMCLSID' (核心度: 3)
+    🔗 串联实体: ItemData, Item_Query, OpenTrips
+
+[11] 跨域节点: 'Total_Open_CO_Qty' (核心度: 2)
+    🔗 串联实体: CG_ABC, UPH_ABC
+
+[12] 跨域节点: 'Open_CO(%)' (核心度: 2)
+    🔗 串联实体: CG_ABC, UPH_ABC
+
+[13] 跨域节点: 'Item_Status' (核心度: 2)
+    🔗 串联实体: CG_ABC, ItemData
+
+[14] 跨域节点: 'Location' (核心度: 2)
+    🔗 串联实体: Disabled_Loc, FWP
+
+[15] 跨域节点: 'Loc_Type' (核心度: 2)
+    🔗 串联实体: FWP, ItemData
+
+[16] 跨域节点: 'Pallet Type' (核心度: 2)
+    🔗 串联实体: FWP, Locations
+
+[17] 跨域节点: 'TripQty' (核心度: 2)
+    🔗 串联实体: FWP, ItemData
+
+[18] 跨域节点: 'CO_Qty' (核心度: 2)
+    🔗 串联实体: FWP, ItemData
+
+[19] 跨域节点: 'MOHTQ' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[20] 跨域节点: 'WHSLC' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[21] 跨域节点: 'QTSYR' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[22] 跨域节点: 'B2Z95S' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[23] 跨域节点: 'UNITSWIDE' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[24] 跨域节点: 'UNITLAYERS' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[25] 跨域节点: 'UNITSDEEP' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[26] 跨域节点: 'SCOOPQTY' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[27] 跨域节点: 'SKIDSIZE' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[28] 跨域节点: 'QTYCR' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[29] 跨域节点: 'NBSEAT' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[30] 跨域节点: 'CRTWIN' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[31] 跨域节点: 'CRTLIN' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[32] 跨域节点: 'CRTHIN' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[33] 跨域节点: 'PRDWIN' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[34] 跨域节点: 'PRDHIN' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[35] 跨域节点: 'PRDLIN' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[36] 跨域节点: 'ITMWEGHT' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[37] 跨域节点: 'OPEN_PO' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[38] 跨域节点: 'PALLETS' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[39] 跨域节点: 'UNIT_WEIGHT_RANGE' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[40] 跨域节点: 'WEIGHT_RANGE' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[41] 跨域节点: 'FWP' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[42] 跨域节点: 'PRDWIN2' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[43] 跨域节点: 'PRDHIN2' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[44] 跨域节点: 'PRDLIN2' (核心度: 2)
+    🔗 串联实体: ItemData, Item_Query
+
+[45] 跨域节点: 'Item_Type' (核心度: 2)
+    🔗 串联实体: ItemData, Locations
+
+[46] 跨域节点: 'HOUSE' (核心度: 2)
+    🔗 串联实体: Item_Query, OpenTrips
+
+[47] 跨域节点: 'Location ID' (核心度: 2)
+    🔗 串联实体: Locations, STO
+
+[48] 跨域节点: 'Type' (核心度: 2)
+    🔗 串联实体: Locations, STO
+
+[49] 跨域节点: 'PRODUCT' (核心度: 2)
+    🔗 串联实体: Locations, OpenTrips
+
+
+
+【二】实体基因字典 (Data Dictionary)
+说明：各离散业务实体（数据表）内部的完整特征属性映射。
+
+[CG_ABC] (6 个有效维度):
+  - Item, Open_CO_Qty, Total_Open_CO_Qty, Open_CO(%), Acc(%), Item_Status
+
+[Change] (4 个有效维度):
+  - Warehouse, Item, Old FWP location, new FWD location
+
+[Defined] (3 个有效维度):
+  - Defined_Item_Class, Description, Shipping Side
+
+[Disabled_Loc] (4 个有效维度):
+  - Location, Disabled, Reason, Date
+
+[FWP] (20 个有效维度):
+  - Warehouse, Location, Loc_Type, Item, Replen Level, Replen Qty, Uom, Capacity Qty, Pick Put Id, Class Id, Fwd Qty, Current Utilized, Notfwd Qty, Potential Utilized, Pallet Type, Pick Trans Qty, TripQty, CO_Qty, Disabled, STO
+
+[ItemData] (43 个有效维度):
+  - ITNBR, MFPUS, MOHTQ, WHSLC, ITCLS, QTSYR, B2Z95S, ITDSC, MFPUS.1, PICKPUT, ITMCLSID, UNITSWIDE, UNITLAYERS, UNITSDEEP, SCOOPQTY, SKIDSIZE, QTYCR, NBSEAT, CRTWIN, CRTLIN, CRTHIN, PRDWIN, PRDHIN, PRDLIN, ITMWEGHT, "Unit_Weight(KG)", OPEN_PO, PALLETS, "SCOOP_Weight(KG)", UNIT_WEIGHT_RANGE, WEIGHT_RANGE, FWP, PRDWIN2, PRDHIN2, PRDLIN2, TripQty, CO_Qty, Disabled, Acc(%), Item_Type, Item_Status, Loc_Type, Product_Family
+
+[ItemString] (1 个有效维度):
+  - SELECT t2.ITNBR,t1.MFPUS,t2.MOHTQ,t2.WHSLC,t2.ITCLS, t2.QTSYR, t4.B2Z95S, t4.ITDSC, t3.MFPUS, t1.PICKPUT, t1.ITMCLSID, t1.UNITSWIDE, t1.UNITLAYERS, t1.UNITSDEEP, t1.SCOOPQTY, t1.SKIDSIZE, t3.QTYCR,
+
+[Item_Query] (36 个有效维度):
+  - ITNBR, HOUSE, MOHTQ, WHSLC, ITCLS, QTSYR, B2Z95S, ITDSC, TIHIUNLD, PICKPUT, ITMCLSID, UNITSWIDE, UNITLAYERS, UNITSDEEP, SCOOPQTY, SKIDSIZE, QTYCR, NBSEAT, CRTWIN, CRTLIN, CRTHIN, PRDWIN, PRDHIN, PRDLIN, ITMWEGHT, ITNBR2, OPEN_PO, SCOOP_Weight(KG), WEIGHT_RANGE, PALLETS, Unit_Weight(KG), UNIT_WEIGHT_RANGE, FWP, PRDWIN2, PRDHIN2, PRDLIN2
+
+[Locations] (38 个有效维度):
+  - LoBation_CefineC, Primary_Item, Item_Type, OnHand, Bay(from S to R), Bay(from R to S), 67th, Side, 6th, Aisle, Tier, Warehouse ID, Location ID, Type, Status, Picking Flow, Pick Area, Capacity Volume, Item Hu Indicator, Loc_Status, Width, Height, Depth, Loc_CBM, Pallet Type, Pallet Fit, Pieces/Pallet, Capacity(By Pieces), Area, Product, Area Avg.CBM/Pieces, Utilization, Capacity(By CBM), Switch, Product_Qty, Product_CBM, Utilization_by_PIECES, Utilization_by_CBM
+
+[Metrics] (18 个有效维度):
+  - Defined_Item_Type, Top20%, Top20%.1, Top20%.2, Top20%.3, FastItem, FastItem.1, FastItem.2, FastItem.3, NormalItem, NormalItem.1, NormalItem.2, NormalItem.3, SlowMoving, SlowMoving.1, SlowMoving.2, SlowMoving.3, Total
+
+[OpenTrips] (34 个有效维度):
+  - HOUSE, ORDNO, ITMSQ, ITNBR, ITDSC, ITCLS, CCUSNO, CSHPNO, CUSNM, ORDER_TAKEN_DATE, ORIGINAL_REQUEST_DATE, CRD, CPD, LOADDATE, ORDUSR, COQTY, QTYSH, QTYBO, OPEN_CO_QTY, ALC, PRODUCT, BDTRP#, BDISEQ, TRIP_QTY, BDITCT, BDITWT, BDREF#, BHCDAT, BHCTIM, BHRDAT, BHLDAT, BHLTIM, PICKPUT, ITMCLSID
+
+[Setup] (3 个有效维度):
+  - NGOCDINH, DataCollectedAt: 2026/04/04  22:17:38, Updated Successful~  Wall Time: 160.88s.
+
+[STO] (18 个有效维度):
+  - Sequence, Item Number, Actual Qty, Unavailable Qty, Status, Warehouse, Location Id, Type, Fifo Date, Expiration Date, Reserved For, Lot Number, Inspection Code, Serial Number, Type1, Put Away Location, Owner Id, Pod Status
+
+[Summary] (0 个有效维度):
+  - 
+
+[UPH_ABC] (6 个有效维度):
+  - Item, Open_CO_Qty, Total_Open_CO_Qty, Open_CO(%), Acc(%), Item_Class

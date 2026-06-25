@@ -24,7 +24,7 @@ def generate_warehouse_locations(aisles_config):
     one_side = ['A', 'C', 'E', 'G', 'J', 'L', 'N', 'Q', 'S', 'U', 'W', 'Y']
     another_side = ['B', 'D', 'F', 'H', 'K', 'M', 'P', 'R', 'T', 'V', 'X', 'Z']
     second_letters = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-    levels = [1, 2, 3, 4, 5, 6, 7, 8]
+    levels = [1, 2, 3, 4]
     
     # 遍历每个通道配置
     for aisle_config in aisles_config:
@@ -145,33 +145,33 @@ def main():
     # 在这里自定义你的通道配置
     aisles_config = [
         {
-            'aisle': '022',           # 通道号
+            'aisle': '036',           # 通道号
             'start_bay': 1,           # 起始bay
-            'end_bay': 55,            # 结束bay
+            'end_bay': 53,            # 结束bay
             'direction': 'forward'    # 方向: 'forward'(正序) 或 'backward'(倒序)
         },
         {
-            'aisle': '023',
-            'start_bay': 55,
+            'aisle': '037',
+            'start_bay': 53,
             'end_bay': 1,
             'direction': 'backward'
         },
         {
-            'aisle': '024',  # 通道号
+            'aisle': '038',  # 通道号
             'start_bay': 1,  # 起始bay
-            'end_bay': 55,  # 结束bay
+            'end_bay': 53,  # 结束bay
             'direction': 'forward'  # 方向: 'forward'(正序) 或 'backward'(倒序)
         },
         {
-            'aisle': '025',
-            'start_bay': 55,
+            'aisle': '039',
+            'start_bay': 53,
             'end_bay': 1,
             'direction': 'backward'
         },
         {
-            'aisle': '026',  # 通道号
+            'aisle': '040',  # 通道号
             'start_bay': 1,  # 起始bay
-            'end_bay': 55,  # 结束bay
+            'end_bay': 53,  # 结束bay
             'direction': 'forward'  # 方向: 'forward'(正序) 或 'backward'(倒序)
         },
         {

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slotting Business Domain - Data Lineage & Topology</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #0056b3;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e1e4e8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1em;
+        }
+
+        .section-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-left: 6px solid var(--accent-color);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-top: 15px;
+        }
+
+        li {
+            margin-bottom: 15px;
+            color: #4a4a4a;
+        }
+
+        .degree-badge {
+            display: inline-block;
+            background-color: #e6f2ff;
+            color: var(--accent-color);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .code-inline {
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d63384;
+            font-weight: 600;
+        }
+
+        .metric-highlight {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Slotting Business Domain</h1>
+            <p>Data Lineage & Operational Topology Report</p>
+        </header>
+
+        <div class="section-card">
+            <h2>I. Core Data Lineage (The "Hub" Topology)</h2>
+            <p>At its foundation, the system relies on high-degree common primary and foreign keys that bridge isolated data tables. By mapping these, we identify the primary drivers of the slotting logic:</p>
+            <ul>
+                <li><strong>Primary Master Hub:</strong> The <span class="code-inline">Item</span> dimension acts as the most heavily interconnected node <span class="degree-badge">Degree: 4</span>, structurally linking the <span class="code-inline">CG_ABC</span>, <span class="code-inline">Change</span>, <span class="code-inline">FWP</span>, and <span class="code-inline">UPH_ABC</span> data tables.</li>
+                <li><strong>Operational Quantity Hub:</strong> The <span class="code-inline">Open_CO_Qty</span> metric <span class="degree-badge">Degree: 3</span> serves as a core connective tissue between <span class="code-inline">CG_ABC</span>, <span class="code-inline">OpenTrips</span>, and <span class="code-inline">UPH_ABC</span>.</li>
+                <li><strong>Accuracy Hub:</strong> The <span class="code-inline">Acc(%)</span> field <span class="degree-badge">Degree: 3</span> creates a direct relationship across <span class="code-inline">CG_ABC</span>, <span class="code-inline">ItemData</span>, and <span class="code-inline">UPH_ABC</span>.</li>
+                <li><strong>Infrastructure Hubs:</strong> Both <span class="code-inline">Warehouse</span> and <span class="code-inline">Disabled</span> function as tertiary connection points <span class="degree-badge">Degree: 3</span>. <span class="code-inline">Warehouse</span> links the <span class="code-inline">Change</span>, <span class="code-inline">FWP</span>, and <span class="code-inline">STO</span> tables. <span class="code-inline">Disabled</span> binds <span class="code-inline">Disabled_Loc</span>, <span class="code-inline">FWP</span>, and <span class="code-inline">ItemData</span>.</li>
+                <li><strong>Item Identity Cluster:</strong> Core item attributes like <span class="code-inline">ITNBR</span>, <span class="code-inline">ITCLS</span>, <span class="code-inline">ITDSC</span>, <span class="code-inline">PICKPUT</span>, and <span class="code-inline">ITMCLSID</span> uniformly share a connection degree of 3, acting as the structural backbone linking <span class="code-inline">ItemData</span>, <span class="code-inline">Item_Query</span>, and <span class="code-inline">OpenTrips</span> together.</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h2>II. Operational Execution Workflow</h2>
+            <p>The underlying data is orchestrated via a sequential execution pipeline managed by the <span class="code-inline">a99_Excute_FWP_</span> subroutine.</p>
+            <ul>
+                <li><strong>Initialization:</strong> The process begins by stripping all active auto-filters from the worksheets using the <span class="code-inline">Filter_</span> module to ensure a clean data environment.</li>
+                <li><strong>Sequential Staging:</strong> Data transformation follows a strict hierarchy, sequentially firing modules that build upon one another: it initializes base structures (<span class="code-inline">a0_FWP_</span>, <span class="code-inline">a01_STO_</span>), retrieves operational requirements (<span class="code-inline">a1_Pull_Open_Trips_</span>), and enriches the item data (<span class="code-inline">a2_ItemData_</span>, <span class="code-inline">a3_fwp_add_columns_</span>, <span class="code-inline">a4_CG_ABC_</span>, <span class="code-inline">a5_ItemData_Class_</span>).</li>
+                <li><strong>Mapping & Metrics Calculation:</strong> The logic applies the physical location mapping (<span class="code-inline">a6_Location_vs_Item_mapping_</span>), calculates classification and family associations (<span class="code-inline">a7_itemdata_get_location_abc_</span>, <span class="code-inline">a71_item_family_</span>), and culminates in generating final performance outputs (<span class="code-inline">a8_Metrics_</span>).</li>
+                <li><strong>Logging:</strong> Upon success, the system writes the completion timestamp alongside the calculated "Wall Time" onto Sheet9, permanently logging the update run.</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h2>III. Deep Dive: Location vs. Item Mapping Logic</h2>
+            <p>The logic contained within <span class="code-inline">a6_Location_vs_Item_mapping_</span> governs how physical warehouse infrastructure matches to specific inventory items.</p>
+            <ul>
+                <li><strong>Data Aggregation:</strong> The script first constructs a dictionary linking items to specific Forward Pick (FWP) locations parsed from Sheet3.</li>
+                <li><strong>Attribute Gathering:</strong> It simultaneously extracts the "Item Type" and calculates total "OnHand" inventory volume from Sheet12.</li>
+                <li><strong>Reconciliation Engine:</strong> The mapping applies rules directly to the primary Locations table (Sheet4). If an FWP location match exists, the item is mapped; otherwise, the space is actively flagged as <span class="code-inline">z_empty fwp loc</span>.</li>
+                <li><strong>Exception Handling:</strong> The system attempts to assign the item type, defaulting to an alert status of <span class="code-inline">z_Please Check</span> if the source data is missing.</li>
+                <li><strong>Inventory Placement:</strong> Finally, the exact mapped OnHand quantity is assigned to the location, inserting <span class="code-inline">0</span> where no inventory data is detected.</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h2>IV. Entity Data Dictionary Summary</h2>
+            <p>The slotting domain relies on dense tables encapsulating specific business parameters:</p>
+            <ul>
+                <li><span class="metric-highlight">ItemData (43 Dimensions):</span> The most complex entity, maintaining comprehensive attributes such as physical weight constraints (<span class="code-inline">ITMWEGHT</span>), physical dimensions (<span class="code-inline">PRDWIN</span>, <span class="code-inline">PRDHIN</span>, <span class="code-inline">PRDLIN</span>), and pallet characteristics.</li>
+                <li><span class="metric-highlight">Locations (38 Dimensions):</span> Manages physical layout and storage constraints, tracking capacities through metrics like <span class="code-inline">Capacity Volume</span>, <span class="code-inline">Utilization_by_CBM</span>, and specific aisle/tier orientations.</li>
+                <li><span class="metric-highlight">FWP (20 Dimensions):</span> Manages forward-picking strategies by capturing fields like <span class="code-inline">Replen Qty</span>, <span class="code-inline">Capacity Qty</span>, <span class="code-inline">Fwd Qty</span>, and underlying utilization potentials.</li>
+                <li><span class="metric-highlight">Item_Query (36 Dimensions):</span> An analytical snapshot capturing item metrics ranging from <span class="code-inline">MOHTQ</span> and <span class="code-inline">QTYCR</span> to specialized parameters like <span class="code-inline">B2Z95S</span> and open purchase orders (<span class="code-inline">OPEN_PO</span>).</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Slotting Data Architecture & Analysis</p>
+        </footer>
+    </div>
+
+</body>
+</html>

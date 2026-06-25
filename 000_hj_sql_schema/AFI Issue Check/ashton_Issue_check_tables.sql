@@ -67,9 +67,17 @@ select top 10 * from t_hu_master where location_id in ('A3015FW5')
 select top 10 * from t_hu_detail where location_id in ('A3015FW5')
 
 
+-- tran
+select * from t_stored_item where item_number = 'D824-05'
+select start_tran_date,item_number, control_number, control_number_2, sum(case when tran_type = '951' then -tran_qty else tran_qty end) as tran_qty 
+from t_tran_log
+where start_tran_date > '2026-01-01' and tran_type = '151' and item_number = 'D824-05'
+group by start_tran_date,item_number, control_number, control_number_2
 
-
-
+select start_tran_date,item_number, control_number, control_number_2, sum(case when tran_type = '951' then -tran_qty else tran_qty end) as tran_qty 
+from t_tran_log
+where start_tran_date > '2026-05-01' and tran_type = '347' and item_number = 'D824-05'
+group by start_tran_date,item_number, control_number, control_number_2
 
 
 -- select top 100 * from t_tran_log WITH (NOLOCK) where tran_type in ('151','951') order by start_tran_date desc, start_tran_time desc
@@ -336,11 +344,31 @@ select * from t_tran_log where employee_id = '1001787' and start_tran_date >= '2
   select * from t_tran_log where lot_number in ('503953598356') order by lot_number, end_tran_date desc, end_tran_time desc
   select * from t_tran_log where lot_number in ('670110189207') order by lot_number, end_tran_date desc, end_tran_time desc
   select * from t_tran_log where lot_number in ('623820604873') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('667048056058') order by lot_number, end_tran_date desc, end_tran_time desc
   select * from t_tran_log where lot_number in ('666158437449') order by lot_number, end_tran_date desc, end_tran_time desc
 
-
-
+-- sn status check
+select * from t_serial_master where serial_number = '667048056058'
  
+ 
+select top 10 * from t_serial_active where serial_number = '667048056058'
+select top 10 * from t_serial_active where serial_number = '667048056058'
+select top 10 * from t_serial_master where serial_number = '667048056058'
+select * from t_tran_log where lot_number IN ('667048056058') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+
+select distinct serial_no_status from t_serial_master where serial_number = '688075633760'
+
+select t.*, m.serial_no_status
+from t_serial_active(nolock) as t 
+left join t_serial_master(nolock) as m on t.serial_number = m.serial_number
+where t.serial_no_status != m.serial_no_status and t.serial_no_status in ('R')
+
+
+select * from t_tran_log where control_number_2 = 'P2VJ976'
+select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  from t_tran_log where item_number = 'U2710513' and tran_type in ('151')  group by start_tran_date, control_number,control_number_2 order by start_tran_date,control_number,control_number_2
+select start_tran_date, control_number,control_number_2, sum(tran_qty) as qty  from t_tran_log where item_number = 'B100-14' and tran_type in ('347')  group by start_tran_date, control_number,control_number_2 order by start_tran_date,control_number,control_number_2
+
+
 -- 340 Back order check
 
 
@@ -363,7 +391,7 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number, 
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('347')
-   AND t1.item_number IN ('B742-96')
+   AND t1.item_number IN ('5590335')
     --AND t1.control_number_2 like '%39537%'
     AND t1.start_tran_date >= '2026-5-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number,t1.tran_type
@@ -481,7 +509,7 @@ order by t3.lot_number, t3.start_tran_date desc, t3.start_tran_time desc
 select start_tran_date,start_tran_time, tran_type, description, item_number, left(control_number_2,7) as trip_nbr,sum(tran_qty ) as trip_qty
 from t_tran_log
 where tran_type = '347' 
-and control_number_2 like '%1746%'
+and control_number_2 like '%57351%' 
 group by start_tran_date,start_tran_time, tran_type, description, item_number, left(control_number_2,7)
 
 
