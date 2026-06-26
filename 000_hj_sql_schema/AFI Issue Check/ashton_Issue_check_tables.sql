@@ -6,6 +6,8 @@ SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%hu%'
 
 
 
+
+
 select top 10 * from t_serial_active
 select top 10 * from t_stored_item 
 select top 10 * from t_item_master 
@@ -43,8 +45,10 @@ SELECT TOP 10 *  FROM  t_serial_active
 select top 10 * from t_hu_detail where hu_id like '%39485305'
 SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
 
--- trip infor
-select 
+-- ASN hold
+select  * from t_asn where asn_id = '1806451'
+select top 10 * from t_asn_detail where customer_po_number ='P2WFX17'
+select * from t_asn_detail where customer_po_number ='P2WFX17' and item_number = 'B584-81'
 
 
 
@@ -79,7 +83,17 @@ from t_tran_log
 where start_tran_date > '2026-05-01' and tran_type = '347' and item_number = 'D824-05'
 group by start_tran_date,item_number, control_number, control_number_2
 
+select top 10 * from t_stored_item 
 
+select sum(actual_qty) as onhand
+from t_stored_item 
+where location_id like 'A3019%1'
+
+
+select item_number, location_id, sum(actual_qty) as onhand
+from t_stored_item 
+where location_id like 'A3019%1'
+group by item_number, location_id
 -- select top 100 * from t_tran_log WITH (NOLOCK) where tran_type in ('151','951') order by start_tran_date desc, start_tran_time desc
 
 WITH
