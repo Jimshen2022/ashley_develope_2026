@@ -1,0 +1,4 @@
+interface:
+  display_name: "ECUS5 Bonded SQL"
+  short_description: "ECUS5 bonded warehouse SQL knowledge"
+  default_prompt: "Use $ecus5-bonded-warehouse-sql to analyze ECUS5 bonded warehouse SQL and inventory logic."

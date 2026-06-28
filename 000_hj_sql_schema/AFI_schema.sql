@@ -11,10 +11,10 @@ select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%' 
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%putaway%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%post_eco%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%xdock%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%eco%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%processed%count%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%excel%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dynamic%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%count%'
 */
 
 
@@ -23,7 +23,6 @@ SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_orde
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%equip%'
-
 
 
 
@@ -54,12 +53,17 @@ select top 10 * from t_hu_master
 select top 10 * from t_hu_detail
 select top 10 * from t_battery
 select top 10 * from t_employee
+select  * from t_import_XML
+select  * from v_xml_import_queue
+
 
 
 -- SN
 select top 10 * from t_serial_active where 
 select top 10 * from t_serial_master where serial_number = '661470232429'
 
+-- location side
+select top 10 * from t_location where location_id LIKE 'A303%'
 
 -- location scan required
 select id,name, emp_number, dept, supervisor, status, work_shift, location_scan_required 
@@ -136,7 +140,7 @@ SELECT TOP 10 *  FROM  t_load_master where status != 'S' and load_id like '%5813
 SELECT TOP 10 *  FROM  t_serial_master
 SELECT TOP 10 *  FROM  t_serial_active 
 
-SELECT TOP 10 *  FROM  t_serial_master  where serial_number = '544038086' 
+SELECT TOP 10 *  FROM  t_serial_master  where serial_number = '661470232429'
 SELECT TOP 10 *  FROM  t_serial_active where serial_number = '544038086' 
 
 SELECT  *  FROM  t_serial_master  where serial_no_status is null and item_number = 'RP ORDER' and wh_id = '335'

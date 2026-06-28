@@ -1,0 +1,4 @@
+interface:
+  display_name: "DB2 Warehouse SQL"
+  short_description: "DB2 and warehouse SQL workflow"
+  default_prompt: "Use $db2-warehouse-sql to analyze or rewrite a DB2 warehouse SQL query."

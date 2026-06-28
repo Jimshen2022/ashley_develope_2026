@@ -245,7 +245,7 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '694370110319' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '638920006379' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952704823' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
-Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010313' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '668751354722' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 
 --query by sn
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420009049' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time

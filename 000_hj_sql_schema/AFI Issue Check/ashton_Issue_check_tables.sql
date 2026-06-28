@@ -50,6 +50,28 @@ select  * from t_asn where asn_id = '1806451'
 select top 10 * from t_asn_detail where customer_po_number ='P2WFX17'
 select * from t_asn_detail where customer_po_number ='P2WFX17' and item_number = 'B584-81'
 
+-- type X locations
+select top 10 * from t_location 
+select top 10 * from t_stored_item 
+
+select l.location_id,l.status, l.type, sto.onhand, sto.SKUs
+from t_location as l
+left join (select location_id, sum(actual_qty) as onhand, count(distinct item_number) as SKUs from t_stored_item group by location_id) as sto on sto.location_id = l.location_id
+where  l.type = 'X'
+
+
+
+-- cannot picking
+select top 10 * from t_location 
+select top 10 *  from t_zone_loca
+select *  from t_zone
+
+select *  from t_zone_loca where location_id like 'A3020[CEGJL]%1'
+AND location_id not IN (select location_id from t_zone_loca where location_id LIKE 'A306%' and zone = 'A3CGBULK')
+
+select *  from t_zone_loca where location_id like 'A306%' AND location_id not IN (select location_id from t_zone_loca where location_id LIKE 'A306%' and zone = 'A3CGBULK')
+select *  from t_zone_loca where location_id like 'A3020[CEGJL]%1' AND location_id not IN (select location_id from t_zone_loca where location_id LIKE 'A3020[CEGJL]%1' and zone = 'A3CGBULK')
+
 
 
 -- item consolidation, putaway pallet capacity
@@ -359,10 +381,36 @@ select * from t_tran_log where employee_id = '1001787' and start_tran_date >= '2
   select * from t_tran_log where lot_number in ('670110189207') order by lot_number, end_tran_date desc, end_tran_time desc
   select * from t_tran_log where lot_number in ('623820604873') order by lot_number, end_tran_date desc, end_tran_time desc
   select * from t_tran_log where lot_number in ('667048056058') order by lot_number, end_tran_date desc, end_tran_time desc
-  select * from t_tran_log where lot_number in ('666158437449') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('692229400527') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('688806078375') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('688806159289') order by lot_number, end_tran_date desc, end_tran_time desc
+  select * from t_tran_log where lot_number in ('833500838401') order by lot_number, end_tran_date desc, end_tran_time desc
+
+
+  688806159289
+833500838401
+
+  select *
+  from t_tran_log 
+  where item_number = '6690677'      and tran_type in ('165','855','161')
+  order by start_tran_date, start_tran_time
+
+  select * from t_tran_log where lot_number IN ('603953822942','503953822942') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+
+     select start_tran_date, item_number,   tran_type, sum(tran_qty) as qty
+    from t_tran_log
+    where item_number like 'B685-92%' and tran_type = '347'
+    group by  start_tran_date, item_number,   tran_type
+    order by start_tran_date 
+
+
+    select item_number,  control_number_2, tran_type, sum(tran_qty) as qty
+    from t_tran_log
+    where control_number_2 like '%59961%' and tran_type = '347'
+    group by  item_number,  control_number_2,tran_type
 
 -- sn status check
-select * from t_serial_master where serial_number = '667048056058'
+select * from t_serial_master where serial_number = '688806159289'
  
  
 select top 10 * from t_serial_active where serial_number = '667048056058'

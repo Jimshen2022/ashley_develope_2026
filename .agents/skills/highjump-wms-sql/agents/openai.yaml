@@ -1,0 +1,4 @@
+interface:
+  display_name: "HighJump WMS SQL"
+  short_description: "HighJump WMS reporting and SQL guide"
+  default_prompt: "Use $highjump-wms-sql to investigate HighJump WMS tables, procedures, or reports."
