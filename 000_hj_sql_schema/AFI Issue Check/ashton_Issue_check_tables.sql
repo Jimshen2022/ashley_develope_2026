@@ -59,6 +59,9 @@ from t_location as l
 left join (select location_id, sum(actual_qty) as onhand, count(distinct item_number) as SKUs from t_stored_item group by location_id) as sto on sto.location_id = l.location_id
 where  l.type = 'X'
 
+-- sn data error
+select top 10 * from t_serial_master where serial_number = '503953786128'
+select * from t_tran_log where lot_number = '503953786128'
 
 
 -- cannot picking

@@ -2,20 +2,25 @@
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%control%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%profile%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%type%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%excel%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
 select * from t_la_employee_clock_in_out
+select * from t_eil_xml_msg
 select * from INC0644370_t_la_employee_clock_in_out_bkp
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_%' and column_name like '%meter%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%SLQNTY%' 
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%po%' 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%processed%count%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%excel%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dynamic%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%count%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pkd%'
 */
+
+
+
+
 
 
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%serial%'
@@ -53,9 +58,69 @@ select top 10 * from t_hu_master
 select top 10 * from t_hu_detail
 select top 10 * from t_battery
 select top 10 * from t_employee
-select  * from t_import_XML
-select  * from v_xml_import_queue
+select top 10 * from t_import_XML
+select top 10 * from v_xml_import_queue
 
+
+select * from t_pick_detail(nolock) where order_number like'%PTF11%' and status<>'SHIPPED' and item_number='D571-124'
+select * from t_pick_detail(nolock) where status<>'SHIPPED' and item_number='D571-124' 
+
+select * from t_tran_log where item_number ='D571-124' and tran_type like '363%'
+
+--Decouple pick zone and locations
+select top 10 * from t_class_loca
+select top 10 * from t_zone_loca
+select * from t_zone
+select * from t_zone 
+select * from t_zone_loca where zone like 'A4DP%'
+
+-- location zone check
+select location_id, location_barcode from t_location where location_id like 'D%' group by location_id,location_barcode
+
+
+select * from t_tran_log where item_number = 'D371-124'
+select * from t_tran_log where item_number = 'D371-124'
+select * from t_item_uom where item_number = 'D571-124'
+
+
+
+-- location_print
+select * from t_location where location_id like 'A30[34]%'
+
+select
+    t.*,
+    case
+        when charindex(substring(t.location_id, 7, 1), 'ABCDEFGHJKLMNPQRSTUVWXYZ') = 0 then null
+        when ((charindex(substring(t.location_id, 7, 1), 'ABCDEFGHJKLMNPQRSTUVWXYZ') - 1) % 4) in (0, 3)
+            then 'available'
+        else 'Lock'
+    end as bay_location_status
+from t_location t
+where t.location_id like 'A30[3-4]%'
+
+
+-- Location Full check
+select top 10 * from t_location
+select top 10 * from t_stored_item
+select top 10 * from t_exception_tran_log where tran_type like '%252F2%' or  tran_type like '%202F2%'
+select  * from t_exception_tran_log where tran_type like '%252F2%' or  tran_type like '%202F2%'
+select  * from t_exception_tran_log where description like '%Full%'
+
+select t.location_id, t.status, t.type, e.tran_type, e.description, e.exception_date, e.exception_time,e.employee_id,   sum(s.actual_qty) as onhand
+from t_location as t 
+left join t_stored_item as s on t.location_id = s.location_id 
+left join t_exception_tran_log as e on t.location_id = e.location_id
+where t.status = 'F' and t.location_id like 'A3%' and e.tran_type IN ('202F2','252F2')
+group by t.location_id, t.status, t.type, e.tran_type, e.description, e.exception_date, e.exception_time,e.employee_id
+having sum(s.actual_qty) is null
+
+-- employee
+select top 10 * from t_employee
+select top 10 * from t_employee where name like '%VUNG%'
+
+-- check location barcode
+select * from t_location where location_id like 'S%' or location_id like 'D%'
+select * from t_location where location_id like 'A30[34]%' AND location_barcode is  null 
 
 
 -- SN
@@ -69,23 +134,6 @@ select top 10 * from t_location where location_id LIKE 'A303%'
 select id,name, emp_number, dept, supervisor, status, work_shift, location_scan_required 
 from t_employee
 where emp_number IN (
-'00179','00293','00457','00974','01036','01052','01061','50273','50290','50301',
-'50338','50363','50460','50521','50526','50539','50555','50560','50572','50576',
-'50581','50584','50597','50634','50635','50659','50679','50702','50736','50739',
-'50779','50835','50836','50857','50864','50869','50870','50890','50919','50930',
-'50957','50960','50963','50964','50969','50980','50994','50997','50998','51007',
-'51010','51012','51015','51017','51019','51026','51031','51034','51040','51047',
-'51048','51049','51057','51092','51099','50863','51032','51033','50941','50180',
-'50268','51004','00129','00396','00640','00782','00891','00967','00994','01007',
-'50141','50154','50233','50267','50269','50279','50295','50296','50368','50399',
-'50402','50416','50425','50437','50483','50497','50502','50506','50547','50558',
-'50561','50568','50600','50601','50615','50616','50618','50624','50647','50667',
-'50668','50688','50694','50714','50807','50820','50847','50878','50885','50893',
-'50912','50927','50944','50953','50968','50971','50973','50984','50985','50986',
-'50987','50988','50989','50995','51001','51003','51009','51011','51014','51022',
-'51024','51054','51055','51065','51066','51068','51069','51070','51073','51078',
-'51082','51084','51086','51091','51093','51095','51097','51100','51101','51102',
-'51104','51109','51111','51116','51119','51120','51121','51122','51123','51126',
 '51127','51129','51130','51132','51133','51134','51135','51136'
 )
 

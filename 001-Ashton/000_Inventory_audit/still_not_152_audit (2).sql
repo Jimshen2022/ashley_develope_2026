@@ -7,7 +7,7 @@ WITH last_tran AS (
            ) AS rn
     FROM t_tran_log
     WHERE wh_id = '335'
-      AND start_tran_date >= '2026-04-19'
+      AND start_tran_date >= '2026-05-01'
 )
 --SELECT item_number,
 --       control_number_2,
