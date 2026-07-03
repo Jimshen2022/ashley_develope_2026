@@ -12,8 +12,8 @@ SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema like '%MBCDRE
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%CDAITX%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%WNK%' order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%aximo%' order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%ItemBalance%' order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%CostAccounting_Enh%' order by tpkRowCount DESC
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%INVENTORY%'
 select * from dw_developer.tabledictionary where tpkSchemaName like '%Manufacturing_ProductionPlanning_WNK%'  order by tpkTableName
@@ -48,6 +48,8 @@ ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
 
+SELECT top 10 * FROM Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and employee_id in ('50576')
+
 SELECT 
     s.name AS SchemaName,
     t.name AS TableName,
@@ -73,7 +75,16 @@ ORDER BY
     c.column_id;
 
 
+
 select top 10 * from PowerBI_Distribution.DimCustomers
+select top 10 * from Inventory_Enh.ItemBalance where wh_id = '335' 
+
+-- inventory history by month
+select SnapshotDate, Warehouse, sum(QuantityOnHand) as TotalQuantityOnHand
+from Inventory_Enh.ItemBalance_Monthly where Warehouse = '335' 
+group by SnapshotDate, Warehouse
+order by SnapshotDate desc
+
 
 -- Invoice
 select top 10 * from CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335'
@@ -246,6 +257,7 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '638920006379' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952704823' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '668751354722' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where  lot_number = '503953708489' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 
 --query by sn
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420009049' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
@@ -722,6 +734,9 @@ select top 1000 * from Wholesale_ProductSourcing_AFI.SupplyChain_LogilityPlanned
 select top 10 * from Wholesale_CODIS.ATOFILE
 select * from Wholesale_CODIS.ATOFILE where hous = '335' 
 
+
+
+select top 10 * FROM CostAccounting_Enh.ShippedHistoryCubeData where shcWarehouse = '335' 
 
 
 

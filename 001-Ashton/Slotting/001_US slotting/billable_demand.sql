@@ -5,13 +5,39 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%putaway%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%rule%'
 
 
+-- LOCATION CHECK
+select  * from t_location where location_id like 'A3013EU1%'
+
+select * from t_tran_log where item_number = 'T856-2'  and start_tran_date between '2026-06-30' and '2026-07-02' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number ='683811751479'
+select * from t_tran_log where lot_number like '68381175%07'  order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number like '68381175%07'  order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number like '68381175%07'  order by start_tran_date desc, start_tran_time desc
+
+
+select * from t_tran_log where lot_number = '683811751307'  order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '683811755307'  order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '683811751407'  order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '683811751479'  order by start_tran_date desc, start_tran_time desc
+select * from t_location where  type ='Q'
+
+
 -- Pick rules:
 select  * from t_pick_put_detail where type = 'PICK' and pick_put_id = 'PALLT' order by sequence 
+select  * from t_pick_put_rules where type = 'PICK'
 
 -- putaway rules
 select  * from t_pick_put_detail where type = 'PUT' and pick_put_id = 'PALLT' order by sequence 
+select  * from t_pick_put_detail where type = 'PICK' and pick_put_id = 'PALLT' order by sequence 
 
+/* udpate putaway rules sequence 2026-06-30
 
+update
+t_pick_put_detail
+set sequence = case sequence when 24 then 4 when 25 then 5 else sequence+2 end
+where pick_put_id = 'PALLT' and type = 'PUT' and sequence between 4 and 25
+
+*/
 
 
 -- HJ set up

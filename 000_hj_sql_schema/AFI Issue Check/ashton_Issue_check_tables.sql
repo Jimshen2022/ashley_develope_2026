@@ -4,10 +4,6 @@ SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%custom
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%hu%'
 
-
-
-
-
 select top 10 * from t_serial_active
 select top 10 * from t_stored_item 
 select top 10 * from t_item_master 
@@ -28,6 +24,7 @@ select top 10 * from t_active_serial
 select top 10 * from t_hu_master
 select top 10 * from t_hu_detail
 select top 10 * from t_battery
+
 --ASN related tables
 SELECT TOP 10 *  FROM  t_asn
 SELECT TOP 10 *  FROM  t_asn_detail
@@ -45,6 +42,22 @@ SELECT TOP 10 *  FROM  t_serial_active
 select top 10 * from t_hu_detail where hu_id like '%39485305'
 SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
 
+-- uom
+select top 10 * from t_item_uom where uom != 'SCOOP' AND pick_put_id = 'SCOOP'
+
+-- check location sto
+select top 10 * from t_stored_item where location_id = 'NG001SC3'
+select top 10 * from t_serial_active where location_id = 'NG001SC3'
+select * from t_tran_log where lot_number = '683811751449' ORDER By start_tran_date desc, start_tran_time desc
+
+
+select top 10 * from t_stored_item where location_id = 'NG001RA1'
+select top 10 * from t_serial_active where location_id = 'NG001RA1'
+select * from t_tran_log where lot_number = '683811751449' ORDER By start_tran_date desc, start_tran_time desc
+
+
+
+
 -- ASN hold
 select  * from t_asn where asn_id = '1806451'
 select top 10 * from t_asn_detail where customer_po_number ='P2WFX17'
@@ -61,6 +74,7 @@ where  l.type = 'X'
 
 -- sn data error
 select top 10 * from t_serial_master where serial_number = '503953786128'
+select top 10 * from t_serial_active where serial_number = '503953786128'
 select * from t_tran_log where lot_number = '503953786128'
 
 
@@ -119,6 +133,7 @@ select item_number, location_id, sum(actual_qty) as onhand
 from t_stored_item 
 where location_id like 'A3019%1'
 group by item_number, location_id
+
 -- select top 100 * from t_tran_log WITH (NOLOCK) where tran_type in ('151','951') order by start_tran_date desc, start_tran_time desc
 
 WITH

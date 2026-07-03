@@ -15,7 +15,7 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%po%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%processed%count%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%excel%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dynamic%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pkd%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%capacity%'
 */
 
 
@@ -60,19 +60,35 @@ select top 10 * from t_battery
 select top 10 * from t_employee
 select top 10 * from t_import_XML
 select top 10 * from v_xml_import_queue
+select top 10 * from t_fwd_pick
+select top 10 * from t_loc_pallet_capacity
+
+
+select * from t_tran_log where lot_number IN ('666158299775') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('688806172217') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('688580224953') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
 
 select * from t_pick_detail(nolock) where order_number like'%PTF11%' and status<>'SHIPPED' and item_number='D571-124'
 select * from t_pick_detail(nolock) where status<>'SHIPPED' and item_number='D571-124' 
 
+
+
+select * from t_tran_log where item_number ='D571-124' and tran_type like '363%'
+
+-- employee 
 select * from t_tran_log where item_number ='D571-124' and tran_type like '363%'
 
 --Decouple pick zone and locations
 select top 10 * from t_class_loca
+select top 10 * from t_class_loca where location_id = 'SH001AA1'
 select top 10 * from t_zone_loca
 select * from t_zone
 select * from t_zone 
 select * from t_zone_loca where zone like 'A4DP%'
+select top 10 * from t_loc_pallet_capacity where location_id = 'SH001AA1'
+
+
 
 -- location zone check
 select location_id, location_barcode from t_location where location_id like 'D%' group by location_id,location_barcode
@@ -85,6 +101,7 @@ select * from t_item_uom where item_number = 'D571-124'
 
 
 -- location_print
+select * from t_location where location_id like 'A30[34]%'
 select * from t_location where location_id like 'A30[34]%'
 
 select
