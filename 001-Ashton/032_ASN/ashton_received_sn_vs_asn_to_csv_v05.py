@@ -5,6 +5,7 @@ import urllib
 import time
 from datetime import datetime
 import sys
+import csv
 
 # --- Configuration ---
 SERVER     = 'AshtonWHJSQLprod'
@@ -277,7 +278,7 @@ if __name__ == "__main__":
     csv_path  = os.path.join(OUTPUT_DIR, filename)
 
     try:
-        df.to_csv(csv_path, index=False, encoding='utf-8-sig')
+        df.to_csv(csv_path, index=False, encoding='utf-8-sig', quoting=csv.QUOTE_ALL)
         print(f"\nExported to: {csv_path}")
     except Exception as e:
         print(f"Failed to export CSV: {e}")
