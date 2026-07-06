@@ -15,21 +15,14 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%po%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%processed%count%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%excel%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dynamic%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%capacity%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%printer%'
 */
-
-
-
-
-
 
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%serial%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%equip%'
-
-
 
 select  * from t_lookup where source like '%t_location%' and locale_id = '1033' and wh_id = '335'
 select  * from t_lookup where source like '%t_location%' and locale_id = '1033' and wh_id = '335'
@@ -62,21 +55,64 @@ select top 10 * from t_import_XML
 select top 10 * from v_xml_import_queue
 select top 10 * from t_fwd_pick
 select top 10 * from t_loc_pallet_capacity
+select top 10 * from t_printer
+
+-- printer
+select * from t_printer WHERE printer_location = 'Phase 2'
+
+-- replenishment rules
+SELECT replenishment_rule_id, description, sproc_name, rule_type
+FROM dbo.t_replenishment_rule
+ORDER BY replenishment_rule_id;
+
+-- item 现有 open replen WKQ
+SELECT work_q_id, work_type, pick_ref_number, item_number,
+       location_id, from_location_id, qty, priority, work_status
+FROM dbo.t_work_q WITH (NOLOCK)
+WHERE wh_id = '335'
+  AND work_type = '07'
+  AND work_status <> 'C'
+  AND pick_ref_number IN ('INTERBUILDING','REPLENISH','LTCREPLENISH')
+  --AND item_number = 'D947-00'
+ORDER BY work_q_id DESC;
+
+-- locations
+select * from t_location where location_id like 'RS02AA1%'
+
+SELECT replenishment_rule_id, description, sproc_name
+FROM dbo.t_replenishment_rule
+WHERE sproc_name = 'usp_Replenishment_PM';
+
+EXEC dbo.usp_Replenishment_PM
+    '335',
+    'D947-00',
+    'A3013EL1',
+    'ALL';
+
+EXEC dbo.usp_diagnose_replenishment
+    @in_vchWhID = '335',
+    @in_vchItem = 'D947-00',
+    @in_vchLocation = 'A3013EL1',
+    @in_vchRuleName = 'usp_Replenishment_PM',
+    @in_vchCondition = 'ALL',
+    @in_vchDescription = 'manual PM replenish test';
 
 
+
+
+-- sn check
 select * from t_tran_log where lot_number IN ('666158299775') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('688806172217') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
-select * from t_tran_log where lot_number IN ('688580224953') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('661420010266') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
 
+-- pkd check
 select * from t_pick_detail(nolock) where order_number like'%PTF11%' and status<>'SHIPPED' and item_number='D571-124'
 select * from t_pick_detail(nolock) where status<>'SHIPPED' and item_number='D571-124' 
 
 
-
+-- transactions
 select * from t_tran_log where item_number ='D571-124' and tran_type like '363%'
-
--- employee 
 select * from t_tran_log where item_number ='D571-124' and tran_type like '363%'
 
 --Decouple pick zone and locations
@@ -88,6 +124,10 @@ select * from t_zone
 select * from t_zone_loca where zone like 'A4DP%'
 select top 10 * from t_loc_pallet_capacity where location_id = 'SH001AA1'
 
+-- location check
+
+select top 10 * from t_location where location_id like 'A4%' 
+select location_id, location_barcode from t_location where location_id like 'A4%' and location_barcode IS NULL
 
 
 -- location zone check
@@ -430,19 +470,37 @@ Select * from t_tran_log where tran_type = '350' and control_number_2 like '%361
 -- location master
 select  * from t_location where location_id like 'RS%'
 
+select *
+from t_tran_log 
+where item_number = 'R407300' and tran_type in ('161','855')  
+order by start_tran_date, start_tran_time
 
+select *
+from t_tran_log 
+where item_number = 'A2000841' and tran_type in ('161','855')  
+order by start_tran_date, start_tran_time
 
 -- by PO receiving
-select start_tran_date, item_number, control_number,control_number_2, sum(tran_qty) as qty  
+
+
+
+
+select *
 from t_tran_log 
-where control_number_2 = 'P2V0B18' and tran_type in ('151')  
-group by start_tran_date, item_number,control_number,control_number_2 
-order by start_tran_date, control_number,control_number_2
+where item_number = '5930247' and tran_type in ('161','855')  
+order by start_tran_date, start_tran_time
 
 select top 10 * from t_serial_active where serial_number = '526404172037'
 select top 10 * from t_serial_active where serial_number = '645521626057'
 select top 10 * from t_serial_master where serial_number = '688075633760'
-select * from t_tran_log where lot_number IN ('645521626057') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('639721892784') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('688430117759') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('833500814427') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('833500839547') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('639721405832') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('688430117759') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where item_number IN ('D974-124')  and location_id = 'NG001OP3' order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where item_number IN ('D974-124')  and tran_type in ('161','855') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
 select distinct serial_no_status from t_serial_master where serial_number = '688075633760'
 

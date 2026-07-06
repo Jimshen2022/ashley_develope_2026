@@ -12,6 +12,9 @@ from t_location t
 where t.location_id like 'A30[3-4]%'
 
 
+select * from t_zone
+select * from t_location   where location_id like 'POD%'
+
 
 -- 同一个bay, 第一与第四位available only 
 

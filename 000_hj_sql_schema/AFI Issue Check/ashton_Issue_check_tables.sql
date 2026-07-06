@@ -51,9 +51,74 @@ select top 10 * from t_serial_active where location_id = 'NG001SC3'
 select * from t_tran_log where lot_number = '683811751449' ORDER By start_tran_date desc, start_tran_time desc
 
 
-select top 10 * from t_stored_item where location_id = 'NG001RA1'
-select top 10 * from t_serial_active where location_id = 'NG001RA1'
+select top 10 * from t_stored_item where location_id = 'NG001OP3'
+
+select  * from t_stored_item where location_id = 'SH001AA2'
+select  * from t_serial_active where serial_number = '503948860509'
+select  * from t_serial_active where serial_number = '581655545'
+select top 10 * from t_serial_master  where wh_id = '335' and serial_number = '581655545'
+
+
+select  * from t_serial_active where serial_number IN (
+    '503948860509',
+    '503949589468',
+    '503949589469',
+    '503949589470',
+    '503949589471',
+    '503949589472',
+    '503949589473',
+    '503952172322',
+    '833500824196',
+    '671870299528',
+    '663160519738',
+    '542015019834',
+    '542015019835',
+    '542015019842',
+    '542015019843',
+    '542015019846',
+    '542015019847',
+    '542015019858',
+    '542015019859',
+    '542015019862',
+    '542015019863',
+    '542015019866',
+    '542015019867',
+    '542015019886',
+    '542015019887',
+    '542015020750',
+    '542015020751',
+    '639230199412',
+    '625640336885',
+    '645760476259',
+    '645760476260',
+    '676660590801',
+    '676660590802',
+    '676660590812',
+    '676660590822',
+    '676660590825',
+    '615920102252',
+    '677410592503',
+    '581655545',
+    '631314512472',
+    '679310281020',
+    '688806078375',
+    '638920006379',
+    '661420010266',
+    '666158437449',
+    '680140409401',
+    '688806172217',
+    '503952932675',
+    '688430117759',
+    '610450819477',
+    '610450819479',
+    '610450819480',
+    '610450819481'
+)
+
+
 select * from t_tran_log where lot_number = '683811751449' ORDER By start_tran_date desc, start_tran_time desc
+
+
 
 
 

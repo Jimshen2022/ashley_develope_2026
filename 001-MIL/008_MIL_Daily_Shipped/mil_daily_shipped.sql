@@ -3,6 +3,7 @@
 WITH itm AS (
     SELECT t.STID, t.ITNBR, t.ITCLS, t.B2Z95S, t.WEGHT, s.ITMCQTY,
         CASE
+            WHEN t.ITCLS IN ('ZEBF')     THEN 'Aero Bed'
             WHEN t.ITCLS IN ('WPLS','PLST')     THEN 'Plastic'
             WHEN t.ITCLS IN ('PVN','ZDTP')              THEN 'Unkits'
             WHEN t.ITCLS LIKE 'Z%K'             THEN 'Unkits'
