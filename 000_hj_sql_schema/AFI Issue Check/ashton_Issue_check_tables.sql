@@ -59,6 +59,14 @@ select  * from t_serial_active where serial_number = '581655545'
 select top 10 * from t_serial_master  where wh_id = '335' and serial_number = '581655545'
 
 
+-- seal 
+select location_id,location_id_2,lot_number,* from t_tran_log where ( control_number like '%0062918-0%' or control_number_2 like '%0062918-0%') and hu_id_2='HLC3344481' order by log_id desc
+select load_type,seal_number,* from t_load_master(nolock) where load_id like '%0062918-0%'
+select * from AAD..t_export_tran(nolock) where cast(tran_string as varchar(max)) like '%0062918-0%' and transaction_code=345 order by date_time_stamp desc
+Select * from t_wa_tran(nolock) where cast(tran_string as varchar(max)) like '%0062918-0%'
+select top 1 * from AAD..t_export_tran(nolock) where transaction_code=345 order by date_time_stamp desc
+select * from AAD..t_pick_detail(nolock) where load_id like '%0062918-0%'
+
 select  * from t_serial_active where serial_number IN (
     '503948860509',
     '503949589468',
@@ -470,8 +478,6 @@ select * from t_tran_log where employee_id = '1001787' and start_tran_date >= '2
   select * from t_tran_log where lot_number in ('833500838401') order by lot_number, end_tran_date desc, end_tran_time desc
 
 
-  688806159289
-833500838401
 
   select *
   from t_tran_log 
@@ -536,9 +542,9 @@ SELECT t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number, 
 from t_tran_log as t1
 WHERE t1.wh_id = '335'
 	AND t1.tran_type in ('347')
-   AND t1.item_number IN ('5590335')
-    --AND t1.control_number_2 like '%39537%'
-    AND t1.start_tran_date >= '2026-5-01'
+   --AND t1.item_number IN ('5590335')
+    AND t1.control_number_2 like '%65808%'
+    AND t1.start_tran_date >= '2026-1-01'
 GROUP by  t1.start_tran_date,t1.item_number,t1.control_number_2,t1.control_number,t1.tran_type
 order by t1.item_number, t1.start_tran_date
 

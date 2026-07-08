@@ -2,7 +2,7 @@
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%control%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%profile%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%excel%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%seal%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -57,6 +57,56 @@ select top 10 * from t_fwd_pick
 select top 10 * from t_loc_pallet_capacity
 select top 10 * from t_printer
 
+-- cycle count wkqs
+select * from t_work_q where work_type = '08' and work_status <> 'C' and wh_id = '335' order by work_q_id desc
+select * from t_work_q where work_type = '09' and work_status <> 'C' and wh_id = '335' order by location_id desc
+
+
+-- t_seal
+
+select seal_number,* from t_load_master (nolock) where load_id like '0065805%'
+
+select carton_label,* from t_order (nolock) where order_number like '0065805%'
+
+select hu_id_2,* from t_tran_log (nolock) where tran_type='345' and control_number_2 like '0065805%'
+
+ 
+
+
+select * from t_seal where seal_number like '%'
+SELECT TOP 100 *
+FROM t_load_master
+WHERE TRY_CONVERT(
+          INT,
+          LEFT(load_id, CHARINDEX('-', load_id + '-') - 1)
+      ) IN (
+          65331,
+          65805,
+          66399,
+          67262,
+          64748,
+          64475,
+          68294,
+          65444,
+          69570,
+          69489,
+          66540,
+          65367,
+          67863,
+          66628,
+          62918,
+          62919,
+          65469
+      );
+
+
+-- scoop picking use 
+
+
+-- request fill
+
+select * from t_tran_log where tran_type = '350' and control_number_2 like '%49949%' order by start_tran_date desc, start_tran_time desc
+
 -- printer
 select * from t_printer WHERE printer_location = 'Phase 2'
 
@@ -103,7 +153,7 @@ EXEC dbo.usp_diagnose_replenishment
 -- sn check
 select * from t_tran_log where lot_number IN ('666158299775') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('688806172217') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
-select * from t_tran_log where lot_number IN ('661420010266') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('548800128651') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 
 
 -- pkd check

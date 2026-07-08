@@ -9,10 +9,10 @@ SELECT TOP 10* FROM MasterData_IT.PowerBIUsage AS t
 SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema ='Manufacturing_ProductionPlanning_WNK' 
 SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema like '%MasterData_IT_WNK%'
 SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema like '%MBCDRESM %'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%CDAITX%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%seal%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
-select * from dw_developer.tabledictionary where tpktablename LIKE '%ItemBalance%' order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpktablename LIKE '%load%master%' order by tpkRowCount DESC
 select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%CostAccounting_Enh%' order by tpkRowCount DESC
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%INVENTORY%'
@@ -47,6 +47,30 @@ WHERE COLUMN_NAME = 'ActualDate'  -- 替换为你要查找的字段名
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
 
 */
+-- seal
+select * from Distribution_Warehouse_Wholesale.LoadMaster 
+WHERE TRY_CONVERT(
+          INT,
+          LEFT(load_id, CHARINDEX('-', load_id + '-') - 1)
+      ) IN (
+          65331,
+          65805,
+          66399,
+          67262,
+          64748,
+          64475,
+          68294,
+          65444,
+          69570,
+          69489,
+          66540,
+          65367,
+          67863,
+          66628,
+          62918,
+          62919
+      ) and wh_id = '335'
+
 
 SELECT top 10 * FROM Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and employee_id in ('50576')
 
@@ -252,7 +276,8 @@ Select top 10 * FROM Distribution_Warehouse_Wholesale.t_item_master where wh_id 
 
 start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 
-Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503950857188' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '833500814427' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '548800128651' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '694370110319' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '638920006379' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952704823' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
