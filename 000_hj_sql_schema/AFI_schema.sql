@@ -2,7 +2,7 @@
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%control%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%profile%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%seal%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%country%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -15,14 +15,14 @@ SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%po%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%processed%count%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%excel%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dynamic%'
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%printer%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%trip%'
 */
 
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%serial%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
-SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%equip%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%rule%'
 
 select  * from t_lookup where source like '%t_location%' and locale_id = '1033' and wh_id = '335'
 select  * from t_lookup where source like '%t_location%' and locale_id = '1033' and wh_id = '335'
@@ -56,6 +56,123 @@ select top 10 * from v_xml_import_queue
 select top 10 * from t_fwd_pick
 select top 10 * from t_loc_pallet_capacity
 select top 10 * from t_printer
+select top 10 * from t_po_detail
+select top 10 * from t_po_master
+select top 10 * from t_replenishment_rule
+select top 10 * from t_xdock_rule
+select top 10 * from t_pick_put_rules
+
+
+-- tranlog
+
+select * from t_tran_log where item_number = '9140686' and start_tran_date >= '2026-07-13' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where item_number = 'R83761' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '639721456416' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '503953982813' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where item_number = 'D984-01' and tran_type in ('161','855') order by start_tran_date desc, start_tran_time desc
+
+-- fwp 
+select * from t_location where location_id in ('A3011CS1','A3011CT1','A3011DS1','A3011DT1','A3013DS1','A3013DT1','A3013CS1','A3013CT1')
+select  * from t_fwd_pick WHERE location_id in ('A3011CS1','A3011CT1','A3011DS1','A3011DT1','A3013DS1','A3013DT1','A3013CS1','A3013CT1')
+select  * from t_fwd_pick WHERE location_id in ('A3013DU1','A3013CU1')
+select  * from t_fwd_pick WHERE item_number in ('B697-58W1','T642-1')
+
+
+
+select  * from t_fwd_pick WHERE item_number IN (
+    'B433-94',
+    'B612-94',
+    'B923-54',
+    'B821-94',
+    'B974-95',
+    'P690-602A',
+    'B971-156',
+    'P111-701',
+    'B719-58W1',
+    'B971-154W1',
+    'B719-77',
+    'A2000779',
+    'A1900009',
+    'B719-97W1',
+    'B751-94',
+    'B606-56',
+    'B697-95',
+    'B606-94',
+    'B680-92',
+    'B689-58',
+    'B401-81',
+    'M41041US',
+    'D394-25',
+    'B687-52S',
+    'L100074',
+    'T821-8',
+    'A2000819',
+    'L243004',
+    'B611-92',
+    'D602-32',
+    'A3000762',
+    'B795-93',
+    'D618-224',
+    'L100664',
+    'L206041',
+    'D401-15',
+    'D594-00',
+    'D594-124',
+    'L207314',
+    'A4000399',
+    'L430954',
+    'W736-68',
+    'T669-8',
+    'B280-671',
+    'T686-9',
+    'P587-838',
+    'T596-1',
+    'T854-9',
+    'H556-44',
+    'T505-762',
+    'A8010123',
+    'W647-60',
+    'A1000454'
+) and location_id not like 'A1%' order by item_number, location_id
+
+
+-- work q
+select  * from t_work_q 
+select top 1000 * from t_work_q where work_type = '06' order by work_q_id desc
+select top 1000 * from t_work_q where work_type = '06' and pick_ref_number = '00000041011405' order by work_q_id desc
+
+-- PO 
+select top 10 * from t_po_master where item_number = 'L430914'
+select top 10 * from t_po_detail where item_number = 'L430914' AND po_number = 'P2WCN65'
+
+select * from t_po_detail where  po_number = 'P2WMW85'
+
+-- PO summary
+select item_number, control_number_2, case when tran_type = '951' then sum(-tran_qty) else sum(tran_qty) end as tran_qty
+from t_tran_log 
+where 1=1 
+    and control_number_2 = 'P2WMW85' 
+    and tran_type in ('151','951') 
+group by item_number, control_number_2, tran_type
+order by item_number, control_number_2
+
+
+-- sto
+select top 1000 * from t_stored_item where location_id like 'A3%'
+select * from t_serial_active where location_id like 'A3%'
+select * from t_serial_master 
+
+
+
+-- yard tran
+
+select top 100 * from t_ya_tran_log 
+
+select user_name,control_number as YA_SCANNER, count(log_id) as logged_in_times  
+from t_ya_tran_log 
+where control_number LIKE 'YAVT%' and tran_type = '100'  
+group by  user_name,control_number
+order by control_number
 
 -- cycle count wkqs
 select * from t_work_q where work_type = '08' and work_status <> 'C' and wh_id = '335' order by work_q_id desc
@@ -64,13 +181,12 @@ select * from t_work_q where work_type = '09' and work_status <> 'C' and wh_id =
 
 -- t_seal
 
-select seal_number,* from t_load_master (nolock) where load_id like '0065805%'
+select seal_number,* from t_load_master (nolock) where load_id like '0062918%' or load_id like '0062919%' 
+select carton_label,* from t_order (nolock) where order_number like '0062918%' or order_number like '0062919%' 
+select hu_id_2,* from t_tran_log (nolock) where tran_type='345' and (control_number_2 like '0062918%'  or control_number_2 like '0062919%')
 
-select carton_label,* from t_order (nolock) where order_number like '0065805%'
-
-select hu_id_2,* from t_tran_log (nolock) where tran_type='345' and control_number_2 like '0065805%'
-
- 
+ -- trip
+ select * from t_load_master where load_id like '0064270%'
 
 
 select * from t_seal where seal_number like '%'
@@ -147,11 +263,34 @@ EXEC dbo.usp_diagnose_replenishment
     @in_vchCondition = 'ALL',
     @in_vchDescription = 'manual PM replenish test';
 
+-- Scan to NG001OP3 check
+
+select * 
+from t_tran_log 
+where (location_id_2 = 'NG001OP3' and (control_number_2 != 'NG001OP3' or location_id != 'NG001OP3') and item_number !='RP ORDER') and employee_id not in('00129','22888','50044')  
+order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+
+select * from t_employee where emp_number in ('50044')
+select * from t_employee where emp_number in ('51001')
 
 
 
--- sn check
-select * from t_tran_log where lot_number IN ('666158299775') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+-- sn data error check
+select * from t_tran_log where lot_number IN ('642460075541') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('613940704023') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('609890109157') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('630570024329') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_serial_active where serial_number in ('630570024329')
+select * from t_serial_master where serial_number in ('630570024329')
+
+
+select * from t_tran_log where lot_number IN ('630570024461') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_serial_active where serial_number in ('630570024461')
+select * from t_serial_master where serial_number in ('630570024461')
+
+
+
+
 select * from t_tran_log where lot_number IN ('688806172217') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('548800128651') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 

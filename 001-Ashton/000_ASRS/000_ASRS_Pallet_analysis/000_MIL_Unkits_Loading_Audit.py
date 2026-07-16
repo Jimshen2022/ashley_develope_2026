@@ -7,7 +7,7 @@ from pathlib import Path
 import win32com.client as win32
 
 
-def fetch_data(query, connection_string='DSN=MILPROD;UID=JIMSHEN;PWD=MJ2084'):
+def fetch_data(query, connection_string='DSN=MILPROD;UID=JIMSHEN;PWD=MJ2091'):
     """从数据库获取数据"""
     try:
         cnxn = po.connect(connection_string, autocommit=True)
@@ -176,6 +176,10 @@ ORDER BY
         df = fetch_data(query)
         print(f"成功获取 {len(df)} 行数据")
 
+        last_scan_col = next((col for col in df.columns if col.upper() == 'LAST_SCAN_TIME'), None)
+        if last_scan_col:
+            insert_at = df.columns.get_loc(last_scan_col) + 1
+            df.insert(insert_at, 'LAST_SCAN_HOUR', pd.to_datetime(df[last_scan_col], errors='coerce').dt.hour)
         # 如果只想显示部分数据，可以用：
         print(df.head(10))  # 显示前10行
 

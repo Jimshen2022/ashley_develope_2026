@@ -15,7 +15,7 @@ from t_la_employee_clock_in_out as t
 left join t_employee as e on t.employee_id = e.employee_id
 left join t_employee as s on t.supervisor_nbr = s.emp_number
 left join t_employee_attribute as ea on e.emp_number = ea.id
-where e.emp_number in ('51112')
+where e.emp_number in ('50857')
 order by t.work_day,t.actual_clock_in
 
 

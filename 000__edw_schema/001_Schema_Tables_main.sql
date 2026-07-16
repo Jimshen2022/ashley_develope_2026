@@ -8,12 +8,12 @@ SELECT TOP 10* FROM MasterData_IT.PowerBIUsage AS t
 
 SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema ='Manufacturing_ProductionPlanning_WNK' 
 SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema like '%MasterData_IT_WNK%'
-SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema like '%MBCDRESM %'
+SELECT  * FROM INFORMATION_SCHEMA.TABLES as t WHERE t.table_schema like '%asn%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%seal%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE tpkSchemaName LIKE '%Manufacturing_ProductionPlanning_WNK%'
 select * from dw_developer.tabledictionary where tpktablename LIKE '%load%master%' order by tpkRowCount DESC
-select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%CostAccounting_Enh%' order by tpkRowCount DESC
+select * from dw_developer.tabledictionary where tpkSchemaName LIKE '%ASNDETAIL%' order by tpkRowCount DESC
 
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%INVENTORY%'
 select * from dw_developer.tabledictionary where tpkSchemaName like '%Manufacturing_ProductionPlanning_WNK%'  order by tpkTableName
@@ -268,6 +268,13 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503952820543' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '635930176074' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '688075336774' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '639721456416' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '639721340404' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '503949603633' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '639721923976' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '639721923978' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '639721923977' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '688430117759' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and start_tran_date >= '2026-01-01' and tran_type = '500' order by lot_number, start_tran_date, start_tran_time
 
 -- 350 fill check
@@ -276,7 +283,8 @@ Select top 10 * FROM Distribution_Warehouse_Wholesale.t_item_master where wh_id 
 
 start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 
-Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '833500814427' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where  lot_number = '503952984133' and wh_id = '335' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where  lot_number = '610450819477' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '548800128651' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '694370110319' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '638920006379' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
@@ -285,7 +293,7 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where  lot_number = '503953708489' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 
 --query by sn
-Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420009049' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '642460075541' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010266' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010313' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and lot_number = '661420010409' and start_tran_date >= '2024-01-01' order by lot_number, start_tran_date, start_tran_time

@@ -1,5 +1,5 @@
 DECLARE @wh_id         varchar(10) = '335';
-DECLARE @item_number   varchar(30) = 'T247-13';
+DECLARE @item_number   varchar(30) = '%';
 DECLARE @location_like varchar(50) = '%';   -- 例如 'A301%'，不限制就用 '%'
 
 WITH inv AS (

@@ -11,6 +11,21 @@ select
 from t_location t
 where t.location_id like 'A30[3-4]%'
 
+-- 2026-07-15 used version:
+
+select
+    t.wh_id, t.location_id, t.status, t.type,  
+    case
+        when charindex(substring(t.location_id, 7, 1), 'ABCDEFGHJKLMNPQRSTUVWXYZ') = 0 then null
+        when ((charindex(substring(t.location_id, 7, 1), 'ABCDEFGHJKLMNPQRSTUVWXYZ') - 1) % 4) in (0, 3)
+            then 'available'
+        else 'Lock'
+    end as bay_location_status
+from t_location t
+where t.location_id like 'A30[3-4]%'
+
+
+
 
 select * from t_zone
 select * from t_location   where location_id like 'POD%'

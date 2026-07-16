@@ -1,0 +1,24 @@
+[project]
+name = "knq-hj-as400-python"
+version = "0.1.0"
+description = "Python migration of the KNQ / HighJump / MAPICS variance workbook"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "oletools>=0.60",
+    "pandas>=2.0",
+    "pyodbc>=5.1",
+    "pyxlsb>=1.0.10",
+]
+
+[project.scripts]
+knq-extract = "knq_hj_as400.extract_workbook:main"
+knq-pipeline = "knq_hj_as400.cli:main"
+knq-live-pipeline = "knq_hj_as400.run_live_pipeline:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

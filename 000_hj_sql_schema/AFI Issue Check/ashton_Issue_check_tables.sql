@@ -2,7 +2,7 @@ SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%seria
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
-SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%hu%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%equipment%'
 
 select top 10 * from t_serial_active
 select top 10 * from t_stored_item 
@@ -24,6 +24,21 @@ select top 10 * from t_active_serial
 select top 10 * from t_hu_master
 select top 10 * from t_hu_detail
 select top 10 * from t_battery
+select top 10 * from t_item_forecast_daily 
+select top 10 * from t_item_forecast 
+select top 10 * from t_equipment_class 
+select top 10 * from t_equipment_class_loca where location_id like 'VRJIM%'
+select top 10 * from t_AS400_trips 
+
+-- WORKQ
+select  * from t_work_q where work_type like '45%'
+select  * from t_work_q where description like '%SCOOP%'
+
+
+select * from t_order_detail where order_number like '%62918%'
+select * from t_order_detail_breakdown where order_number like '%62918%'
+
+
 
 --ASN related tables
 SELECT TOP 10 *  FROM  t_asn
@@ -36,11 +51,54 @@ SELECT TOP 10 *  FROM  t_loc_pallet_capacity
 SELECT TOP 10 *  FROM  t_item_uom 
 SELECT TOP 10 *  FROM  t_fwd_pick
 SELECT TOP 10 *  FROM  t_new_fwd_pick
-SELECT TOP 10 *  FROM  t_serial_master
-SELECT TOP 10 *  FROM  t_serial_active
+SELECT TOP 10 *  FROM  t_item_master where wh_id = '335' 
+SELECT TOP 10 *  FROM  t_serial_master where wh_id = '335' 
+SELECT *  FROM  t_serial_active
  select top 10 * from t_hu_master where hu_id like '%39485305'
 select top 10 * from t_hu_detail where hu_id like '%39485305'
 SELECT  *  FROM  t_tran_log where employee_id = '80054' and start_tran_date >= '2026-06-04' order by start_tran_date desc, start_tran_time desc
+
+
+-- LOCATION
+select top 10 * from t_location where location_id like 'VRJIM%' 
+
+
+-- FLOOR inventory age
+with itm as 
+(select item_number, class_id
+ from t_item_master 
+ where wh_id = '335' and class_id in ('FLOOR')
+ group by item_number, class_id
+ ),
+ coo as (
+ select wh_id, item_number, serial_number,  serial_no_status, country_code
+ from t_serial_master 
+ where wh_id = '335' and serial_no_status not in ('S','O') 
+ group by wh_id, item_number, serial_number,  serial_no_status, country_code
+ 
+ )
+ select item_number,serial_number, 1 as qty, serial_no_status, location_id
+ from t_serial_active as s where s.serial_no_status not in ('S','O') and s.wh_id = '335' and s.item_number in (select item_number from itm) 
+ 
+ 
+ 
+ select item_number, location_id, lot_number, start_tran_date, start_tran_time, sum(tran_qty) as tran_qty
+
+
+
+select location_id,location_id_2,lot_number,* from t_tran_log where ( control_number like '%0062918-0%' or control_number_2 like '%0062918-0%') and hu_id_2='HLC3344481' order by log_id desc
+select load_type,seal_number,* from t_load_master(nolock) where load_id like '%0062918-0%'
+select * from AAD..t_export_tran(nolock) where cast(tran_string as varchar(max)) like '%0062918-0%' and transaction_code=345 order by date_time_stamp desc
+Select * from t_wa_tran(nolock) where cast(tran_string as varchar(max)) like '%0062918-0%'
+select top 1 * from AAD..t_export_tran(nolock) where transaction_code=345 order by date_time_stamp desc
+select * from AAD..t_pick_detail(nolock) where load_id like '%0062918-0%'
+
+
+USE Archive
+select * from t_export_tran(nolock) where cast(tran_string as varchar(max)) like '%0062918-0%' and transaction_code=345 order by date_time_stamp desc
+select * from AAD..t_export_tran(nolock) where cast(tran_string as varchar(max)) like '%0062918-0%' and transaction_code=345 order by date_time_stamp desc
+select * from AAD..t_pick_detail(nolock) where load_id like '%0062918-0%'
+
 
 -- uom
 select top 10 * from t_item_uom where uom != 'SCOOP' AND pick_put_id = 'SCOOP'

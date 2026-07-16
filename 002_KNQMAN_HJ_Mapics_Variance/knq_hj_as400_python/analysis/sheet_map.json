@@ -1,0 +1,242 @@
+[
+  {
+    "sheet_name": "HJ-Kim",
+    "sheet_part": "worksheets/sheet1.bin",
+    "code_name": null
+  },
+  {
+    "sheet_name": "Vendor E - CS updated",
+    "sheet_part": "worksheets/sheet2.bin",
+    "code_name": null
+  },
+  {
+    "sheet_name": "Setup",
+    "sheet_part": "worksheets/sheet3.bin",
+    "code_name": "Sheet25"
+  },
+  {
+    "sheet_name": "SOLVED",
+    "sheet_part": "worksheets/sheet4.bin",
+    "code_name": "Sheet28"
+  },
+  {
+    "sheet_name": "EX001AA2",
+    "sheet_part": "worksheets/sheet5.bin",
+    "code_name": "Sheet38"
+  },
+  {
+    "sheet_name": "Sheet3",
+    "sheet_part": "worksheets/sheet6.bin",
+    "code_name": null
+  },
+  {
+    "sheet_name": "EX001AA1",
+    "sheet_part": "worksheets/sheet7.bin",
+    "code_name": "Sheet40"
+  },
+  {
+    "sheet_name": "SH001AA2",
+    "sheet_part": "worksheets/sheet8.bin",
+    "code_name": "Sheet33"
+  },
+  {
+    "sheet_name": "SH001AA1",
+    "sheet_part": "worksheets/sheet9.bin",
+    "code_name": "Sheet42"
+  },
+  {
+    "sheet_name": "NG001VD3",
+    "sheet_part": "worksheets/sheet10.bin",
+    "code_name": "Sheet43"
+  },
+  {
+    "sheet_name": "CS",
+    "sheet_part": "worksheets/sheet11.bin",
+    "code_name": "Sheet31"
+  },
+  {
+    "sheet_name": "KNQ Variances List",
+    "sheet_part": "worksheets/sheet12.bin",
+    "code_name": "Sheet23"
+  },
+  {
+    "sheet_name": "Summary",
+    "sheet_part": "worksheets/sheet13.bin",
+    "code_name": "Sheet24"
+  },
+  {
+    "sheet_name": "StillNotInvoiced",
+    "sheet_part": "worksheets/sheet14.bin",
+    "code_name": "Sheet39"
+  },
+  {
+    "sheet_name": "DATA",
+    "sheet_part": "worksheets/sheet15.bin",
+    "code_name": "Sheet1"
+  },
+  {
+    "sheet_name": "rollback",
+    "sheet_part": "worksheets/sheet16.bin",
+    "code_name": "Sheet4"
+  },
+  {
+    "sheet_name": "Code",
+    "sheet_part": "worksheets/sheet17.bin",
+    "code_name": "Sheet26"
+  },
+  {
+    "sheet_name": "RP_Query",
+    "sheet_part": "worksheets/sheet18.bin",
+    "code_name": "Sheet41"
+  },
+  {
+    "sheet_name": "Previous_Data",
+    "sheet_part": "worksheets/sheet19.bin",
+    "code_name": "Sheet14"
+  },
+  {
+    "sheet_name": "HJ_2W_SA",
+    "sheet_part": "worksheets/sheet20.bin",
+    "code_name": "Sheet48"
+  },
+  {
+    "sheet_name": "AS400_SA",
+    "sheet_part": "worksheets/sheet21.bin",
+    "code_name": "Sheet47"
+  },
+  {
+    "sheet_name": "exception",
+    "sheet_part": "worksheets/sheet22.bin",
+    "code_name": "Sheet36"
+  },
+  {
+    "sheet_name": "HJ_SN",
+    "sheet_part": "worksheets/sheet23.bin",
+    "code_name": "Sheet2"
+  },
+  {
+    "sheet_name": "HJDATA",
+    "sheet_part": "worksheets/sheet24.bin",
+    "code_name": "Sheet27"
+  },
+  {
+    "sheet_name": "PO",
+    "sheet_part": "worksheets/sheet25.bin",
+    "code_name": "Sheet6"
+  },
+  {
+    "sheet_name": "Trips",
+    "sheet_part": "worksheets/sheet26.bin",
+    "code_name": "Sheet8"
+  },
+  {
+    "sheet_name": "HJ_SN_Orphaned",
+    "sheet_part": "worksheets/sheet27.bin",
+    "code_name": "Sheet18"
+  },
+  {
+    "sheet_name": "Trx by item",
+    "sheet_part": "worksheets/sheet28.bin",
+    "code_name": "Sheet30"
+  },
+  {
+    "sheet_name": "by PO",
+    "sheet_part": "worksheets/sheet29.bin",
+    "code_name": "Sheet35"
+  },
+  {
+    "sheet_name": "KNQ_4W_Export",
+    "sheet_part": "worksheets/sheet30.bin",
+    "code_name": "Sheet11"
+  },
+  {
+    "sheet_name": "Trx by order",
+    "sheet_part": "worksheets/sheet31.bin",
+    "code_name": "Sheet20"
+  },
+  {
+    "sheet_name": "Trx by date",
+    "sheet_part": "worksheets/sheet32.bin",
+    "code_name": "Sheet21"
+  },
+  {
+    "sheet_name": "Adjusted",
+    "sheet_part": "worksheets/sheet33.bin",
+    "code_name": "Sheet16"
+  },
+  {
+    "sheet_name": "Item",
+    "sheet_part": "worksheets/sheet34.bin",
+    "code_name": "Sheet15"
+  },
+  {
+    "sheet_name": "HJ_NG",
+    "sheet_part": "worksheets/sheet35.bin",
+    "code_name": "Sheet17"
+  },
+  {
+    "sheet_name": "HJ_SNA",
+    "sheet_part": "worksheets/sheet36.bin",
+    "code_name": "Sheet19"
+  },
+  {
+    "sheet_name": "KNQ_OnHand_Details",
+    "sheet_part": "worksheets/sheet37.bin",
+    "code_name": "Sheet45"
+  },
+  {
+    "sheet_name": "KNQ_OnHand",
+    "sheet_part": "worksheets/sheet38.bin",
+    "code_name": "Sheet9"
+  },
+  {
+    "sheet_name": "Mapics_OnHand",
+    "sheet_part": "worksheets/sheet39.bin",
+    "code_name": "Sheet3"
+  },
+  {
+    "sheet_name": "Sheet1",
+    "sheet_part": "worksheets/sheet40.bin",
+    "code_name": "Sheet32"
+  },
+  {
+    "sheet_name": "KNQ delared but HJ not",
+    "sheet_part": "worksheets/sheet41.bin",
+    "code_name": "Sheet7"
+  },
+  {
+    "sheet_name": "Sheet2",
+    "sheet_part": "worksheets/sheet42.bin",
+    "code_name": "Sheet34"
+  },
+  {
+    "sheet_name": "Trailer in Yard but KNQ not",
+    "sheet_part": "worksheets/sheet43.bin",
+    "code_name": "Sheet22"
+  },
+  {
+    "sheet_name": "ASYARD",
+    "sheet_part": "worksheets/sheet44.bin",
+    "code_name": "Sheet5"
+  },
+  {
+    "sheet_name": "LinkToVBA",
+    "sheet_part": "worksheets/sheet45.bin",
+    "code_name": "Sheet29"
+  },
+  {
+    "sheet_name": "KNQ_4W_Import",
+    "sheet_part": "worksheets/sheet46.bin",
+    "code_name": "Sheet10"
+  },
+  {
+    "sheet_name": "HJ_4W_Received",
+    "sheet_part": "worksheets/sheet47.bin",
+    "code_name": "Sheet12"
+  },
+  {
+    "sheet_name": "HJ_4W_Shipped",
+    "sheet_part": "worksheets/sheet48.bin",
+    "code_name": "Sheet13"
+  }
+]

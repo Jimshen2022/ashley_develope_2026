@@ -1,0 +1,45 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Large",
+            "weight": "Bolder",
+            "text": "📊 Picking and Putaway Exception Report",
+            "color": "Accent"
+        },
+        {
+            "type": "TextBlock",
+            "text": "The latest exception report has been successfully generated.",
+            "wrap": true
+        },
+        {
+            "type": "FactSet",
+            "facts": [
+                {
+                    "title": "Refresh Time:",
+                    "value": "@{formatDateTime(convertTimeZone(utcNow(),'UTC','SE Asia Standard Time'),'yyyy-MM-dd HH:mm')}"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.OpenUrl",
+            "title": "🌐 View Dashboard",
+            "url": "https://app.powerbi.com/reportEmbed?reportId=9c5a44b8-9c3a-494e-9e44-48f19fc858f9&appId=1434ea3e-c829-4f05-a150-239f59b1f1ca&autoAuth=true&ctid=5a9d9cfd-c32e-4ac1-a9ed-fe83df4f9e4d"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "📥 Picking Exception",
+            "url": "https://masterashley.sharepoint.com/sites/AsiaWarehouseOperations/powerbi@{outputs('Create_file_-_Picking_Exception')?['body/Path']}"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "📥 Putaway Exception",
+            "url": "https://masterashley.sharepoint.com/sites/AsiaWarehouseOperations/powerbi@{outputs('Create_file_-_PutawayException')?['body/Path']}"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.4"
+}
