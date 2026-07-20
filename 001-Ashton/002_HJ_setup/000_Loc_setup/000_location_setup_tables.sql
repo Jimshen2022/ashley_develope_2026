@@ -4,10 +4,15 @@ select * from t_eil_xml_msg
 select top 10 * from t_rei_master
 select * from t_location where location_id like 'A3025[DF][A-Z]2%'
 
+-- locatoin barcode
+select wh_id, location_id, location_barcode from t_location where location_id like '[DSR]%'
+
+
 -- yard door location
 select * from t_ya_location where type = 'DOOR'
 select * from t_ya_zone
 select * from t_ya_zone_loca
+select * from t_location where location_id like 'D%' and type ='D' and location_id not in (select location_name from t_ya_location)
 
 -- step1: add location
 select '335' as area_id, location_id as location_name, location_id  as description, 'DOOR' as type, 'EMPTY' as status from t_location where location_id like '[D]%' and type ='D' and location_id not in (select location_name from t_ya_location)

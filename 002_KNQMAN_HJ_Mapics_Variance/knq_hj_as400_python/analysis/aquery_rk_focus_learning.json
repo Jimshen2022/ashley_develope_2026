@@ -1,0 +1,2932 @@
+{
+  "RK_LOGFCST": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 133934,
+    "column_count": 17,
+    "first_columns": [
+      {
+        "column": "RFCSCPSEQNBR",
+        "ordinal": 1,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Sequence Number",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCLVLNBR",
+        "ordinal": 2,
+        "type": "DECIMAL",
+        "length": 3,
+        "scale": 0,
+        "column_desc": "Level Number",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCFCSTID",
+        "ordinal": 3,
+        "type": "VARCHAR",
+        "length": 36,
+        "scale": null,
+        "column_desc": "Forecast ID",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCITEMNUM",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCWAREHOUSE",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC1",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 1",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC2",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 2",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC3",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 3",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC4",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 4",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC5",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 5",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC6",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 6",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC7",
+        "ordinal": 12,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 7",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC8",
+        "ordinal": 13,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 8",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC9",
+        "ordinal": 14,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 9",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC10",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 10",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC11",
+        "ordinal": 16,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 11",
+        "table_desc": "",
+        "number_rows": 133934
+      },
+      {
+        "column": "RFCRESULTFC12",
+        "ordinal": 17,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 12",
+        "table_desc": "",
+        "number_rows": 133934
+      }
+    ]
+  },
+  "RK_ATPSUM1": {
+    "found": true,
+    "table_desc": "ATPSUM FOR WHSE 1",
+    "number_rows": 17122,
+    "column_count": 10,
+    "first_columns": [
+      {
+        "column": "APITNB",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      },
+      {
+        "column": "APHOUS",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      },
+      {
+        "column": "RECEIPTS",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 0,
+        "column_desc": "+APTR01+APTR02+APTR03+APTR04+APTR05+APTR06+APTR07+",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      },
+      {
+        "column": "BILLABLE",
+        "ordinal": 4,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 0,
+        "column_desc": "+APNQ01+APNQ02+APNQ03+APNQ04+APNQ05+APNQ06+APNQ07+",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      },
+      {
+        "column": "TRANSFER",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 0,
+        "column_desc": "+APWH01+APWH02+APWH03+APWH04+APWH05+APWH06+APWH07+",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      },
+      {
+        "column": "ACTIVITY",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 21,
+        "scale": 0,
+        "column_desc": "+BILLABLE+TRANSFER+RECEIPTS",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      },
+      {
+        "column": "APAT01",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "ATP Quantity 01",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      },
+      {
+        "column": "APAT07",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "ATP Quantity 07",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      },
+      {
+        "column": "APAT13",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "ATP Quantity 13",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      },
+      {
+        "column": "APAT15",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "ATP Quantity 15",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 17122
+      }
+    ]
+  },
+  "RK_ATPSUMK": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 3972861,
+    "column_count": 23,
+    "first_columns": [
+      {
+        "column": "MFPUS",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Manu Status Code",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "APHOUS",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "REC1",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "+APTR01+APTR02+APTR03+APTR04+APTR05+APTR06+APTR07+",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "REC2",
+        "ordinal": 4,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 0,
+        "column_desc": "+APTR15+APTR09+APTR10+APTR11+APTR12+APTR13+APTR14",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "REC3",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 0,
+        "column_desc": "+APTR16+APTR17+APTR18+APTR19+APTR20+APTR21+APTR22",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "XFR1",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "+APWH01+APWH02+APWH03+APWH04+APWH05+APWH06+APWH07+",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "XFR2",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 0,
+        "column_desc": "+APWH09+APWH10+APWH11+APWH12+APWH13+APWH14+APWH15",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "XFR3",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 0,
+        "column_desc": "+APWH16+APWH17+APWH18+APWH19+APWH20+APWH21+APWH22",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "MOHTQ",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "On hand total quantity",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "USEMO",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "Quantity used this period",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "DOFLS",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Date of last sale",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "ITSCDT",
+        "ordinal": 12,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Item Status Change Date",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "REC4",
+        "ordinal": 13,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 0,
+        "column_desc": "+APTR23+APTR24+APTR25+APTR26+APTR27+APTR28+APTR29",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "REC5",
+        "ordinal": 14,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 0,
+        "column_desc": "+APTR30+APTR31+APTR32+APTR33+APTR34+APTR35+APTR36",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "REC6",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 0,
+        "column_desc": "+APTR37+APTR38+APTR39+APTR40+APTR41+APTR42+APTR43",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "USEYR",
+        "ordinal": 16,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "Quantity used this year",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "NBSEAT",
+        "ordinal": 17,
+        "type": "NUMERIC",
+        "length": 4,
+        "scale": 2,
+        "column_desc": "Number of Seats",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "POQTY01",
+        "ordinal": 18,
+        "type": "NUMERIC",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "POQTY TOTAL",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "XFR4",
+        "ordinal": 19,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 0,
+        "column_desc": "+APWH23+APWH24+APWH25+APWH26+APWH27+APWH28+APWH29",
+        "table_desc": "",
+        "number_rows": 3972861
+      },
+      {
+        "column": "XFR5",
+        "ordinal": 20,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 0,
+        "column_desc": "+APWH30+APWH31+APWH32+APWH33+APWH34+APWH35+APWH36",
+        "table_desc": "",
+        "number_rows": 3972861
+      }
+    ]
+  },
+  "RK_ATPADJ": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 27259,
+    "column_count": 9,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "",
+        "number_rows": 27259
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "",
+        "number_rows": 27259
+      },
+      {
+        "column": "AAAWHSE",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 27259
+      },
+      {
+        "column": "AAAITEM",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "",
+        "number_rows": 27259
+      },
+      {
+        "column": "AAARCPTD03",
+        "ordinal": 5,
+        "type": "DATE",
+        "length": 4,
+        "scale": null,
+        "column_desc": "AAARCPTDAT MIN",
+        "table_desc": "",
+        "number_rows": 27259
+      },
+      {
+        "column": "AAARCPTD04",
+        "ordinal": 6,
+        "type": "DATE",
+        "length": 4,
+        "scale": null,
+        "column_desc": "AAARCPTDAT MAX",
+        "table_desc": "",
+        "number_rows": 27259
+      },
+      {
+        "column": "AAAQTY01",
+        "ordinal": 7,
+        "type": "NUMERIC",
+        "length": 10,
+        "scale": 0,
+        "column_desc": "AAAQTY TOTAL",
+        "table_desc": "",
+        "number_rows": 27259
+      },
+      {
+        "column": "AAAB4ATP03",
+        "ordinal": 8,
+        "type": "NUMERIC",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "AAAB4ATP MIN",
+        "table_desc": "",
+        "number_rows": 27259
+      },
+      {
+        "column": "AAAAFTAT03",
+        "ordinal": 9,
+        "type": "NUMERIC",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "AAAAFTATP MIN",
+        "table_desc": "",
+        "number_rows": 27259
+      }
+    ]
+  },
+  "RKONHAND": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 57286,
+    "column_count": 34,
+    "first_columns": [
+      {
+        "column": "GDESCD",
+        "ordinal": 1,
+        "type": "DECIMAL",
+        "length": 4,
+        "scale": 0,
+        "column_desc": "General Desc Code",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "GDICS",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "SHORT DESCRIPTION",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "GDICL",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 40,
+        "scale": null,
+        "column_desc": "LONG DESCRIPTION OF",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "MFPUS",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Manu Status Code",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "ITCLS",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Item class",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "MOHTQ",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "On hand total quantity",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "CUBES",
+        "ordinal": 9,
+        "type": "NUMERIC",
+        "length": 10,
+        "scale": 5,
+        "column_desc": "Cubes Cubic Feet",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "CRTLIN",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 5,
+        "scale": 2,
+        "column_desc": "Carton Length Inches",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "CRTWIN",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 5,
+        "scale": 2,
+        "column_desc": "Carton Width Inches",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "CRTHIN",
+        "ordinal": 12,
+        "type": "DECIMAL",
+        "length": 5,
+        "scale": 2,
+        "column_desc": "Carton Height Inches",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "PRDLIN",
+        "ordinal": 13,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 2,
+        "column_desc": "Product Length Inches",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "PRDWIN",
+        "ordinal": 14,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 2,
+        "column_desc": "Product Width Inches",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "PRDHIN",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 2,
+        "column_desc": "Product Height Inches",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "NBSEAT",
+        "ordinal": 16,
+        "type": "NUMERIC",
+        "length": 4,
+        "scale": 2,
+        "column_desc": "Number of Seats",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "DOFLS",
+        "ordinal": 17,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Date of last sale",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "UUCCIM",
+        "ordinal": 18,
+        "type": "CHAR",
+        "length": 5,
+        "scale": null,
+        "column_desc": "Financial Division",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "QTSYR",
+        "ordinal": 19,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "Quantity sold year-to-date",
+        "table_desc": "",
+        "number_rows": 57286
+      },
+      {
+        "column": "QTSMO",
+        "ordinal": 20,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 3,
+        "column_desc": "Quantity sold this period",
+        "table_desc": "",
+        "number_rows": 57286
+      }
+    ]
+  },
+  "RK_335ONHA": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 1192,
+    "column_count": 23,
+    "first_columns": [
+      {
+        "column": "MFPUS",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Manu Status Code",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "ITCLS",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Item class",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "MOHTQ",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "On hand total quantity",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "CUBES",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 10,
+        "scale": 5,
+        "column_desc": "Cubes Cubic Feet",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "CRTLIN",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 5,
+        "scale": 2,
+        "column_desc": "Carton Length Inches",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "CRTWIN",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 5,
+        "scale": 2,
+        "column_desc": "Carton Width Inches",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "CRTHIN",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 5,
+        "scale": 2,
+        "column_desc": "Carton Height Inches",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "NBSEAT",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 4,
+        "scale": 2,
+        "column_desc": "Number of Seats",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "DOFLS",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Date of last sale",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "UUCCIM",
+        "ordinal": 12,
+        "type": "CHAR",
+        "length": 5,
+        "scale": null,
+        "column_desc": "Financial Division",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "QTSYR",
+        "ordinal": 13,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "Quantity sold year-to-date",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "QTSMO",
+        "ordinal": 14,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 3,
+        "column_desc": "Quantity sold this period",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "ITSCDT",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Item Status Change Date",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "SCOOPWIDTH",
+        "ordinal": 16,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Scoop Width",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "ITMCLSID",
+        "ordinal": 17,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Item Class ID",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "RCVEQPCLS",
+        "ordinal": 18,
+        "type": "CHAR",
+        "length": 20,
+        "scale": null,
+        "column_desc": "Equipment Class Name",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "PICKPUT",
+        "ordinal": 19,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "PickPut ID",
+        "table_desc": "",
+        "number_rows": 1192
+      },
+      {
+        "column": "SCOOPQTY",
+        "ordinal": 20,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Scoop QTY",
+        "table_desc": "",
+        "number_rows": 1192
+      }
+    ]
+  },
+  "RKWKSHPTX": {
+    "found": true,
+    "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+    "number_rows": 80550,
+    "column_count": 8,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 80550
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 80550
+      },
+      {
+        "column": "INIVDT",
+        "ordinal": 3,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Invoice Date",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 80550
+      },
+      {
+        "column": "XTITNO",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "ITEM NUMBER",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 80550
+      },
+      {
+        "column": "INWHSE",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 80550
+      },
+      {
+        "column": "INWHSE03",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "INWHSE MIN",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 80550
+      },
+      {
+        "column": "ITSHQT01",
+        "ordinal": 7,
+        "type": "NUMERIC",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "ITSHQT TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 80550
+      },
+      {
+        "column": "XNTRPN",
+        "ordinal": 8,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Trip Number",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 80550
+      }
+    ]
+  },
+  "RKINVBYDAY": {
+    "found": true,
+    "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+    "number_rows": 844,
+    "column_count": 14,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "INIVDT",
+        "ordinal": 3,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Invoice Date",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "INWHSE",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "ITSHQT01",
+        "ordinal": 5,
+        "type": "NUMERIC",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "ITSHQT TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "GSFRT01",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 11,
+        "scale": 2,
+        "column_desc": "GSFRT TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "FREIGHT01",
+        "ordinal": 7,
+        "type": "NUMERIC",
+        "length": 11,
+        "scale": 2,
+        "column_desc": "FREIGHT TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "COMMADJ01",
+        "ordinal": 8,
+        "type": "NUMERIC",
+        "length": 11,
+        "scale": 2,
+        "column_desc": "COMMADJ TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "EXTDSC01",
+        "ordinal": 9,
+        "type": "NUMERIC",
+        "length": 11,
+        "scale": 2,
+        "column_desc": "EXTDSC TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "VALUESHI01",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 11,
+        "scale": 2,
+        "column_desc": "VALUESHIP TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "TOTFRT01",
+        "ordinal": 11,
+        "type": "NUMERIC",
+        "length": 11,
+        "scale": 2,
+        "column_desc": "TOTFRT TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "INIVAM01",
+        "ordinal": 12,
+        "type": "NUMERIC",
+        "length": 16,
+        "scale": 2,
+        "column_desc": "INIVAM TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "EXTCUBES01",
+        "ordinal": 13,
+        "type": "NUMERIC",
+        "length": 23,
+        "scale": 8,
+        "column_desc": "EXTCUBES TOTAL",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      },
+      {
+        "column": "UUCCIM",
+        "ordinal": 14,
+        "type": "CHAR",
+        "length": 5,
+        "scale": null,
+        "column_desc": "Financial Division",
+        "table_desc": "WEEKLY IW RECORDS FROM IMHIST",
+        "number_rows": 844
+      }
+    ]
+  },
+  "RKSHORT1": {
+    "found": true,
+    "table_desc": "Short shipped history file step one",
+    "number_rows": 9959969,
+    "column_count": 50,
+    "first_columns": [
+      {
+        "column": "ITNOIV",
+        "ordinal": 1,
+        "type": "NUMERIC",
+        "length": 1,
+        "scale": 0,
+        "column_desc": "Non-Inventory",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "INCSNO",
+        "ordinal": 2,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Customer Number",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "ININVR",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 9,
+        "scale": 0,
+        "column_desc": "Invoice Number",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "INORNO",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order Number",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "INIVDT",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Invoice Date",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "INWHSE",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "XFRGHT",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 12,
+        "scale": 2,
+        "column_desc": "FREIGHT AMT",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "XTCONF",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 12,
+        "scale": 2,
+        "column_desc": "COMMISSION ADJUST",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "ITITCL",
+        "ordinal": 9,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Item Class",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "XTITNO",
+        "ordinal": 10,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "ITEM NUMBER",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "XTITSQ",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "ITEM SEQUENCE NO",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "XDSCNT",
+        "ordinal": 12,
+        "type": "DECIMAL",
+        "length": 12,
+        "scale": 2,
+        "column_desc": "DISCOUNT AMT",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "XCOOPA",
+        "ordinal": 13,
+        "type": "DECIMAL",
+        "length": 12,
+        "scale": 2,
+        "column_desc": "ADVERTISING ACCRUAL",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "XDFIDC",
+        "ordinal": 14,
+        "type": "DECIMAL",
+        "length": 12,
+        "scale": 2,
+        "column_desc": "DFI DISCOUNT",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "INPONO",
+        "ordinal": 15,
+        "type": "CHAR",
+        "length": 22,
+        "scale": null,
+        "column_desc": "Purchase Order No",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "INIVAM",
+        "ordinal": 16,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 2,
+        "column_desc": "Invoice Amount",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "XPRCCD",
+        "ordinal": 17,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "PRICE CODE",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "ITCRCD",
+        "ordinal": 18,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Credit Code",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "ITSHQT",
+        "ordinal": 19,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Shipped Quantity",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      },
+      {
+        "column": "INTXA1",
+        "ordinal": 20,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 2,
+        "column_desc": "Tax Amount",
+        "table_desc": "Short shipped history file step one",
+        "number_rows": 9959969
+      }
+    ]
+  },
+  "RKSHORT2": {
+    "found": true,
+    "table_desc": "Short ship file by Whse step two",
+    "number_rows": 7154,
+    "column_count": 18,
+    "first_columns": [
+      {
+        "column": "CUSNM",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 35,
+        "scale": null,
+        "column_desc": "Alpha sort name",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "OHINNO",
+        "ordinal": 2,
+        "type": "NUMERIC",
+        "length": 9,
+        "scale": 0,
+        "column_desc": "INVOICE NUMBER",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "OHCSIV",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 30,
+        "scale": null,
+        "column_desc": "CUSTOMER INVOICE #",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "ITINVOICENUMBER",
+        "ordinal": 4,
+        "type": "DECIMAL",
+        "length": 9,
+        "scale": 0,
+        "column_desc": "Invoice Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "ITORDERNUMBER",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "INWHSE",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "INCSNO",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Customer Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "ININVR",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 9,
+        "scale": 0,
+        "column_desc": "Invoice Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "INORNO",
+        "ordinal": 9,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "ITITCL",
+        "ordinal": 10,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Item Class",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "XTITNO",
+        "ordinal": 11,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "ITEM NUMBER",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "INIVDT",
+        "ordinal": 12,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Invoice Date",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "ITCRCD",
+        "ordinal": 13,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Credit Code",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "ITSCRAPDEFECT",
+        "ordinal": 14,
+        "type": "CHAR",
+        "length": 2,
+        "scale": null,
+        "column_desc": "Scrap Defect",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "ITSHQT",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Shipped Quantity",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "SSVALUE",
+        "ordinal": 16,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 2,
+        "column_desc": "(ITSHQT*ITPRIC)-COMMADJ          -FREIGHT+EXTDSC",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "XFRGHT",
+        "ordinal": 17,
+        "type": "DECIMAL",
+        "length": 12,
+        "scale": 2,
+        "column_desc": "FREIGHT AMT",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      },
+      {
+        "column": "FREIGHT",
+        "ordinal": 18,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 2,
+        "column_desc": "ITSHQT*T01.XFRGHT",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 7154
+      }
+    ]
+  },
+  "RKXFRPROJ": {
+    "found": true,
+    "table_desc": "Transfers",
+    "number_rows": 2046,
+    "column_count": 10,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      },
+      {
+        "column": "HFHOUS",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "FROM WHSE",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      },
+      {
+        "column": "HTHOUS",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "TO WHSE",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      },
+      {
+        "column": "DTFRQT01",
+        "ordinal": 5,
+        "type": "NUMERIC",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "DTFRQT TOTAL",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      },
+      {
+        "column": "EXTCUBES01",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 18,
+        "scale": 5,
+        "column_desc": "EXTCUBES TOTAL",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      },
+      {
+        "column": "HDLDTE",
+        "ordinal": 7,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "DELIVERY DATE",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      },
+      {
+        "column": "FWK#03",
+        "ordinal": 8,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "FWK# MIN",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      },
+      {
+        "column": "DYWK03",
+        "ordinal": 9,
+        "type": "NUMERIC",
+        "length": 1,
+        "scale": 0,
+        "column_desc": "DYWK MIN",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      },
+      {
+        "column": "WEEKOF03",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "WEEKOF MIN",
+        "table_desc": "Transfers",
+        "number_rows": 2046
+      }
+    ]
+  },
+  "RKDX501": {
+    "found": true,
+    "table_desc": "Transfers",
+    "number_rows": 42167,
+    "column_count": 9,
+    "first_columns": [
+      {
+        "column": "DTFRNO",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 9,
+        "scale": null,
+        "column_desc": "TRANSFER NUMBER",
+        "table_desc": "Transfers",
+        "number_rows": 42167
+      },
+      {
+        "column": "HSHDTE",
+        "ordinal": 2,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "SHIPMENT DATE",
+        "table_desc": "Transfers",
+        "number_rows": 42167
+      },
+      {
+        "column": "HTHOUS",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "TO WHSE",
+        "table_desc": "Transfers",
+        "number_rows": 42167
+      },
+      {
+        "column": "DITNBR",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "ITEM NUMBER",
+        "table_desc": "Transfers",
+        "number_rows": 42167
+      },
+      {
+        "column": "DTFRQT",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "TRANSFER QTY",
+        "table_desc": "Transfers",
+        "number_rows": 42167
+      },
+      {
+        "column": "DSHPQT",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "SHIPPED QTY",
+        "table_desc": "Transfers",
+        "number_rows": 42167
+      },
+      {
+        "column": "DTSHPQ",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "TOTAL SHIPPED QTY",
+        "table_desc": "Transfers",
+        "number_rows": 42167
+      },
+      {
+        "column": "DCUBES",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 5,
+        "scale": 2,
+        "column_desc": "CUBES PER PIECE",
+        "table_desc": "Transfers",
+        "number_rows": 42167
+      },
+      {
+        "column": "EXTCUBES",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 15,
+        "scale": 5,
+        "column_desc": "dtfrqt*dcubes",
+        "table_desc": "Transfers",
+        "number_rows": 42167
+      }
+    ]
+  },
+  "RKBACKORDS": {
+    "found": true,
+    "table_desc": "All crossed at docks for Whse 1",
+    "number_rows": 18339,
+    "column_count": 35,
+    "first_columns": [
+      {
+        "column": "WAREHOUSE",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "bhwhs#",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHCNTI",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 9,
+        "scale": null,
+        "column_desc": "Container Id",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHCNTN",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Container Nbr",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "DROPS",
+        "ordinal": 4,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "bhtdrp",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "DATE",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "substr(digits(bhzdat),5,2)||'/'|| substr(digits(bh",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "TRIP#",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "bhtrp#",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "TODAYCHAR",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "char(current(date)-1 day,iso)",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "YESTERDAY",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 8,
+        "scale": null,
+        "column_desc": "substr(todaychar,1,4)||substr(todaychar,6,2)||subs",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "CODE_DATE",
+        "ordinal": 9,
+        "type": "CHAR",
+        "length": 8,
+        "scale": null,
+        "column_desc": "digits(T02.bhzdat)",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHTITM",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Tot Itms For Trip",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHTDRP",
+        "ordinal": 11,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "Tot Drps For Trip",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHTCUB",
+        "ordinal": 12,
+        "type": "NUMERIC",
+        "length": 10,
+        "scale": 2,
+        "column_desc": "Tot Cubes For Trip",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHCDAT",
+        "ordinal": 13,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Creation Date",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHCTIM",
+        "ordinal": 14,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Creation Time",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHRDAT",
+        "ordinal": 15,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Release Date",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHRTIM",
+        "ordinal": 16,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Release Time",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHZDAT",
+        "ordinal": 17,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Close Date",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHZTIM",
+        "ordinal": 18,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Close Time",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHSDAT",
+        "ordinal": 19,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Start Date",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      },
+      {
+        "column": "BHSTIM",
+        "ordinal": 20,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Start Time",
+        "table_desc": "All crossed at docks for Whse 1",
+        "number_rows": 18339
+      }
+    ]
+  },
+  "RK_BOSET1": {
+    "found": true,
+    "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+    "number_rows": 43129,
+    "column_count": 13,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "SUPERVIS03",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "SUPERVISOR MIN",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "DATE03",
+        "ordinal": 4,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "DATE MIN",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "BOTIME03",
+        "ordinal": 5,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "BOTIME MIN",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "WAREHOUS03",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "WAREHOUSE MIN",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "QUANTITY01",
+        "ordinal": 7,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "QUANTITY TOTAL",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "QUANTITY05",
+        "ordinal": 8,
+        "type": "NUMERIC",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "QUANTITY COUNT",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "TRIP#03",
+        "ordinal": 9,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "TRIP# MIN",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "DROP#03",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "DROP# MIN",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "TIE2",
+        "ordinal": 11,
+        "type": "CHAR",
+        "length": 22,
+        "scale": null,
+        "column_desc": "TTIP1||T01.NORD#||SERIES",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "NCUSNM03",
+        "ordinal": 12,
+        "type": "CHAR",
+        "length": 25,
+        "scale": null,
+        "column_desc": "NCUSNM MIN",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      },
+      {
+        "column": "NCUSNO03",
+        "ordinal": 13,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "NCUSNO MIN",
+        "table_desc": "ALL CROSSED AT DOCKS BY WHSE",
+        "number_rows": 43129
+      }
+    ]
+  },
+  "RK_ASRS001": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 495476,
+    "column_count": 4,
+    "first_columns": [
+      {
+        "column": "ADITNB",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "ITEM NUMBER",
+        "table_desc": "",
+        "number_rows": 495476
+      },
+      {
+        "column": "ADCDAT",
+        "ordinal": 2,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "CURRENT DATE",
+        "table_desc": "",
+        "number_rows": 495476
+      },
+      {
+        "column": "ADOHTQ",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "ON HAND TOTAL QUANTITY",
+        "table_desc": "",
+        "number_rows": 495476
+      },
+      {
+        "column": "NBSEAT",
+        "ordinal": 4,
+        "type": "NUMERIC",
+        "length": 4,
+        "scale": 2,
+        "column_desc": "Number of Seats",
+        "table_desc": "",
+        "number_rows": 495476
+      }
+    ]
+  },
+  "RKHOTLIST1": {
+    "found": true,
+    "table_desc": "DOMESTIC Itms - Trps Not Invoice (Not In Tsinxna3)",
+    "number_rows": 7809,
+    "column_count": 5,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "DOMESTIC Itms - Trps Not Invoice (Not In Tsinxna3)",
+        "number_rows": 7809
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "DOMESTIC Itms - Trps Not Invoice (Not In Tsinxna3)",
+        "number_rows": 7809
+      },
+      {
+        "column": "WHSNO",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Whs#",
+        "table_desc": "DOMESTIC Itms - Trps Not Invoice (Not In Tsinxna3)",
+        "number_rows": 7809
+      },
+      {
+        "column": "BDITM#",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "DOMESTIC Itms - Trps Not Invoice (Not In Tsinxna3)",
+        "number_rows": 7809
+      },
+      {
+        "column": "SCNQTY01",
+        "ordinal": 5,
+        "type": "NUMERIC",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "SCNQTY TOTAL",
+        "table_desc": "DOMESTIC Itms - Trps Not Invoice (Not In Tsinxna3)",
+        "number_rows": 7809
+      }
+    ]
+  },
+  "RK_TRIPD00": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 443764,
+    "column_count": 29,
+    "first_columns": [
+      {
+        "column": "BDTRP#",
+        "ordinal": 1,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Trip #",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BDDRP#",
+        "ordinal": 2,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "Drop #",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BDORD#",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order #",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BDITM#",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BDITQT",
+        "ordinal": 5,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Total Item Qty",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BDITCT",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 10,
+        "scale": 2,
+        "column_desc": "Total Item Cubes",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BDITMD",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 20,
+        "scale": null,
+        "column_desc": "Item Description",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BDCUS#",
+        "ordinal": 8,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Customer#",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BHCNTI",
+        "ordinal": 9,
+        "type": "CHAR",
+        "length": 9,
+        "scale": null,
+        "column_desc": "Container Id",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BHCNTN",
+        "ordinal": 10,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Container Nbr",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BHTITM",
+        "ordinal": 11,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Tot Itms For Trip",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BHTDRP",
+        "ordinal": 12,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "Tot Drps For Trip",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BHTCUB",
+        "ordinal": 13,
+        "type": "NUMERIC",
+        "length": 10,
+        "scale": 2,
+        "column_desc": "Tot Cubes For Trip",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BHTWGT",
+        "ordinal": 14,
+        "type": "NUMERIC",
+        "length": 10,
+        "scale": 2,
+        "column_desc": "Tot Weight For Trip",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BHTSNS",
+        "ordinal": 15,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Tot Scan - Ser#",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BHTSNN",
+        "ordinal": 16,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Tot Scan - No Tag",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "BHTSNE",
+        "ordinal": 17,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Tot Scan - Excptns",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "QTYCR",
+        "ordinal": 18,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "Qty Per Carton",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "UUCCIM",
+        "ordinal": 19,
+        "type": "CHAR",
+        "length": 5,
+        "scale": null,
+        "column_desc": "Financial Division",
+        "table_desc": "",
+        "number_rows": 443764
+      },
+      {
+        "column": "CRTLIN",
+        "ordinal": 20,
+        "type": "DECIMAL",
+        "length": 5,
+        "scale": 2,
+        "column_desc": "Carton Length Inches",
+        "table_desc": "",
+        "number_rows": 443764
+      }
+    ]
+  },
+  "RK_ORDERS1": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 249675,
+    "column_count": 12,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "CCUSNO",
+        "ordinal": 3,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Customer Number",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "CSHPNO",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Ship-to Number",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "RQSDAT03",
+        "ordinal": 5,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "RQSDAT MIN",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "RQSDAT04",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "RQSDAT MAX",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "COQTY01",
+        "ordinal": 9,
+        "type": "NUMERIC",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "COQTY TOTAL",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "EXTCUBES01",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 23,
+        "scale": 8,
+        "column_desc": "EXTCUBES TOTAL",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "TRUCKLOA01",
+        "ordinal": 11,
+        "type": "NUMERIC",
+        "length": 23,
+        "scale": 1,
+        "column_desc": "TRUCKLOADS TOTAL",
+        "table_desc": "",
+        "number_rows": 249675
+      },
+      {
+        "column": "NETMAPIC02",
+        "ordinal": 12,
+        "type": "NUMERIC",
+        "length": 22,
+        "scale": 3,
+        "column_desc": "NETMAPIC01 AVG",
+        "table_desc": "",
+        "number_rows": 249675
+      }
+    ]
+  },
+  "RK_SERSHIP": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 487412,
+    "column_count": 12,
+    "first_columns": [
+      {
+        "column": "WHSNO",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Whs#",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "SERNBR",
+        "ordinal": 2,
+        "type": "NUMERIC",
+        "length": 15,
+        "scale": 0,
+        "column_desc": "Serial Nbr",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "TRIPNO",
+        "ordinal": 3,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Trip#",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "DROPNO",
+        "ordinal": 4,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "Drop #",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "ITEMNO",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "EQPNBR",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Equip Id/Nbr",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "ADDDAT",
+        "ordinal": 7,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Add Date",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "ADDTIM",
+        "ordinal": 8,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Add Time",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "ITDSC",
+        "ordinal": 9,
+        "type": "CHAR",
+        "length": 30,
+        "scale": null,
+        "column_desc": "Item description",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "CUSTID",
+        "ordinal": 10,
+        "type": "CHAR",
+        "length": 20,
+        "scale": null,
+        "column_desc": "Customer ID Number",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "VNDNR",
+        "ordinal": 11,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Vendor number",
+        "table_desc": "",
+        "number_rows": 487412
+      },
+      {
+        "column": "UUCCIM",
+        "ordinal": 12,
+        "type": "CHAR",
+        "length": 5,
+        "scale": null,
+        "column_desc": "User field-code C",
+        "table_desc": "",
+        "number_rows": 487412
+      }
+    ]
+  },
+  "RK_ALLFCST": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 29691,
+    "column_count": 16,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCWHSE",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "SERIES",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Series Code",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT101",
+        "ordinal": 5,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT1 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT201",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT2 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT301",
+        "ordinal": 7,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT3 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT401",
+        "ordinal": 8,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT4 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT501",
+        "ordinal": 9,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT5 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT601",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT6 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT701",
+        "ordinal": 11,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT7 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT801",
+        "ordinal": 12,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT8 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT901",
+        "ordinal": 13,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT9 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT106",
+        "ordinal": 14,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT10 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT107",
+        "ordinal": 15,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT11 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      },
+      {
+        "column": "RFCRSLT108",
+        "ordinal": 16,
+        "type": "NUMERIC",
+        "length": 14,
+        "scale": 0,
+        "column_desc": "RFCRSLT12 TOTAL",
+        "table_desc": "",
+        "number_rows": 29691
+      }
+    ]
+  }
+}

@@ -3,9 +3,9 @@
 -- ====================================================================
 SET NOCOUNT ON;
 
-DECLARE @MaKNQ NVARCHAR(50) = '你的保税仓代码';   -- 例如 'VNNSL'
-DECLARE @StartDate DATETIME = '2026-01-01';     --【变量：出库开始日期】
-DECLARE @EndDate DATETIME = '2026-05-17';       --【变量：出库结束日期】
+DECLARE @MaKNQ NVARCHAR(50) = '335';   -- 例如 'VNNSL'
+DECLARE @StartDate DATETIME = '2026-07-13';     --【变量：出库开始日期】
+DECLARE @EndDate DATETIME = '2026-07-20';       --【变量：出库结束日期】
 
 -- --------------------------------------------------------------------
 -- STEP 1.1: 提取所有【集装箱重箱（Type = 1）】的正式有效出库明细

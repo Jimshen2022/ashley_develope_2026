@@ -1,3 +1,6 @@
+select * from t_class_loca where location_id like 'A3018DA1%';
+
+
 INSERT INTO t_class_loca (wh_id, class_id, location_id, fill_seq, capacity_volume)
 VALUES
 ('335','UPHL','A3021CA2','005','400000'),

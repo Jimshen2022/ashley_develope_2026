@@ -302,6 +302,7 @@ Select * from Distribution_Warehouse_Wholesale.tranlog where wh_id = '335' and l
 Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number = '666158352972' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number = '503950023383' and wh_id = '335' order by lot_number, start_tran_date, start_tran_time
 Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number in ('667047837308','653650410388') and wh_id = '335' order by lot_number, start_tran_date, start_tran_time
+Select * from Distribution_Warehouse_Wholesale.tranlog where lot_number in ('688806155563') and wh_id = '335' order by lot_number, start_tran_date, start_tran_time
 
 -- Create temp table for item master data
 SELECT
@@ -641,7 +642,7 @@ WHERE t.wh_id = '335'
     AND t.start_tran_date > '2026-01-01'
     AND t.tran_type IN ('347')
     -- 过滤条件：确保包含连字符且截取后是数字格式（防止报错）
-    AND (t.control_number_2 LIKE '%14173-%' or t.control_number_2 LIKE '%14173-%' )
+    AND (t.control_number_2 LIKE '%40308-%' or t.control_number_2 LIKE '%40308-%' )
 GROUP BY 
     t.tran_type,  
     t.description, 

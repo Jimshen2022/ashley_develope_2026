@@ -2,7 +2,7 @@ SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%seria
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%t_order_c_number%' and COLUMN_NAME like '%email%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%customer%'
 SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%pal%capacity%'
-SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%equipment%'
+SELECT TOP 100 *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%ya%'
 
 select top 10 * from t_serial_active
 select top 10 * from t_stored_item 
@@ -29,6 +29,38 @@ select top 10 * from t_item_forecast
 select top 10 * from t_equipment_class 
 select top 10 * from t_equipment_class_loca where location_id like 'VRJIM%'
 select top 10 * from t_AS400_trips 
+select top 10 * from t_AS400_trips 
+select top 10 * from t_interleave_master 
+select  * from t_interleave_detail 
+select top 10 * from t_work_types 
+
+-- ya location
+select * from t_ya_location where location_name like 'D%'
+select * from t_location where location_id like 'RS%'
+
+
+-- PO received
+select start_tran_date, control_number_2, item_number, sum(tran_qty) as qty 
+from t_tran_log 
+where tran_type in ('151','951') 
+    and start_tran_date >= '2026-06-01' 
+    and control_number_2 in ('P2WMW85','P2WNH46','P2WWL36') 
+group by start_tran_date, control_number_2, item_number order by start_tran_date, control_number_2, item_number
+
+
+
+-- interleaving 
+SELECT *
+FROM t_interleave_master (NOLOCK)
+WHERE interleave_master_id = 11;
+
+SELECT *
+FROM t_interleave_detail (NOLOCK)
+WHERE interleave_master_id = 11;
+
+SELECT *
+FROM t_work_types (NOLOCK)
+WHERE work_types_id IN (45, 63, 75);
 
 -- WORKQ
 select  * from t_work_q where work_type like '45%'

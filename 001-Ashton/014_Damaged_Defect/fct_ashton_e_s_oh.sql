@@ -1,3 +1,5 @@
+
+    
 WITH itm AS (
     SELECT ITNBR, ITDSC
     FROM MasterData_ItemMaster_AFI.ITMRVA
@@ -94,6 +96,10 @@ FROM Distribution_Warehouse_Wholesale.t_serial_active AS t1
 LEFT JOIN sn_po as sy on sy.lot_number = t1.serial_number
 LEFT JOIN itm as i on t1.item_number = i.ITNBR
 WHERE t1.wh_id IN ('335') 
-	AND t1.serial_no_status NOT IN ('O') 
-	AND t1.master_status NOT IN ('S')
-	AND t1.location_id in ('SH001AA1','EX001AA1')
+	--AND t1.serial_no_status NOT IN ('O') 
+	--AND t1.master_status NOT IN ('S')
+	and t1.location_id IN ('DM001AA1','NG001CK3','NG001CG3','NG001UP3','NG001VD3','NG001RA1')
+	--AND (t1.location_id like 'NG%' OR t1.location_id like 'DM%' OR t1.location_id like 'SH00%' OR t1.location_id like 'EX%')
+	AND t1.location_id NOT like 'NG%OP%'
+
+    

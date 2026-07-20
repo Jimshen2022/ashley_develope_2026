@@ -27,7 +27,7 @@ r1 AS (
 	, MIN(t1.start_tran_date) AS received_into_loc_date
 FROM Distribution_Warehouse_Wholesale.TranLog AS t1
 WHERE t1.wh_id IN ('335') AND t1.start_tran_date > '2023-01-01' AND t1.lot_number is not null and len(t1.lot_number)>5
-	AND t1.location_id_2 IN ('DM001AA1','NG001CK3','NG001CG3','NG001UP3','NG001VD3') 
+	AND t1.location_id_2 IN ('DM001AA1','NG001CK3','NG001CG3','NG001UP3','NG001VD3','NG001RA1') 
 GROUP BY t1.wh_id, t1.item_number, CAST(t1.lot_number as VARCHAR(20)), t1.location_id_2
     ),
 
@@ -54,7 +54,8 @@ SELECT t1.wh_id
 			WHEN t1.location_id = 'NG001CK3' THEN '(2) Repair Materials Required - CartonsDamaged'
 			WHEN t1.location_id = 'NG001CG3' THEN '(3) Vendor Repair Required - ProductsDamaged'
 			WHEN t1.location_id = 'NG001UP3' THEN '(3) Vendor Repair Required - ProductsDamaged'
-			WHEN t1.location_id = 'NG001VD3' THEN '(4) Returned To Vendor For Repair'
+			WHEN t1.location_id = 'NG001RA1' THEN '(4) Damaged and cannot be repaired - ProductsDamaged'
+			WHEN t1.location_id = 'NG001VD3' THEN '(5) Returned To Vendor For Repair'
 			ELSE 'Check' END AS Location_Meaning
     , case when itm.product_category is null then 
 										case when left(t1.item_number,1) like '[U,1-9]%' THEN 'UPH' else 'CG' end
@@ -75,5 +76,5 @@ FROM Distribution_Warehouse_Wholesale.t_serial_active  AS T1
     LEFT JOIN (SELECT * FROM r3) AS r3 ON t1.wh_id = r3.wh_id AND t1.item_number = r3.item_number AND t1.serial_number = r3.SN 
 	LEFT JOIN itm ON t1.item_number = itm.item_number
 WHERE  t1.wh_id  IN ('335') 
-	AND T1.location_id IN ('DM001AA1','NG001CK3','NG001CG3','NG001UP3','NG001VD3') 
+	AND T1.location_id IN ('DM001AA1','NG001CK3','NG001CG3','NG001UP3','NG001VD3','NG001RA1') 
 	AND t1.serial_no_status NOT IN ('O') and t1.master_status NOT IN ('S') 

@@ -1,0 +1,1 @@
+select  * from t_work_q WHERE location_id like 'A30[34]%' AND work_status = 'U'

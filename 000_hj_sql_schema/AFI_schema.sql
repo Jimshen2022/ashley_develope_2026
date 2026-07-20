@@ -2,7 +2,7 @@
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%control%'
 SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%profile%'
 SELECT  table_name  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%dispatch%' group by table_name
-SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%country%'
+SELECT  *  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%import%'
 select * from t_la_employee_clock_in_out_detail
 select * from t_sod_eod_cico_log
 select * from t_la_team_cico
@@ -61,6 +61,7 @@ select top 10 * from t_po_master
 select top 10 * from t_replenishment_rule
 select top 10 * from t_xdock_rule
 select top 10 * from t_pick_put_rules
+select top 10 * from t_import_EMPLOYEE
 
 
 -- tranlog

@@ -23,7 +23,7 @@ sn_in_damaged_loc as (
                 as last_tran_type
         from t_tran_log as lg with (nolock)
         where lg.start_tran_date >= '2026-01-01'
-            and lg.location_id_2 in ('NG001CG3','NG001UP3','NG001VD3','NG001CK3','DM001AA1')
+            and lg.location_id_2 in ('NG001CG3','NG001UP3','NG001VD3','NG001CK3','DM001AA1','NG001RA1')
             and lg.lot_number is not null
     ) as t
 
@@ -33,7 +33,7 @@ select sna.wh_id,sna.serial_number, sna.item_number, sna.po_number, sna.location
 from t_serial_active as sna
 left join t_serial_master as snm on sna.serial_number = snm.serial_number and sna.wh_id = snm.wh_id
 where sna.wh_id = '335' and (sna.serial_no_status != 'O' and sna.serial_number is not null and sna.serial_no_status != 'S')
-    and sna.location_id in ('NG001CG3','NG001UP3','NG001VD3','NG001CK3','DM001AA1')
+    and sna.location_id in ('NG001CG3','NG001UP3','NG001VD3','NG001CK3','DM001AA1','NG001RA1')
 )
 -- 以sn_in_warehouse为主表，左连接sn_in_damaged_loc获取扫描到残次品位置的时间和最后一次tran_type，再左连接po表获取po信息
 select 

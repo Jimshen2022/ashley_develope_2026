@@ -1,0 +1,2678 @@
+{
+  "MB_ITEMBL": {
+    "found": true,
+    "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+    "number_rows": 3420852,
+    "column_count": 10,
+    "first_columns": [
+      {
+        "column": "HOUSE",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      },
+      {
+        "column": "STID",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Site identifier",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      },
+      {
+        "column": "MOHTQ",
+        "ordinal": 4,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "On hand total quantity",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      },
+      {
+        "column": "MALQT",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Manufacturing allocated quantity",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      },
+      {
+        "column": "MPRPQ",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "On order production quantity",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      },
+      {
+        "column": "MPUPQ",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "On order purchase quantity",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      },
+      {
+        "column": "ISSMO",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "Quantity issued this period",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      },
+      {
+        "column": "FLSTK",
+        "ordinal": 9,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Floor stock code",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      },
+      {
+        "column": "LDQOH",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Last date affecting quantity on hand",
+        "table_desc": "ITEM BALANCE SAVE WITH SITE ID",
+        "number_rows": 3420852
+      }
+    ]
+  },
+  "MB_ITEMBL1": {
+    "found": true,
+    "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+    "number_rows": 3371328,
+    "column_count": 125,
+    "first_columns": [
+      {
+        "column": "STID",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Site identifier",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "ACREC",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Active record code",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "ITCLS",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Item class",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "MALQT",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Manufacturing allocated quantity",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "QTSMO",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 3,
+        "column_desc": "Quantity sold this period",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "ISSMO",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "Quantity issued this period",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "RECMO",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "Quantity received this period",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "ADJMO",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "Quantity adjusted this period",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "BEGIN",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Beginning inventory",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "LTCOD",
+        "ordinal": 12,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Lead time code",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "LTMAN",
+        "ordinal": 13,
+        "type": "DECIMAL",
+        "length": 4,
+        "scale": 1,
+        "column_desc": "Lead time manufacturing",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "LTADM",
+        "ordinal": 14,
+        "type": "NUMERIC",
+        "length": 3,
+        "scale": 1,
+        "column_desc": "Lead time adjustment manufacturing",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "LTPUR",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 4,
+        "scale": 1,
+        "column_desc": "Lead time purchase",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "LTVEN",
+        "ordinal": 16,
+        "type": "DECIMAL",
+        "length": 4,
+        "scale": 1,
+        "column_desc": "Vendor lead time",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "LTSAF",
+        "ordinal": 17,
+        "type": "DECIMAL",
+        "length": 4,
+        "scale": 1,
+        "column_desc": "Safety lead time",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "LTREV",
+        "ordinal": 18,
+        "type": "DECIMAL",
+        "length": 4,
+        "scale": 1,
+        "column_desc": "Review lead time",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "LTADP",
+        "ordinal": 19,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "Lead time adjustment purchase",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      },
+      {
+        "column": "MOHTQ",
+        "ordinal": 20,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "On hand total quantity",
+        "table_desc": "TAKES COMPUTER IB SAVE AND SAVE UNDER MONTHLY NAME",
+        "number_rows": 3371328
+      }
+    ]
+  },
+  "DH_ITEMBL": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 24993909,
+    "column_count": 7,
+    "first_columns": [
+      {
+        "column": "VNDNR",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Vendor number",
+        "table_desc": "",
+        "number_rows": 24993909
+      },
+      {
+        "column": "PLANIB",
+        "ordinal": 2,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Planner",
+        "table_desc": "",
+        "number_rows": 24993909
+      },
+      {
+        "column": "ITCLS",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Item class",
+        "table_desc": "",
+        "number_rows": 24993909
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 24993909
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "",
+        "number_rows": 24993909
+      },
+      {
+        "column": "ITDSC",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 30,
+        "scale": null,
+        "column_desc": "Item description",
+        "table_desc": "",
+        "number_rows": 24993909
+      },
+      {
+        "column": "MOHTQ",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "On hand total quantity",
+        "table_desc": "",
+        "number_rows": 24993909
+      }
+    ]
+  },
+  "JD_ONHAND": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 222877017,
+    "column_count": 5,
+    "first_columns": [
+      {
+        "column": "HOUSE",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 222877017
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "",
+        "number_rows": 222877017
+      },
+      {
+        "column": "ITDSC",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 30,
+        "scale": null,
+        "column_desc": "Item description",
+        "table_desc": "",
+        "number_rows": 222877017
+      },
+      {
+        "column": "LLOCN",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Location in warehouse",
+        "table_desc": "",
+        "number_rows": 222877017
+      },
+      {
+        "column": "LQNTY",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Location quantity",
+        "table_desc": "",
+        "number_rows": 222877017
+      }
+    ]
+  },
+  "MB_LOCMST": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 4187893,
+    "column_count": 4,
+    "first_columns": [
+      {
+        "column": "LMWHSE",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Whse#",
+        "table_desc": "",
+        "number_rows": 4187893
+      },
+      {
+        "column": "LLOCN",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 8,
+        "scale": null,
+        "column_desc": "LMAREA||AISLE1||LMSEC||TIER1",
+        "table_desc": "",
+        "number_rows": 4187893
+      },
+      {
+        "column": "LMCDAT",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Creation Date",
+        "table_desc": "",
+        "number_rows": 4187893
+      },
+      {
+        "column": "LMMUSR",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Maint. User",
+        "table_desc": "",
+        "number_rows": 4187893
+      }
+    ]
+  },
+  "MB_IMH2025": {
+    "found": true,
+    "table_desc": "Transaction History Save - 2025",
+    "number_rows": 85326649,
+    "column_count": 29,
+    "first_columns": [
+      {
+        "column": "STID",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Site identifier",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "ACREC",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Active record code",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "BATCH",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 3,
+        "scale": 0,
+        "column_desc": "Batch number",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "TRMID",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Workstation ID",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "TCODE",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 2,
+        "scale": null,
+        "column_desc": "Transaction code",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "ORDNO",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order number",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "UPDDT",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Update period date",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "UPDTM",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Update time",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "TRQTY",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Transaction quantity",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "TRNDT",
+        "ordinal": 12,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Transaction date",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "ENTUM",
+        "ordinal": 13,
+        "type": "CHAR",
+        "length": 2,
+        "scale": null,
+        "column_desc": "Entry unit of measure",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "VNDNR",
+        "ordinal": 14,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Vendor number",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "REFNO",
+        "ordinal": 15,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Reference number",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "BCHTY",
+        "ordinal": 16,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Batch type",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "DTLOH",
+        "ordinal": 17,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Last date affect qty on hand",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "INVFG",
+        "ordinal": 18,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "Inventory flag",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "REASN",
+        "ordinal": 19,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Reason code",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      },
+      {
+        "column": "TRWHS",
+        "ordinal": 20,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Transfer warehouse",
+        "table_desc": "Transaction History Save - 2025",
+        "number_rows": 85326649
+      }
+    ]
+  },
+  "MB_IMHYE": {
+    "found": true,
+    "table_desc": "IMHIST WITH ALL MONTHS",
+    "number_rows": 92637960,
+    "column_count": 18,
+    "first_columns": [
+      {
+        "column": "ITTYP",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Item type code",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "CHGN",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Charge nature",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "UUCC",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 5,
+        "scale": null,
+        "column_desc": "User field-code C",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "UPDDT",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Update period date",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "UPDTM",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Update time",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "TRQTY",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Transaction quantity",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "ITCLS",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Item class",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 9,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "MATER",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 15,
+        "scale": 2,
+        "column_desc": "TRQTY*PURCHS",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "FRT",
+        "ordinal": 11,
+        "type": "NUMERIC",
+        "length": 15,
+        "scale": 2,
+        "column_desc": "TRQTY*PUROVH",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "EXTCOST",
+        "ordinal": 12,
+        "type": "NUMERIC",
+        "length": 15,
+        "scale": 2,
+        "column_desc": "TRQTY*STDUC",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "REFNO",
+        "ordinal": 13,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Reference number",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "REASN",
+        "ordinal": 14,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Reason code",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "TCODE",
+        "ordinal": 15,
+        "type": "CHAR",
+        "length": 2,
+        "scale": null,
+        "column_desc": "Transaction code",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "ORDNO",
+        "ordinal": 16,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order number",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "TRMID",
+        "ordinal": 17,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Workstation ID",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      },
+      {
+        "column": "MONTH",
+        "ordinal": 18,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "'0125'",
+        "table_desc": "IMHIST WITH ALL MONTHS",
+        "number_rows": 92637960
+      }
+    ]
+  },
+  "WMV_SHORT2": {
+    "found": true,
+    "table_desc": "Short ship file by Whse step two",
+    "number_rows": 798868194,
+    "column_count": 15,
+    "first_columns": [
+      {
+        "column": "INWHSE",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "OHINNO",
+        "ordinal": 2,
+        "type": "NUMERIC",
+        "length": 9,
+        "scale": 0,
+        "column_desc": "INVOICE NUMBER",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "OHCSIV",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 30,
+        "scale": null,
+        "column_desc": "CUSTOMER INVOICE #",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "ITINVOICENUMBER",
+        "ordinal": 4,
+        "type": "DECIMAL",
+        "length": 9,
+        "scale": 0,
+        "column_desc": "Invoice Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "ITORDERNUMBER",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "INCSNO",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Customer Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "OHSNAM",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 25,
+        "scale": null,
+        "column_desc": "Ship-To Name",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "SSSPNM",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 25,
+        "scale": null,
+        "column_desc": "Ship to Name",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "ININVR",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 9,
+        "scale": 0,
+        "column_desc": "Invoice Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "INORNO",
+        "ordinal": 10,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order Number",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "XTITNO",
+        "ordinal": 11,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "ITEM NUMBER",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "INIVDT",
+        "ordinal": 12,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Invoice Date",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "ITCRCD",
+        "ordinal": 13,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Credit Code",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "ITSCRAPDEFECT",
+        "ordinal": 14,
+        "type": "CHAR",
+        "length": 2,
+        "scale": null,
+        "column_desc": "Scrap Defect",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      },
+      {
+        "column": "ITSHQT",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Shipped Quantity",
+        "table_desc": "Short ship file by Whse step two",
+        "number_rows": 798868194
+      }
+    ]
+  },
+  "LD_CUSINFO": {
+    "found": true,
+    "table_desc": "shipped history - JAN 2017",
+    "number_rows": 72965475,
+    "column_count": 8,
+    "first_columns": [
+      {
+        "column": "INCSNO",
+        "ordinal": 1,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Customer Number",
+        "table_desc": "shipped history - JAN 2017",
+        "number_rows": 72965475
+      },
+      {
+        "column": "ITSPNO",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Ship-to Number",
+        "table_desc": "shipped history - JAN 2017",
+        "number_rows": 72965475
+      },
+      {
+        "column": "INWHSE",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "shipped history - JAN 2017",
+        "number_rows": 72965475
+      },
+      {
+        "column": "XSTATE",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 2,
+        "scale": null,
+        "column_desc": "STATE",
+        "table_desc": "shipped history - JAN 2017",
+        "number_rows": 72965475
+      },
+      {
+        "column": "SSSPST",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 2,
+        "scale": null,
+        "column_desc": "Ship to State code",
+        "table_desc": "shipped history - JAN 2017",
+        "number_rows": 72965475
+      },
+      {
+        "column": "SSSPZC",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Ship to Zip code",
+        "table_desc": "shipped history - JAN 2017",
+        "number_rows": 72965475
+      },
+      {
+        "column": "SSSCTY",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Sold to Country Name",
+        "table_desc": "shipped history - JAN 2017",
+        "number_rows": 72965475
+      },
+      {
+        "column": "SSSPCN",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Ship to Country Name",
+        "table_desc": "shipped history - JAN 2017",
+        "number_rows": 72965475
+      }
+    ]
+  },
+  "AFDLOGFCST": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 12609,
+    "column_count": 14,
+    "first_columns": [
+      {
+        "column": "RFCWAREHOUSE",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCITEMNUM",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC1",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 1",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC2",
+        "ordinal": 4,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 2",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC3",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 3",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC4",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 4",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC5",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 5",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC6",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 6",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC7",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 7",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC8",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 8",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC9",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 9",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC10",
+        "ordinal": 12,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 10",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC11",
+        "ordinal": 13,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 11",
+        "table_desc": "",
+        "number_rows": 12609
+      },
+      {
+        "column": "RFCRESULTFC12",
+        "ordinal": 14,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "Result Forcast 12",
+        "table_desc": "",
+        "number_rows": 12609
+      }
+    ]
+  },
+  "ST_ATP2WK": {
+    "found": true,
+    "table_desc": "ATPSUM FOR WHSE 1",
+    "number_rows": 12901,
+    "column_count": 8,
+    "first_columns": [
+      {
+        "column": "APITNB",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 12901
+      },
+      {
+        "column": "APHOUS",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 12901
+      },
+      {
+        "column": "NEED",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 23,
+        "scale": 0,
+        "column_desc": "+need1+NEED2+NEED3+NEED4",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 12901
+      },
+      {
+        "column": "MODEL",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "substr(apitnb,1,7)",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 12901
+      },
+      {
+        "column": "NEED1",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 20,
+        "scale": 0,
+        "column_desc": "+apnq01+apnq02+apnq03+apnq04+apNQ05+apnq06+apnq07+",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 12901
+      },
+      {
+        "column": "NEED2",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "+apnq15+apnq16",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 12901
+      },
+      {
+        "column": "NEED3",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 20,
+        "scale": 0,
+        "column_desc": "+apWH01+apWH02+apWH03+apWH04+apWH05+apWH06+apWH07+",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 12901
+      },
+      {
+        "column": "NEED4",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "+apWH15+apWH16",
+        "table_desc": "ATPSUM FOR WHSE 1",
+        "number_rows": 12901
+      }
+    ]
+  },
+  "TWPPVFCST": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 11501,
+    "column_count": 15,
+    "first_columns": [
+      {
+        "column": "BUYNO",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 5,
+        "scale": null,
+        "column_desc": "Buyer number",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "BUYNM",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 25,
+        "scale": null,
+        "column_desc": "Buyer name",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "ITDSC",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 30,
+        "scale": null,
+        "column_desc": "Item description",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "ORDNO",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order number",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "DUEDT",
+        "ordinal": 7,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Due date",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "VNDNR",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Vendor number",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "VNAME",
+        "ordinal": 9,
+        "type": "CHAR",
+        "length": 25,
+        "scale": null,
+        "column_desc": "Vendor name",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "QTYOR",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Original order quantity",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "STKPR",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 15,
+        "scale": 4,
+        "column_desc": "Stocking unit price",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "MATL",
+        "ordinal": 12,
+        "type": "NUMERIC",
+        "length": 19,
+        "scale": 8,
+        "column_desc": "SMAT+SMAL",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "IMPACT",
+        "ordinal": 13,
+        "type": "DECIMAL",
+        "length": 30,
+        "scale": 11,
+        "column_desc": "(T02.STKPR-T01.MATL)*T02.QTYOR",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "CHGN",
+        "ordinal": 14,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Charge nature",
+        "table_desc": "",
+        "number_rows": 11501
+      },
+      {
+        "column": "ACTDT",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Actual order placed date",
+        "table_desc": "",
+        "number_rows": 11501
+      }
+    ]
+  },
+  "SR_TRACKNO": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 173061,
+    "column_count": 9,
+    "first_columns": [
+      {
+        "column": "TSEINVOICENUMBER",
+        "ordinal": 1,
+        "type": "DECIMAL",
+        "length": 9,
+        "scale": 0,
+        "column_desc": "Invoice Number",
+        "table_desc": "",
+        "number_rows": 173061
+      },
+      {
+        "column": "TSEORDERNUMBER",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Order Number",
+        "table_desc": "",
+        "number_rows": 173061
+      },
+      {
+        "column": "TSEITEMSEQUENCENUMBER",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Item Sequence Number",
+        "table_desc": "",
+        "number_rows": 173061
+      },
+      {
+        "column": "TSEITEMNUMBER",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "",
+        "number_rows": 173061
+      },
+      {
+        "column": "TSETRACKINGSEQNUMBER",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Tracking Sequence Number",
+        "table_desc": "",
+        "number_rows": 173061
+      },
+      {
+        "column": "TSETRACKINGNUMBER",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 35,
+        "scale": null,
+        "column_desc": "Tracking Number",
+        "table_desc": "",
+        "number_rows": 173061
+      },
+      {
+        "column": "TSECARRIER",
+        "ordinal": 7,
+        "type": "VARG",
+        "length": 30,
+        "scale": null,
+        "column_desc": "Carrier",
+        "table_desc": "",
+        "number_rows": 173061
+      },
+      {
+        "column": "TSEFREIGHTCHARGE",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 2,
+        "column_desc": "Freight Charge",
+        "table_desc": "",
+        "number_rows": 173061
+      },
+      {
+        "column": "INIVDT",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "Invoice Date",
+        "table_desc": "",
+        "number_rows": 173061
+      }
+    ]
+  },
+  "AAHOTLIST5": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 61955,
+    "column_count": 18,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BHWHS#03",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "BHWHS# MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BHTRP#",
+        "ordinal": 4,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Trip Number",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BDITM#",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item Number",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "NET01",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 11,
+        "scale": 0,
+        "column_desc": "NET TOTAL",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "TRIP103",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 5,
+        "scale": null,
+        "column_desc": "TRIP1 MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BHTRPS03",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BHTRPS MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BHTDRP03",
+        "ordinal": 9,
+        "type": "NUMERIC",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "BHTDRP MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BHCDAT03",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "BHCDAT MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BDCUS#03",
+        "ordinal": 11,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "BDCUS# MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BDITQT01",
+        "ordinal": 12,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "BDITQT TOTAL",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BDITCT01",
+        "ordinal": 13,
+        "type": "NUMERIC",
+        "length": 13,
+        "scale": 2,
+        "column_desc": "BDITCT TOTAL",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BHDOOR03",
+        "ordinal": 14,
+        "type": "NUMERIC",
+        "length": 4,
+        "scale": 0,
+        "column_desc": "BHDOOR MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "BHRDAT03",
+        "ordinal": 15,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "BHRDAT MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "DSPDAT03",
+        "ordinal": 16,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "DSPDAT MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "DSPTIM03",
+        "ordinal": 17,
+        "type": "NUMERIC",
+        "length": 4,
+        "scale": 0,
+        "column_desc": "DSPTIM MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      },
+      {
+        "column": "LSCHDT03",
+        "ordinal": 18,
+        "type": "NUMERIC",
+        "length": 8,
+        "scale": 0,
+        "column_desc": "LSCHDT MIN",
+        "table_desc": "",
+        "number_rows": 61955
+      }
+    ]
+  },
+  "QJNRACK1": {
+    "found": true,
+    "table_desc": "ArcadiaCasegoodracking1",
+    "number_rows": 4556,
+    "column_count": 5,
+    "first_columns": [
+      {
+        "column": "ITNBR",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "ArcadiaCasegoodracking1",
+        "number_rows": 4556
+      },
+      {
+        "column": "ITDSC",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 30,
+        "scale": null,
+        "column_desc": "Item description",
+        "table_desc": "ArcadiaCasegoodracking1",
+        "number_rows": 4556
+      },
+      {
+        "column": "LLOCN",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 7,
+        "scale": null,
+        "column_desc": "Location in warehouse",
+        "table_desc": "ArcadiaCasegoodracking1",
+        "number_rows": 4556
+      },
+      {
+        "column": "LQNTY",
+        "ordinal": 4,
+        "type": "DECIMAL",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "Location quantity",
+        "table_desc": "ArcadiaCasegoodracking1",
+        "number_rows": 4556
+      },
+      {
+        "column": "FDATE",
+        "ordinal": 5,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "FIFO date",
+        "table_desc": "ArcadiaCasegoodracking1",
+        "number_rows": 4556
+      }
+    ]
+  },
+  "TW_ISIP_BI": {
+    "found": true,
+    "table_desc": "Production RM's - November 2010",
+    "number_rows": 66027752,
+    "column_count": 6,
+    "first_columns": [
+      {
+        "column": "BREAKLVL",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "BREAK LEVEL",
+        "table_desc": "Production RM's - November 2010",
+        "number_rows": 66027752
+      },
+      {
+        "column": "OVERFLOW",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "OVERFLOW FLAG",
+        "table_desc": "Production RM's - November 2010",
+        "number_rows": 66027752
+      },
+      {
+        "column": "UPDDT",
+        "ordinal": 3,
+        "type": "NUMERIC",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Update period date",
+        "table_desc": "Production RM's - November 2010",
+        "number_rows": 66027752
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "Production RM's - November 2010",
+        "number_rows": 66027752
+      },
+      {
+        "column": "ITNBR",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 11,
+        "scale": null,
+        "column_desc": "Item number",
+        "table_desc": "Production RM's - November 2010",
+        "number_rows": 66027752
+      },
+      {
+        "column": "TRQTY01",
+        "ordinal": 6,
+        "type": "NUMERIC",
+        "length": 13,
+        "scale": 3,
+        "column_desc": "TRQTY TOTAL",
+        "table_desc": "Production RM's - November 2010",
+        "number_rows": 66027752
+      }
+    ]
+  },
+  "MON_LAB": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 25226624,
+    "column_count": 10,
+    "first_columns": [
+      {
+        "column": "EINBR",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "End Item Number",
+        "table_desc": "",
+        "number_rows": 25226624
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "",
+        "number_rows": 25226624
+      },
+      {
+        "column": "IDENTIFIER",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 48,
+        "scale": null,
+        "column_desc": "EINBR||PINBR||CINBR||HOUSE",
+        "table_desc": "",
+        "number_rows": 25226624
+      },
+      {
+        "column": "PINBR",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Parent Item Number",
+        "table_desc": "",
+        "number_rows": 25226624
+      },
+      {
+        "column": "CINBR",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Component Item Number",
+        "table_desc": "",
+        "number_rows": 25226624
+      },
+      {
+        "column": "QPASYX",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 9,
+        "column_desc": "Qty Per Unit",
+        "table_desc": "",
+        "number_rows": 25226624
+      },
+      {
+        "column": "WKCTR",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 5,
+        "scale": null,
+        "column_desc": "Work Center",
+        "table_desc": "",
+        "number_rows": 25226624
+      },
+      {
+        "column": "RLBCST",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 15,
+        "scale": 7,
+        "column_desc": "Run Labor Cost",
+        "table_desc": "",
+        "number_rows": 25226624
+      },
+      {
+        "column": "SLBCST",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 15,
+        "scale": 7,
+        "column_desc": "Setup Labor Cost",
+        "table_desc": "",
+        "number_rows": 25226624
+      },
+      {
+        "column": "TLBCST",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 15,
+        "scale": 7,
+        "column_desc": "Total Labor Cost",
+        "table_desc": "",
+        "number_rows": 25226624
+      }
+    ]
+  },
+  "PICWIP001": {
+    "found": true,
+    "table_desc": "Arcadia daily WIP",
+    "number_rows": 43231700,
+    "column_count": 10,
+    "first_columns": [
+      {
+        "column": "WHS",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "house",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      },
+      {
+        "column": "TODAY",
+        "ordinal": 2,
+        "type": "NUMERIC",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "((year(date)-1900)*10000)+       (month(date)*100)",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      },
+      {
+        "column": "ITEM",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "item#",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      },
+      {
+        "column": "QTY",
+        "ordinal": 4,
+        "type": "NUMERIC",
+        "length": 10,
+        "scale": 3,
+        "column_desc": "wip",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      },
+      {
+        "column": "ITDSC",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 30,
+        "scale": null,
+        "column_desc": "Item description",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      },
+      {
+        "column": "IC",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "ITEMCLASS",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      },
+      {
+        "column": "ITTYP",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Item type code",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      },
+      {
+        "column": "M",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "MAKE",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      },
+      {
+        "column": "UCDEF",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 8,
+        "column_desc": "Unit cost default",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      },
+      {
+        "column": "SOURCE",
+        "ordinal": 10,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "srcfile",
+        "table_desc": "Arcadia daily WIP",
+        "number_rows": 43231700
+      }
+    ]
+  },
+  "MB_PSFOAM1": {
+    "found": true,
+    "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+    "number_rows": 776047,
+    "column_count": 58,
+    "first_columns": [
+      {
+        "column": "PINBR",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Parent item number",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "STID",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Site identifier",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "PITR",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Parent item revision",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "ALTS",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Alternate BOM ID",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "NOSLC",
+        "ordinal": 5,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 0,
+        "column_desc": "Number single level assembly components",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "SBQTY",
+        "ordinal": 6,
+        "type": "DECIMAL",
+        "length": 11,
+        "scale": 3,
+        "column_desc": "Standard batch quantity",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "CFOPC",
+        "ordinal": 7,
+        "type": "NUMERIC",
+        "length": 5,
+        "scale": 4,
+        "column_desc": "Cumulative F/O cost roll-up factor",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "PSHD",
+        "ordinal": 8,
+        "type": "CHAR",
+        "length": 40,
+        "scale": null,
+        "column_desc": "Product structure header description",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "UUSA",
+        "ordinal": 9,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "User field-switch A",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "UUD1",
+        "ordinal": 10,
+        "type": "NUMERIC",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "User field-date 1",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "UU40",
+        "ordinal": 11,
+        "type": "CHAR",
+        "length": 40,
+        "scale": null,
+        "column_desc": "User field-text 40",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "CRUS",
+        "ordinal": 12,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Create user",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "CRPG",
+        "ordinal": 13,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Create program",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "CRDT",
+        "ordinal": 14,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Create date",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "CRTM",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Create time",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "CHUS",
+        "ordinal": 16,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Change user",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "CHPG",
+        "ordinal": 17,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Change program",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "CHDE",
+        "ordinal": 18,
+        "type": "DECIMAL",
+        "length": 7,
+        "scale": 0,
+        "column_desc": "Change date",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "CHTE",
+        "ordinal": 19,
+        "type": "DECIMAL",
+        "length": 6,
+        "scale": 0,
+        "column_desc": "Change time",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      },
+      {
+        "column": "APCC",
+        "ordinal": 20,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "APC structure code",
+        "table_desc": "PRODUCT STRUCTURE SAVE before foam changes",
+        "number_rows": 776047
+      }
+    ]
+  },
+  "MB_ISSWH": {
+    "found": true,
+    "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+    "number_rows": 399054,
+    "column_count": 19,
+    "first_columns": [
+      {
+        "column": "STID",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Site identifier",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "PERYR",
+        "ordinal": 2,
+        "type": "DECIMAL",
+        "length": 4,
+        "scale": 0,
+        "column_desc": "Period Year",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "PERMO",
+        "ordinal": 3,
+        "type": "DECIMAL",
+        "length": 2,
+        "scale": 0,
+        "column_desc": "Period Month",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "HOUSE",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "EINBR",
+        "ordinal": 5,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "End Item Number",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "PINBR",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Parent Item Number",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "CINBR",
+        "ordinal": 7,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "Component Item Number",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "LEVEL",
+        "ordinal": 8,
+        "type": "DECIMAL",
+        "length": 3,
+        "scale": 0,
+        "column_desc": "Relative Level",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "TRQTY",
+        "ordinal": 9,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 9,
+        "column_desc": "Transaction Qty",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "QTYPN",
+        "ordinal": 10,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 9,
+        "column_desc": "Qty Per Parent",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "QPASYX",
+        "ordinal": 11,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 9,
+        "column_desc": "Qty Per Unit",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "MATRL",
+        "ordinal": 12,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 8,
+        "column_desc": "Material",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "FRGHT",
+        "ordinal": 13,
+        "type": "DECIMAL",
+        "length": 19,
+        "scale": 8,
+        "column_desc": "Freight",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "MCOST",
+        "ordinal": 14,
+        "type": "DECIMAL",
+        "length": 20,
+        "scale": 8,
+        "column_desc": "Material Cost",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "FCOST",
+        "ordinal": 15,
+        "type": "DECIMAL",
+        "length": 20,
+        "scale": 8,
+        "column_desc": "Freight Cost",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "ITTYP",
+        "ordinal": 16,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Item Type Code",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "EITCLS",
+        "ordinal": 17,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "End Item Class",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "ITCLS",
+        "ordinal": 18,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Item Class",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      },
+      {
+        "column": "CHGN",
+        "ordinal": 19,
+        "type": "CHAR",
+        "length": 10,
+        "scale": null,
+        "column_desc": "Charge Nature",
+        "table_desc": "BOM EXPLOSION LINKED TO WHSE MASTER",
+        "number_rows": 399054
+      }
+    ]
+  },
+  "MB_NETSAL1": {
+    "found": true,
+    "table_desc": "NET SALES",
+    "number_rows": 12483755,
+    "column_count": 6,
+    "first_columns": [
+      {
+        "column": "INWHSE",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Warehouse",
+        "table_desc": "NET SALES",
+        "number_rows": 12483755
+      },
+      {
+        "column": "SSSPCN",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 3,
+        "scale": null,
+        "column_desc": "Ship to Country Name",
+        "table_desc": "NET SALES",
+        "number_rows": 12483755
+      },
+      {
+        "column": "ITITCL",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "Item Class",
+        "table_desc": "NET SALES",
+        "number_rows": 12483755
+      },
+      {
+        "column": "XTITNO",
+        "ordinal": 4,
+        "type": "CHAR",
+        "length": 15,
+        "scale": null,
+        "column_desc": "ITEM NUMBER",
+        "table_desc": "NET SALES",
+        "number_rows": 12483755
+      },
+      {
+        "column": "NETSALES",
+        "ordinal": 5,
+        "type": "NUMERIC",
+        "length": 12,
+        "scale": 2,
+        "column_desc": "(ITPRIC-XFRGHT-XTCONF)*ITSHQT",
+        "table_desc": "NET SALES",
+        "number_rows": 12483755
+      },
+      {
+        "column": "MONTH",
+        "ordinal": 6,
+        "type": "CHAR",
+        "length": 4,
+        "scale": null,
+        "column_desc": "'0110'",
+        "table_desc": "NET SALES",
+        "number_rows": 12483755
+      }
+    ]
+  },
+  "TS_VENDOR": {
+    "found": true,
+    "table_desc": "",
+    "number_rows": 347171418,
+    "column_count": 3,
+    "first_columns": [
+      {
+        "column": "VNAME",
+        "ordinal": 1,
+        "type": "CHAR",
+        "length": 25,
+        "scale": null,
+        "column_desc": "Vendor name",
+        "table_desc": "",
+        "number_rows": 347171418
+      },
+      {
+        "column": "VNDNR",
+        "ordinal": 2,
+        "type": "CHAR",
+        "length": 6,
+        "scale": null,
+        "column_desc": "Vendor number",
+        "table_desc": "",
+        "number_rows": 347171418
+      },
+      {
+        "column": "PRODUCTORIGIN",
+        "ordinal": 3,
+        "type": "CHAR",
+        "length": 1,
+        "scale": null,
+        "column_desc": "Product Origin(D/I)",
+        "table_desc": "",
+        "number_rows": 347171418
+      }
+    ]
+  }
+}

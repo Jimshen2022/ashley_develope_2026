@@ -17,13 +17,15 @@ SELECT t1.wh_id,
                         t1.location_id_2 AS 'ToLocation',
                         t1.employee_id_2,
                         CASE
-                            WHEN t1.location_id_2 IN ('DM001AA1') AND t1.control_number_2 LIKE 'RS%' THEN 'Inbound Vendor Damaged received qty'
-                            WHEN t1.location_id_2 IN ('DM001AA1') AND t1.control_number_2 LIKE 'A3%' THEN 'Whse Damaged qty'
-                            WHEN t1.location_id_2 LIKE 'A3%' AND t1.control_number_2 IN ('DM001AA1') THEN 'Inspected & Fixing okay qty'
+                            WHEN t1.location_id_2 IN ('DM001AA1') AND t1.control_number_2 LIKE 'RS%' THEN 'Inbound Vendor Damaged received pcs be moved to inspection location'
+                            WHEN t1.location_id_2 IN ('DM001AA1') AND t1.control_number_2 LIKE 'A3%' THEN 'Whse Damaged piece be moved to inspection location'
+                            WHEN t1.location_id_2 LIKE 'A3%' AND t1.control_number_2 IN ('DM001AA1') THEN 'Inspected & Fixing okay moving back to whse'
                             WHEN t1.location_id_2 LIKE 'A3%' AND t1.control_number_2 IN ('NG001CK3') THEN 'Inspected & Fixing okay qty'
-                                WHEN t1.location_id_2 IN ('NG001VD3') AND t1.control_number_2 IN ('NG001UP3') THEN 'Whse damaged return to venodr fixing qty'
-                            WHEN t1.location_id_2 IN ('NG001VD3') AND t1.control_number_2 IN ('NG001CG3') THEN 'Whse damaged return to venodr fixing qty'
-                            WHEN t1.location_id_2 IN ('NG001CK3') AND t1.control_number_2 IN ('NG001CG3') THEN 'Ashton can fix it but lack materials qty'
+                            WHEN t1.location_id_2 IN ('NG001VD3') AND t1.control_number_2 IN ('NG001UP3') THEN 'Returned to venodr for fixing'
+                            WHEN t1.location_id_2 IN ('NG001VD3') AND t1.control_number_2 IN ('NG001CG3') THEN 'Returned to venodr for fixing'
+                            WHEN t1.location_id_2 IN ('NG001CK3') AND t1.control_number_2 IN ('NG001CG3') THEN 'Inspected & Ashton can fix it but lack materials qty'
+                            WHEN t1.location_id_2 IN ('NG001RA1') THEN 'Inspected but product damaged can cannot be fixed'
+                            WHEN t1.location_id_2 IN ('NG001CG3','NG001UP3') THEN 'Inspected & product damaged and need return to vendor reparing'                             
                             WHEN t1.location_id_2 LIKE 'A3%' AND t1.control_number_2 IN ('NG001VD3') THEN 'Vendor fixed okay or swapped qty'
                             ELSE 'Check'
                         END AS Transaction_type,
@@ -37,13 +39,15 @@ SELECT t1.wh_id,
                     AND t1.start_tran_date > '2024-01-01'
                     AND t1.tran_type IN ('254', '202')
                     AND (CASE
-                            WHEN t1.location_id_2 IN ('DM001AA1') AND t1.control_number_2 LIKE 'RS%' THEN 'Inbound Vendor Damaged received qty'
-                            WHEN t1.location_id_2 IN ('DM001AA1') AND t1.control_number_2 LIKE 'A3%' THEN 'Whse Damaged qty'
-                            WHEN t1.location_id_2 LIKE 'A3%' AND t1.control_number_2 IN ('DM001AA1') THEN 'Inspected & Fixing okay qty'
+                            WHEN t1.location_id_2 IN ('DM001AA1') AND t1.control_number_2 LIKE 'RS%' THEN 'Inbound Vendor Damaged received pcs be moved to inspection location'
+                            WHEN t1.location_id_2 IN ('DM001AA1') AND t1.control_number_2 LIKE 'A3%' THEN 'Whse Damaged piece be moved to inspection location'
+                            WHEN t1.location_id_2 LIKE 'A3%' AND t1.control_number_2 IN ('DM001AA1') THEN 'Inspected & Fixing okay moving back to whse'
                             WHEN t1.location_id_2 LIKE 'A3%' AND t1.control_number_2 IN ('NG001CK3') THEN 'Inspected & Fixing okay qty'
-                            WHEN t1.location_id_2 IN ('NG001VD3') AND t1.control_number_2 IN ('NG001UP3') THEN 'Whse damaged return to venodr fixing qty'
-                            WHEN t1.location_id_2 IN ('NG001VD3') AND t1.control_number_2 IN ('NG001CG3') THEN 'Whse damaged return to venodr fixing qty'
-                            WHEN t1.location_id_2 IN ('NG001CK3') AND t1.control_number_2 IN ('NG001CG3') THEN 'Ashton can fix it but lack materials qty'
+                            WHEN t1.location_id_2 IN ('NG001VD3') AND t1.control_number_2 IN ('NG001UP3') THEN 'Returned to venodr for fixing'
+                            WHEN t1.location_id_2 IN ('NG001VD3') AND t1.control_number_2 IN ('NG001CG3') THEN 'Returned to venodr for fixing'
+                            WHEN t1.location_id_2 IN ('NG001CK3') AND t1.control_number_2 IN ('NG001CG3') THEN 'Inspected & Ashton can fix it but lack materials qty'
+                            WHEN t1.location_id_2 IN ('NG001RA1') THEN 'Inspected but product damaged can cannot be fixed'
+                            WHEN t1.location_id_2 IN ('NG001CG3','NG001UP3') THEN 'Inspected & product damaged and need return to vendor reparing'                             
                             WHEN t1.location_id_2 LIKE 'A3%' AND t1.control_number_2 IN ('NG001VD3') THEN 'Vendor fixed okay or swapped qty'
                             ELSE 'Check'
                         END) <> 'Check'
