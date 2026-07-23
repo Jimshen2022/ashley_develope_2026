@@ -54,6 +54,6 @@ def main():
     finally:
         print(f"⏱ 总耗时: {time.time() - start_time:.2f} 秒")
 
-Scx
+
 if __name__ == '__main__':
     main()

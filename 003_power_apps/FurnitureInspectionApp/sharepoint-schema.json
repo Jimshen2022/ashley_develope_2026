@@ -1,0 +1,37 @@
+{
+  "siteUrl": "https://masterashley.sharepoint.com/sites/AsiaWarehouseOperations/power_app",
+  "lists": [
+    {
+      "title": "FurnitureInspections",
+      "description": "Furniture product inspection records, one row per serial number inspection.",
+      "columns": [
+        { "name": "InspectionID", "displayName": "InspectionID", "type": "Text", "required": false, "indexed": true, "unique": true },
+        { "name": "InspectionDate", "displayName": "InspectionDate", "type": "DateTime", "format": "DateTime", "required": true, "indexed": true },
+        { "name": "ItemNumber", "displayName": "ItemNumber", "type": "Text", "required": true, "indexed": true },
+        { "name": "SerialNumber", "displayName": "SerialNumber", "type": "Text", "required": true, "indexed": true },
+        { "name": "IssueFrom", "displayName": "IssueFrom", "type": "Choice", "required": true, "choices": ["Ashton", "Vendor"] },
+        { "name": "DamagedDescription", "displayName": "DamagedDescription", "type": "Note", "required": true },
+        { "name": "Reason", "displayName": "Reason", "type": "Note", "required": false },
+        { "name": "DamagedBy", "displayName": "DamagedBy", "type": "Text", "required": false },
+        { "name": "WhseDealWithStatus", "displayName": "WhseDealWithStatus", "type": "Choice", "required": true, "choices": ["Pending", "In Review", "Repaired", "Scrapped", "Returned to Vendor", "Closed"] },
+        { "name": "Inspector", "displayName": "Inspector", "type": "Text", "required": true },
+        { "name": "Notes", "displayName": "Notes", "type": "Note", "required": false },
+        { "name": "PhotoCount", "displayName": "PhotoCount", "type": "Number", "required": false },
+        { "name": "ReportDate", "displayName": "ReportDate", "type": "DateTime", "format": "DateOnly", "required": false, "indexed": true }
+      ]
+    },
+    {
+      "title": "FurnitureInspectionPhotos",
+      "description": "Inspection photos linked to FurnitureInspections.",
+      "columns": [
+        { "name": "InspectionListID", "displayName": "InspectionListID", "type": "Number", "required": true, "indexed": true },
+        { "name": "InspectionID", "displayName": "InspectionID", "type": "Text", "required": false, "indexed": true },
+        { "name": "PhotoIndex", "displayName": "PhotoIndex", "type": "Number", "required": false },
+        { "name": "PhotoName", "displayName": "PhotoName", "type": "Text", "required": false },
+        { "name": "Photo", "displayName": "Photo", "type": "Thumbnail", "required": false },
+        { "name": "PhotoLink", "displayName": "PhotoLink", "type": "URL", "required": false }
+      ]
+    }
+  ]
+}
+

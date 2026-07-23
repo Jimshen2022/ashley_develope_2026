@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 import win32com.client as win32
 
-def fetch_data(query, connection_string='DSN=WFVNPROD;UID=JIMSHEN;PWD=MJ2090'):
+def fetch_data(query, connection_string='DSN=WFVNPROD;UID=JIMSHEN;PWD=MJ2091'):
     """从数据库获取数据"""
     try:
         cnxn = po.connect(connection_string, autocommit=True)

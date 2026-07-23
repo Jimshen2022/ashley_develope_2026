@@ -63,20 +63,32 @@ select top 10 * from t_xdock_rule
 select top 10 * from t_pick_put_rules
 select top 10 * from t_import_EMPLOYEE
 
+-- trip shipped
+
+select start_tran_date, tran_type, item_number, control_number_2, sum(tran_qty) as tran_qty from t_tran_log  where control_number_2 like '%66955%' and tran_type = '347' group by start_tran_date, tran_type, item_number, control_number_2
+
+-- ORDER DETAILS
+select  * from t_order_detail where order_number like '%66955%'
+select  * from t_order_detail_breakdown where order_number like '%66955%' and item_number = 'D612-25'
+
 
 -- tranlog
 
+
+select * from t_tran_log where item_number = 'D612-25' and start_tran_date >= '2026-01-13' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where item_number = '9140686' and start_tran_date >= '2026-07-13' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where item_number = 'R83761' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '639721456416' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number = '503953982813' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '631051283697' order by start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number = '631051285072' order by start_tran_date desc, start_tran_time desc
 select * from t_tran_log where item_number = 'D984-01' and tran_type in ('161','855') order by start_tran_date desc, start_tran_time desc
 
 -- fwp 
-select * from t_location where location_id in ('A3011CS1','A3011CT1','A3011DS1','A3011DT1','A3013DS1','A3013DT1','A3013CS1','A3013CT1')
-select  * from t_fwd_pick WHERE location_id in ('A3011CS1','A3011CT1','A3011DS1','A3011DT1','A3013DS1','A3013DT1','A3013CS1','A3013CT1')
+select * from t_location where location_id in ('A3011DD1','A3013DC1')
+select  * from t_fwd_pick WHERE location_id in ('A3011CC1','A3011CD1','A3011DC1','A3011DD1','A3013CC1','A3013CD1','A3013DC1','A3013DD1')
 select  * from t_fwd_pick WHERE location_id in ('A3013DU1','A3013CU1')
-select  * from t_fwd_pick WHERE item_number in ('B697-58W1','T642-1')
+select  * from t_fwd_pick WHERE item_number in ('B947-94','B697-36','L235964')
 
 
 
@@ -277,7 +289,7 @@ select * from t_employee where emp_number in ('51001')
 
 
 -- sn data error check
-select * from t_tran_log where lot_number IN ('642460075541') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
+select * from t_tran_log where lot_number IN ('588456622') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('613940704023') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('609890109157') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
 select * from t_tran_log where lot_number IN ('630570024329') order by item_number, lot_number, start_tran_date desc, start_tran_time desc
@@ -660,15 +672,8 @@ Select * from t_tran_log where tran_type = '350' and control_number_2 like '%361
 -- location master
 select  * from t_location where location_id like 'RS%'
 
-select *
-from t_tran_log 
-where item_number = 'R407300' and tran_type in ('161','855')  
-order by start_tran_date, start_tran_time
 
-select *
-from t_tran_log 
-where item_number = 'A2000841' and tran_type in ('161','855')  
-order by start_tran_date, start_tran_time
+
 
 -- by PO receiving
 
