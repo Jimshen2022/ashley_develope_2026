@@ -1,0 +1,10 @@
+# Dependency folders
+node_modules/
+**/node_modules/
+
+# Package manager caches
+.pnpm-store/
+
+# Python caches
+__pycache__/
+*.py[cod]
