@@ -62,6 +62,17 @@ select top 10 * from t_replenishment_rule
 select top 10 * from t_xdock_rule
 select top 10 * from t_pick_put_rules
 select top 10 * from t_import_EMPLOYEE
+select * from t_import_ITEM where transaction_string like '%D797-02%'
+select top 10 * from t_import_DEPARTMENT
+select top 10 * from t_import_EMPLOYEE
+
+
+
+-- sn hold
+select top 10 * from t_serial_active where item_number like 'B%'
+select distinct serial_no_status from t_serial_active where item_number like 'B%'
+select * from t_serial_master where serial_number = '503953808023'
+select distinct serial_no_status  from t_serial_master
 
 -- trip shipped
 
