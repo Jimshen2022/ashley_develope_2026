@@ -2,8 +2,8 @@ SELECT *
 FROM [Wholesale_ProductSourcing_AFI].[Bookings]
 WHERE BokWarehouse = '335' AND BokContainerNumBer LIKE 'HLBU2707872%'
 
-SELECT TOP 10 *FROM [Wholesale_ProductSourcing_AFI].[Bookings] where BokTripNumber = '43482'
-
+SELECT TOP 10 *FROM [Wholesale_ProductSourcing_AFI].[Bookings] where BokTripNumber = '92811'
+0092811-00
 SELECT *
 FROM [Wholesale_ProductSourcing_AFI].[Bookings] 
 WHERE BokWarehouse = '335' AND BokContainerNumBer LIKE 'HLBU2707872%'

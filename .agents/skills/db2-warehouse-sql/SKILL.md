@@ -24,10 +24,10 @@ Use this skill to work on warehouse-facing SQL where the business result matters
 
 Check these locations first when the request looks DB2 or Mapics related:
 
-- `D:\GitHub\ashley_develope_2026\000_db2_schema\DB2`
-- `D:\GitHub\ashley_develope_2026\017_ItemMaster`
-- `D:\GitHub\ashley_develope_2026\001-MIL`
-- `D:\GitHub\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\000_db2_schema\DB2`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\017_ItemMaster`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\001-MIL`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance`
 
 ## Output Pattern
 

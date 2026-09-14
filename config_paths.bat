@@ -17,7 +17,7 @@ echo.
 :get_source
 echo.
 echo Current source directory setting:
-echo   D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI
+echo   D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI
 echo.
 set /p new_source="Enter new source directory (or press Enter to skip): "
 
@@ -34,7 +34,7 @@ if not "%new_source%"=="" (
 :get_target
 echo.
 echo Current target directory setting:
-echo   D:\GitHub\power_bi_develop_2026\US_PBIP
+echo   D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP
 echo.
 set /p new_target="Enter new target directory (or press Enter to skip): "
 

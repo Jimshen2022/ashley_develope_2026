@@ -86,7 +86,7 @@ QUICK_START_GUIDE = """
 第 3 步: 查看结果
 ──────────────────────────────────────
 ✅ 完成后在这里查看转换结果:
-   D:\\GitHub\\power_bi_develop_2026\\US_PBIP\\
+   D:\\JimOneDrive\\OneDrive - Ashley Furniture Industries, Inc\\Documents\\Github\\power_bi_develop_2026\\US_PBIP\\
 
 
 🎉 就这么简单!
@@ -103,7 +103,7 @@ PREREQUISITES = {
         },
         {
             "名称": "源目录存在",
-            "路径": "D:\\GitHub\\ashley_develope_2026\\00-PowerBI\\DC BI",
+            "路径": "D:\\JimOneDrive\\OneDrive - Ashley Furniture Industries, Inc\\Documents\\Github\\ashley_develope_2026\\00-PowerBI\\DC BI",
             "文件类型": "*.pbix",
             "数量": "应包含多个 Power BI 文件",
         },
@@ -176,14 +176,14 @@ COMMAND_REFERENCE = {
     
     "PowerShell (推荐)": [
         "# 打开 PowerShell 管理员",
-        "cd D:\\GitHub\\ashley_develope_2026",
+        "cd D:\\JimOneDrive\\OneDrive - Ashley Furniture Industries, Inc\\Documents\\Github\\ashley_develope_2026",
         "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser",
         ".\\Convert-PowerBIFiles.ps1",
     ],
     
     "Python 脚本": [
         "# 打开 CMD 或 PowerShell",
-        "cd D:\\GitHub\\ashley_develope_2026",
+        "cd D:\\JimOneDrive\\OneDrive - Ashley Furniture Industries, Inc\\Documents\\Github\\ashley_develope_2026",
         "python power_bi_converter.py",
     ],
     
@@ -191,10 +191,10 @@ COMMAND_REFERENCE = {
     
     "查看转换日志": "type power_bi_conversion.log",
     
-    "打开目标目录": "explorer D:\\GitHub\\power_bi_develop_2026\\US_PBIP",
+    "打开目标目录": "explorer D:\\JimOneDrive\\OneDrive - Ashley Furniture Industries, Inc\\Documents\\Github\\power_bi_develop_2026\\US_PBIP",
     
     "列出转换完成的文件": [
-        "Get-ChildItem D:\\GitHub\\power_bi_develop_2026\\US_PBIP",
+        "Get-ChildItem D:\\JimOneDrive\\OneDrive - Ashley Furniture Industries, Inc\\Documents\\Github\\power_bi_develop_2026\\US_PBIP",
         "-Filter '*.pbip' -Recurse | Select-Object FullName",
     ],
 }

@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 
 # Read Excel file
-excel_file = Path(r"D:\GitHub\Ashley_Project\Network Labor Planning File_DC Version.xlsx")
+excel_file = Path(r"D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\Ashley_Project\Network Labor Planning File_DC Version.xlsx")
 if excel_file.exists():
     print(f"✓ Found Excel file: {excel_file}")
     print(f"\nSheet names:")

@@ -1,6 +1,6 @@
 # HighJump Expert Notes
 
-This file is a working knowledge base for `D:\GitHub\ashley_develope_2026\002_HJ_Server_Tables`.
+This file is a working knowledge base for `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\002_HJ_Server_Tables`.
 
 ## Scope
 

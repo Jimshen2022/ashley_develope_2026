@@ -4,7 +4,7 @@
 
 ✅ 所有文件已成功创建！
 
-📁 所在目录: D:\GitHub\ashley_develope_2026\
+📁 所在目录: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\
 
 ==================================================================================
 🚀 立即开始 - 选择以下三种方式之一:
@@ -13,7 +13,7 @@
 【方式 1️⃣】最简单 - Windows 菜单界面（推荐初学者）
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. 打开 Windows 文件浏览器
-2. 导航到: D:\GitHub\ashley_develope_2026\
+2. 导航到: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\
 3. 找到文件: run_power_bi_converter.bat
 4. 双击执行（如果提示，点击"是"或"允许"）
 5. 在菜单中选择 "1" 运行转换
@@ -26,7 +26,7 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. 按 Windows + X，选择 "Windows PowerShell (管理员)"
 2. 执行命令：
-   cd D:\GitHub\ashley_develope_2026
+   cd D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026
    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
    .\Convert-PowerBIFiles.ps1
 3. 按照彩色提示操作
@@ -38,7 +38,7 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. 按 Windows + X，选择 "Windows PowerShell" 或 "命令提示符"
 2. 执行命令：
-   cd D:\GitHub\ashley_develope_2026
+   cd D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026
    python power_bi_converter.py
 3. 按照提示操作
 
@@ -76,11 +76,11 @@ Python 脚本:
   下载: https://powerbi.microsoft.com/downloads/
 
 ✓ 源目录存在且有 .pbix 文件
-  路径: D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI
+  路径: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI
   检查: 该目录下应该有多个 .pbix 文件
 
 ✓ 目标目录有写入权限
-  路径: D:\GitHub\power_bi_develop_2026\US_PBIP
+  路径: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP
   (如不存在，脚本会自动创建)
 
 ⭕ Python 3.7+ (仅使用 Python 方式需要)

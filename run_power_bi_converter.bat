@@ -6,8 +6,8 @@ chcp 65001 >nul
 setlocal enabledelayedexpansion
 
 REM Configuration - Update these paths as needed
-set SOURCE_DIR=D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI
-set TARGET_DIR=D:\GitHub\power_bi_develop_2026\US_PBIP
+set SOURCE_DIR=D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI
+set TARGET_DIR=D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP
 
 :menu
 cls

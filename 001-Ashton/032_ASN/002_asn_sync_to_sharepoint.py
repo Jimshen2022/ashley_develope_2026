@@ -16,7 +16,7 @@ DATABASE = 'AAD'
 
 # SharePoint 本地同步盘路径 (请将这里的 "你的用户名" 替换为你电脑的实际用户名，或直接粘贴绝对路径)
 # 例如: r"C:\Users\ashton\Ashley Furniture Industries\Asia Warehouse Operations - ASN"
-SHAREPOINT_FOLDER = r"D:\OneDriver\Ashley Furniture Industries, Inc\Asia Warehouse Operations - ASN"
+SHAREPOINT_FOLDER = r"D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Asia Warehouse Operations - ASN"
 
 # ==========================================
 # 2. 数据库连接模块 (Database Connection)

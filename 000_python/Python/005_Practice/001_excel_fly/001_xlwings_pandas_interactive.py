@@ -62,7 +62,7 @@ def save_dataframe_to_excel(df, base_path, base_filename):
 # 主函数
 if __name__ == "__main__":
     # 目标路径和文件名
-    base_path = r'D:\GitHub\Python2038\005_Practice\001_excel_fly'
+    base_path = r'D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\Python2038\005_Practice\001_excel_fly'
     base_filename = 'pd_xlwings'
 
     # 杀掉挂起的 Excel 进程

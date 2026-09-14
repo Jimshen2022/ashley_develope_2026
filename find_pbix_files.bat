@@ -15,15 +15,15 @@ echo.
 REM Search in common locations
 set FOUND=0
 
-echo Searching in D:\GitHub...
-for /r "D:\GitHub" %%F in (*.pbix) do (
+echo Searching in D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github...
+for /r "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github" %%F in (*.pbix) do (
     echo Found: %%F
     set FOUND=1
 )
 
 if %FOUND%==0 (
     echo.
-    echo No .pbix files found in D:\GitHub
+    echo No .pbix files found in D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github
     echo.
     echo Trying other common locations...
     echo.

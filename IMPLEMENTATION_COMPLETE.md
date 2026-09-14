@@ -1,6 +1,6 @@
 ## 📦 Power BI 转换工具 - 完整部署总结
 
-已在 `D:\GitHub\ashley_develope_2026\` 目录成功创建以下文件:
+已在 `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\` 目录成功创建以下文件:
 
 ---
 
@@ -69,7 +69,7 @@
 
 #### 方式 1️⃣: **最简单** (Windows 菜单)
 ```
-1. 打开: D:\GitHub\ashley_develope_2026\
+1. 打开: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\
 2. 双击: run_power_bi_converter.bat
 3. 选择: 1 (运行转换)
 4. 跟随提示操作
@@ -77,14 +77,14 @@
 
 #### 方式 2️⃣: **推荐** (PowerShell)
 ```powershell
-cd D:\GitHub\ashley_develope_2026
+cd D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
 .\Convert-PowerBIFiles.ps1
 ```
 
 #### 方式 3️⃣: **灵活** (Python)
 ```bash
-cd D:\GitHub\ashley_develope_2026
+cd D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026
 python power_bi_converter.py
 ```
 
@@ -97,7 +97,7 @@ python power_bi_converter.py
   - 下载: https://powerbi.microsoft.com/downloads/
 
 - [ ] **源目录** 存在并有 .pbix 文件
-  - 路径: `D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI`
+  - 路径: `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI`
   - 验证: 该目录下应有多个 .pbix 文件
 
 - [ ] **Python 3.7+** (仅用 Python 方式需要)
@@ -191,8 +191,8 @@ A: 手动打开 .pbix 文件，另存为 .pbip 到对应文件夹
 ### 📌 **关键信息速查**
 
 ```
-源目录: D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI
-目标目录: D:\GitHub\power_bi_develop_2026\US_PBIP
+源目录: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI
+目标目录: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP
 推荐工具: Convert-PowerBIFiles.ps1
 最简单: run_power_bi_converter.bat
 日志文件: power_bi_conversion.log

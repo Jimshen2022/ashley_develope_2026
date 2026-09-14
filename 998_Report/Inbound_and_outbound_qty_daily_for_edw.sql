@@ -1,6 +1,6 @@
 /*
 Derived from:
-  D:\GitHub\ashley_develope_2026\998_Report\Inbound_and_outbound_qty_by_product.sql
+  D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\998_Report\Inbound_and_outbound_qty_by_product.sql
 
 Output columns:
   wh_id, start_tran_date, tran_piece, container_count, yearmonth, year, inbound_or_outbound

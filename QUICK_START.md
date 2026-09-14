@@ -61,7 +61,7 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
 
 ```bash
 # 打开 CMD 或 PowerShell
-cd D:\GitHub\ashley_develope_2026
+cd D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026
 
 # 运行交互式版本
 python power_bi_converter.py
@@ -113,13 +113,13 @@ python power_bi_auto_converter.py
 - [ ] **源目录存在且有 .pbix 文件**
   ```powershell
   # 检查：
-  Get-ChildItem "D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI" -Filter "*.pbix"
+  Get-ChildItem "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI" -Filter "*.pbix"
   ```
 
 - [ ] **目标目录有写入权限**
   ```powershell
   # 创建测试文件：
-  New-Item -Path "D:\GitHub\power_bi_develop_2026\US_PBIP\test.txt"
+  New-Item -Path "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP\test.txt"
   ```
 
 ---
@@ -136,7 +136,7 @@ REM 直接运行 Python 工具
 python power_bi_converter.py
 
 REM 打开目标目录
-explorer D:\GitHub\power_bi_develop_2026\US_PBIP
+explorer D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP
 
 REM 查看转换日志
 type power_bi_conversion.log
@@ -176,7 +176,7 @@ type power_bi_conversion.log
 4. **确认文件名和位置**
    ```
    文件名: [自动填充，无需修改]
-   保存位置: D:\GitHub\power_bi_develop_2026\US_PBIP\[文件名]/
+   保存位置: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP\[文件名]/
    ```
 
 5. **点击保存**
@@ -222,7 +222,7 @@ Get-ChildItem "C:\Program Files*" -Recurse -Name "PBIDesktop.exe"
 完成后，你应该看到：
 
 ```
-D:\GitHub\power_bi_develop_2026\US_PBIP\
+D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP\
 ├── Additional Reports/
 │   ├── Additional Reports.pbip
 │   ├── Report1.rdl
@@ -268,7 +268,7 @@ D:\GitHub\power_bi_develop_2026\US_PBIP\
 
 1. **备份原始文件**
    ```powershell
-   Copy-Item -Path "D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI" `
+   Copy-Item -Path "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI" `
              -Destination "D:\Backup\DC BI" -Recurse
    ```
 

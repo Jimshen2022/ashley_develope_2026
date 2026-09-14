@@ -58,7 +58,7 @@ power_bi_develop_2026/
    - 检查：`python --version`
 
 3. **源目录存在**
-   - 默认路径: `D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI`
+   - 默认路径: `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI`
 
 ## ⚙️ 配置项
 
@@ -66,10 +66,10 @@ power_bi_develop_2026/
 
 ```python
 # 源目录（包含所有 .pbix 文件）
-self.source_dir = r"D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI"
+self.source_dir = r"D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI"
 
 # 目标目录（转换后的 .pbip 文件存储位置）
-self.target_base_dir = r"D:\GitHub\power_bi_develop_2026\US_PBIP"
+self.target_base_dir = r"D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP"
 ```
 
 ## 📊 功能对比

@@ -2,7 +2,7 @@
 
 ## ✅ 已成功创建的文件
 
-在 `D:\GitHub\ashley_develope_2026\` 目录下：
+在 `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\` 目录下：
 
 ### 1. 🐍 Python 脚本
 
@@ -214,7 +214,7 @@ power_bi_develop_2026/
 
 ### 步骤 4️⃣ 确认保存位置
 ```
-位置: D:\GitHub\power_bi_develop_2026\US_PBIP\[文件名]/
+位置: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP\[文件名]/
 
 脚本已自动创建该目录，直接保存即可
 ```
@@ -272,8 +272,8 @@ self.pbi_desktop_path = "C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesk
 
 **解决方案：**
 1. 以管理员身份运行脚本
-2. 检查目标目录权限：`icacls D:\GitHub\power_bi_develop_2026\US_PBIP`
-3. 如需修改权限：`icacls "D:\GitHub\power_bi_develop_2026\US_PBIP" /grant:r %USERNAME%:(OI)(CI)F`
+2. 检查目标目录权限：`icacls D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP`
+3. 如需修改权限：`icacls "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP" /grant:r %USERNAME%:(OI)(CI)F`
 
 ### 问题 3: "文件未转换"
 
@@ -331,10 +331,10 @@ dir power_bi_develop_2026\US_PBIP /s *.pbip | find /c ".pbip"
 ### 检查转换结果
 ```powershell
 # 统计转换完成的文件
-(Get-ChildItem D:\GitHub\power_bi_develop_2026\US_PBIP -Filter "*.pbip" -Recurse).Count
+(Get-ChildItem D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP -Filter "*.pbip" -Recurse).Count
 
 # 列出所有转换的文件
-Get-ChildItem D:\GitHub\power_bi_develop_2026\US_PBIP -Filter "*.pbip" -Recurse | 
+Get-ChildItem D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP -Filter "*.pbip" -Recurse | 
   Select-Object FullName, Length
 ```
 
@@ -345,7 +345,7 @@ Get-ChildItem D:\GitHub\power_bi_develop_2026\US_PBIP -Filter "*.pbip" -Recurse 
 ### 备份原始文件
 ```powershell
 # 在转换前备份
-Copy-Item -Path "D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI" `
+Copy-Item -Path "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI" `
           -Destination "D:\Backup\DC_BI_Backup_$(Get-Date -f 'yyyyMMdd')" -Recurse -Force
 ```
 
@@ -359,8 +359,8 @@ Copy-Item -Path "D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI" `
 ```powershell
 # 转换完成后，整理目录
 # 创建一个索引文件，列出所有转换的文件
-Get-ChildItem D:\GitHub\power_bi_develop_2026\US_PBIP -Filter "*.pbip" -Recurse | 
-  Export-Csv "D:\GitHub\power_bi_develop_2026\US_PBIP\FILE_INDEX.csv"
+Get-ChildItem D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP -Filter "*.pbip" -Recurse | 
+  Export-Csv "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP\FILE_INDEX.csv"
 ```
 
 ---
@@ -387,7 +387,7 @@ Get-ChildItem D:\GitHub\power_bi_develop_2026\US_PBIP -Filter "*.pbip" -Recurse 
 
 ### 查看日志
 - 📄 **转换日志**: `power_bi_conversion.log`
-- 📁 **文件索引**: `D:\GitHub\power_bi_develop_2026\US_PBIP\FILE_INDEX.csv`
+- 📁 **文件索引**: `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP\FILE_INDEX.csv`
 
 ### 常见问题
 详见 `QUICK_START.md` 中的"常见问题"部分
@@ -408,8 +408,8 @@ Get-ChildItem D:\GitHub\power_bi_develop_2026\US_PBIP -Filter "*.pbip" -Recurse 
 
 | 项目 | 值 |
 |------|-----|
-| **源目录** | `D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI` |
-| **目标目录** | `D:\GitHub\power_bi_develop_2026\US_PBIP` |
+| **源目录** | `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI` |
+| **目标目录** | `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP` |
 | **推荐工具** | `Convert-PowerBIFiles.ps1` |
 | **最简单工具** | `run_power_bi_converter.bat` |
 | **日志文件** | `power_bi_conversion.log` |

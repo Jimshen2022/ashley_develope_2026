@@ -9,7 +9,7 @@ from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
 INPUT = Path(r"C:\Users\jishen\Downloads\list.xlsx")
-OUTPUT = Path(r"D:\GitHub\ashley_develope_2026\003_power_apps\FurnitureInspectionApp\outputs\furniture_option_list_20260723\FurnitureInspectionOptionList.xlsx")
+OUTPUT = Path(r"D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\003_power_apps\FurnitureInspectionApp\outputs\furniture_option_list_20260723\FurnitureInspectionOptionList.xlsx")
 
 CATEGORY_MAP = {
     "Damaged Description": "DamagedDescription",

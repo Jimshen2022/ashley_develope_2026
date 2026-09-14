@@ -2,8 +2,8 @@
 # 使用: .\Convert-PowerBIFiles.ps1
 
 param(
-    [string]$SourceDir = "D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI",
-    [string]$TargetDir = "D:\GitHub\power_bi_develop_2026\US_PBIP",
+    [string]$SourceDir = "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI",
+    [string]$TargetDir = "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP",
     [switch]$Verbose = $false
 )
 

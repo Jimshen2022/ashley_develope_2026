@@ -8,3 +8,6 @@ node_modules/
 # Python caches
 __pycache__/
 *.py[cod]
+
+# Google Drive temporary upload files
+.tmp.driveupload/

@@ -4,7 +4,7 @@
 
 ### 症状：
 ```
-❌ 源目录不存在: D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI
+❌ 源目录不存在: D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI
 ```
 
 ### 原因：
@@ -31,7 +31,7 @@ config_paths.bat
 #### 方法 3: 直接编辑 BAT 文件
 编辑 `run_power_bi_converter.bat`，找到这一行：
 ```batch
-set SOURCE_DIR=D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI
+set SOURCE_DIR=D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI
 ```
 改为你的实际路径，例如：
 ```batch
@@ -42,7 +42,7 @@ set SOURCE_DIR=C:\Users\YourName\Documents\Power BI
 #### 方法 4: 检查实际位置
 ```powershell
 # 在 PowerShell 中运行
-Get-ChildItem -Path "D:\GitHub" -Filter "*.pbix" -Recurse | Select-Object FullName
+Get-ChildItem -Path "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github" -Filter "*.pbix" -Recurse | Select-Object FullName
 ```
 
 ---
@@ -69,7 +69,7 @@ run_power_bi_converter_v2.bat
 
 #### 方法 2: 使用 PowerShell（最佳）
 ```powershell
-cd D:\GitHub\ashley_develope_2026
+cd D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
 .\Convert-PowerBIFiles.ps1
 ```
@@ -159,7 +159,7 @@ Access Denied / Permission Denied / 拒绝访问
 #### 方法 2: 更改目录权限
 ```powershell
 # 以管理员身份运行 PowerShell
-$path = "D:\GitHub\power_bi_develop_2026\US_PBIP"
+$path = "D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP"
 icacls $path /grant:r "$env:USERNAME`:(OI)(CI)F"
 ```
 

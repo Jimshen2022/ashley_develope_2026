@@ -11,8 +11,8 @@ class PowerBIAutoConverter:
     
     def __init__(self):
         # 设置路径
-        self.source_dir = r"D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI"
-        self.target_base_dir = r"D:\GitHub\power_bi_develop_2026\US_PBIP"
+        self.source_dir = r"D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI"
+        self.target_base_dir = r"D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP"
         self.pbi_desktop_path = self._find_pbi_desktop()
         self.pbix_files = []
         self.log_file = "power_bi_conversion.log"

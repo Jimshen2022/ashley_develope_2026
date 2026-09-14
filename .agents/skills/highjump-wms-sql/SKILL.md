@@ -28,10 +28,10 @@ Use this skill for HighJump WMS work that depends on knowing which tables, proce
 
 Check these locations first when the request looks HighJump related:
 
-- `D:\GitHub\ashley_develope_2026\000_JimCursor\001_AshleyProject\HJ_SQLSERVER`
-- `D:\GitHub\ashley_develope_2026\001_Wanek\050_Hotloading`
-- `D:\GitHub\ashley_develope_2026\002_HJ_setup`
-- `D:\GitHub\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\000_JimCursor\001_AshleyProject\HJ_SQLSERVER`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\001_Wanek\050_Hotloading`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\002_HJ_setup`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance`
 
 ## Working Rules
 

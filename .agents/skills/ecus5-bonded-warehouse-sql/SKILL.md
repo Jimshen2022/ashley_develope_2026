@@ -31,9 +31,9 @@ Use this skill for ECUS5 and Vietnamese bonded-warehouse SQL where customs rules
 
 Check these locations first when the request looks ECUS5 or bonded-warehouse related:
 
-- `D:\GitHub\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance\dnspy`
-- `D:\GitHub\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance\KNQMAN`
-- `D:\GitHub\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance\SN check`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance\dnspy`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance\KNQMAN`
+- `D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\002_KNQMAN_HJ_Mapics_Variance\SN check`
 
 ## Working Rules
 

@@ -11,8 +11,8 @@ if exist "config.ini" (
     )
 ) else (
     REM Default paths
-    set "SOURCE_DIR=D:\GitHub\ashley_develope_2026\00-PowerBI\DC BI"
-    set "TARGET_DIR=D:\GitHub\power_bi_develop_2026\US_PBIP"
+    set "SOURCE_DIR=D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\ashley_develope_2026\00-PowerBI\DC BI"
+    set "TARGET_DIR=D:\JimOneDrive\OneDrive - Ashley Furniture Industries, Inc\Documents\Github\power_bi_develop_2026\US_PBIP"
 )
 
 :menu
